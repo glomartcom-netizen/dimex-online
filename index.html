@@ -11,19 +11,18 @@
 body{margin:0;background:#000;color:#fff;font-family:Arial;}
 header{display:flex;justify-content:space-between;padding:20px;border-bottom:1px solid #222;}
 .logo{color:gold;font-size:24px;font-weight:bold;}
-nav a{color:#fff;margin:0 10px;text-decoration:none;}
 
 .hero{text-align:center;padding:80px 20px;}
-.hero h1{color:gold;font-size:42px;}
+.hero h1{color:gold;font-size:40px;}
 
 .section{max-width:900px;margin:auto;padding:60px 20px;}
 h2{color:gold;}
 
 .card{background:#111;padding:25px;border-radius:12px;margin-top:20px;}
 
-button{background:gold;border:none;padding:14px 30px;font-size:18px;border-radius:8px;margin-top:20px;}
+button{background:gold;border:none;padding:14px 28px;font-size:18px;border-radius:8px;}
 
-footer{text-align:center;padding:40px;border-top:1px solid #222;}
+footer{text-align:center;padding:40px;border-top:1px solid #222;margin-top:40px;}
 </style>
 </head>
 
@@ -31,14 +30,8 @@ footer{text-align:center;padding:40px;border-top:1px solid #222;}
 
 <header>
 <div class="logo">DimeX (DX)</div>
-<nav>
-<a href="#">Home</a>
-<a href="#intro">Intro</a>
-<a href="#roadmap">Roadmap</a>
-</nav>
 </header>
 
-<!-- HERO -->
 <div class="hero">
 <h1>DimeX Staking Ecosystem</h1>
 <p>Secure • Transparent • Community Driven</p>
@@ -47,100 +40,83 @@ footer{text-align:center;padding:40px;border-top:1px solid #222;}
 <div id="wallet" style="margin-top:15px;color:gold;"></div>
 </div>
 
-<!-- INTRODUCTION -->
-<div class="section" id="intro">
+<div class="section">
 <h2>Introduction</h2>
 <div class="card">
-DimeX (DX) is a decentralized staking ecosystem built on BNB Smart Chain.  
-The platform allows users to stake tokens and earn rewards through secure and transparent smart contracts.  
-
-Our goal is to create a sustainable long-term staking platform that rewards community participation and ensures transparency on-chain.
+DimeX is a decentralized staking ecosystem on BNB Smart Chain.  
+Users can stake DX tokens and earn rewards through transparent smart contracts designed for long-term sustainability.
 </div>
 </div>
 
-<!-- ABOUT -->
 <div class="section">
 <h2>About</h2>
 <div class="card">
-DimeX focuses on secure staking, transparent reward distribution, and long-term growth.  
-The project is built to provide reliable decentralized finance tools for users worldwide.
+The platform focuses on secure staking, community growth, and transparent reward distribution.
 </div>
 </div>
 
-<!-- CORE -->
 <div class="section">
 <h2>Core Value</h2>
 <div class="card">
-• Transparency  
-• Security  
-• Community growth  
-• Long-term sustainability
+Transparency • Security • Community • Sustainability
 </div>
 </div>
 
-<!-- VISION -->
 <div class="section">
 <h2>Vision</h2>
 <div class="card">
-To become a trusted global staking platform within the decentralized finance ecosystem.
+To build a trusted global staking platform within the DeFi ecosystem.
 </div>
 </div>
 
-<!-- MISSION -->
 <div class="section">
 <h2>Mission</h2>
 <div class="card">
-Provide a secure and transparent staking environment that rewards long-term holders and builds a strong decentralized community.
+Provide secure and sustainable staking rewards through verified smart contracts.
 </div>
 </div>
 
-<!-- MARKET -->
 <div class="section">
 <h2>Market Analysis</h2>
 <div class="card">
-The DeFi market on BNB Smart Chain continues to grow rapidly.  
-Staking platforms are a key part of the ecosystem, and DimeX aims to provide a stable and transparent solution for users.
+BNB Smart Chain DeFi adoption continues to grow rapidly.  
+DimeX aims to provide stable staking and long-term ecosystem expansion.
 </div>
 </div>
 
-<!-- ROADMAP -->
-<div class="section" id="roadmap">
+<div class="section">
 <h2>Roadmap</h2>
 <div class="card">
-<b>Phase 1 – Foundation</b><br>
-Token creation<br>
-Website launch<br>
-Community building<br><br>
+<b>Phase 1</b><br>
+Token launch<br>
+Website launch<br><br>
 
-<b>Phase 2 – Staking Launch</b><br>
-Staking smart contract<br>
-Platform launch<br>
+<b>Phase 2</b><br>
+Staking launch<br>
 Wallet integration<br><br>
 
-<b>Phase 3 – Growth</b><br>
-Marketing expansion<br>
-DEX visibility<br>
-Ecosystem development
+<b>Phase 3</b><br>
+DEX listing<br>
+Ecosystem growth
 </div>
 </div>
 
-<!-- DECLARATION -->
 <div class="section">
 <h2>Declaration</h2>
 <div class="card">
-Cryptocurrency investments involve risk.  
-Users should conduct independent research before participating in staking or token transactions.
+Crypto investments carry risk.  
+Users should conduct independent research before participating.
 </div>
 </div>
 
 <footer>
-© 2026 DimeX • BNB Smart Chain
+© 2026 DimeX
 </footer>
 
 <script>
 async function connectWallet(){
 
-if(typeof window.ethereum !== 'undefined'){
+if(typeof window.ethereum !== "undefined"){
 
 try{
 const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -151,7 +127,7 @@ const address = await signer.getAddress();
 document.getElementById("wallet").innerHTML =
 "Connected: "+address;
 
-}catch(e){
+}catch{
 alert("Connection rejected");
 }
 
