@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DimeX</title>
+<title>DimeX (DX)</title>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
 
@@ -12,10 +12,11 @@ body{margin:0;background:#000;color:#fff;font-family:Arial;}
 header{padding:20px;border-bottom:1px solid #222;}
 .logo{color:gold;font-size:24px;font-weight:bold;}
 .hero{text-align:center;padding:80px 20px;}
-.hero h1{color:gold;font-size:40px;}
-.section{max-width:900px;margin:auto;padding:60px 20px;}
-.card{background:#111;padding:25px;border-radius:12px;margin-top:20px;}
+.hero h1{color:gold;font-size:42px;}
 button{background:gold;border:none;padding:14px 28px;font-size:18px;border-radius:8px;}
+.section{max-width:900px;margin:auto;padding:60px 20px;}
+h2{color:gold;}
+.card{background:#111;padding:25px;border-radius:12px;margin-top:20px;}
 footer{text-align:center;padding:40px;border-top:1px solid #222;margin-top:40px;}
 </style>
 </head>
@@ -37,39 +38,92 @@ footer{text-align:center;padding:40px;border-top:1px solid #222;margin-top:40px;
 <div class="section">
 <h2>Introduction</h2>
 <div class="card">
-DimeX is a decentralized staking ecosystem on BNB Smart Chain allowing users to earn rewards through secure smart contracts.
+DimeX is a decentralized staking ecosystem built on BNB Smart Chain.  
+Users can stake DX tokens and earn rewards through secure smart contracts designed for long-term sustainability.
+</div>
+</div>
+
+<div class="section">
+<h2>About</h2>
+<div class="card">
+The project focuses on transparency, security, and community growth.  
+Our goal is to build a reliable staking platform with sustainable rewards.
+</div>
+</div>
+
+<div class="section">
+<h2>Core Value</h2>
+<div class="card">
+• Transparency  
+• Smart contract security  
+• Community driven  
+• Long-term vision
+</div>
+</div>
+
+<div class="section">
+<h2>Vision</h2>
+<div class="card">
+To build a globally trusted staking platform within the DeFi ecosystem.
+</div>
+</div>
+
+<div class="section">
+<h2>Mission</h2>
+<div class="card">
+Provide secure staking rewards and a transparent decentralized ecosystem.
+</div>
+</div>
+
+<div class="section">
+<h2>Market Analysis</h2>
+<div class="card">
+BNB Smart Chain continues to grow rapidly.  
+DimeX aims to provide stable staking and long-term ecosystem expansion.
 </div>
 </div>
 
 <div class="section">
 <h2>Roadmap</h2>
 <div class="card">
-Phase 1 – Token launch<br>
-Phase 2 – Staking launch<br>
-Phase 3 – DEX visibility
+<b>Phase 1</b><br>
+Token launch<br>
+Website launch<br><br>
+
+<b>Phase 2</b><br>
+Staking launch<br>
+Wallet integration<br><br>
+
+<b>Phase 3</b><br>
+DEX visibility<br>
+Community growth
+</div>
+</div>
+
+<div class="section">
+<h2>Declaration</h2>
+<div class="card">
+Crypto investments involve risk.  
+Users should conduct independent research before participating.
 </div>
 </div>
 
 <footer>
-© 2026 DimeX
+© 2026 DimeX • BNB Smart Chain
 </footer>
 
 <script>
 async function connectWallet(){
 
-// MOBILE METAMASK FIX
 if(typeof window.ethereum === "undefined"){
-const dapp = window.location.href.replace("https://","");
-window.location.href = "https://metamask.app.link/dapp/"+dapp;
+let url = window.location.href.replace("https://","");
+window.location.href = "https://metamask.app.link/dapp/"+url;
 return;
 }
 
 try{
-const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-
-// important fix
+const provider = new ethers.providers.Web3Provider(window.ethereum);
 await provider.send("eth_requestAccounts", []);
-
 const signer = provider.getSigner();
 const address = await signer.getAddress();
 
@@ -84,4 +138,4 @@ alert("Wallet connection failed");
 </script>
 
 </body>
-</html>
+  </html>
