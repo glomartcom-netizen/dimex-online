@@ -8,107 +8,173 @@
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
 
 <style>
-body{margin:0;background:#000;color:#fff;font-family:Arial;}
-.hero{text-align:center;padding:80px 20px;}
-h1{color:gold;font-size:42px;}
-button{background:gold;border:none;padding:15px 30px;font-size:18px;border-radius:8px;}
-.section{max-width:900px;margin:auto;padding:60px 20px;}
-.card{background:#111;padding:25px;border-radius:12px;margin-top:20px;}
+body{
+background:#000;
+color:#fff;
+font-family:Arial;
+margin:0;
+text-align:center;
+}
+
+header{
+padding:20px;
+font-size:28px;
+color:gold;
+border-bottom:1px solid #222;
+}
+
+.hero{
+padding:60px 20px;
+}
+
+button{
+padding:16px 30px;
+background:gold;
+border:none;
+font-size:18px;
+border-radius:10px;
+margin:10px;
+}
+
+.section{
+max-width:900px;
+margin:40px auto;
+}
+
+.card{
+background:#111;
+padding:25px;
+border-radius:12px;
+margin-top:20px;
+}
+
 h2{color:gold;}
 </style>
 </head>
 
 <body>
 
+<header>DimeX (DX)</header>
+
 <div class="hero">
-<h1>DimeX (DX)</h1>
-<p>BNB Smart Chain Staking Platform</p>
+<h1>BNB Smart Chain Staking</h1>
+<p>Secure • Transparent • Community Driven</p>
 
 <button onclick="connectWallet()">CONNECT WALLET</button>
-<div id="wallet" style="margin-top:20px;color:gold;"></div>
+<div id="wallet" style="color:gold;margin-top:10px;"></div>
 </div>
 
+<!-- INTRO -->
 <div class="section">
 <h2>Introduction</h2>
 <div class="card">
 DimeX is a decentralized staking ecosystem built on BNB Smart Chain.  
-Users can stake tokens and earn rewards through transparent smart contracts.
+Users can stake DX tokens and earn rewards through secure smart contracts designed for long-term sustainability.
 </div>
 </div>
 
+<!-- ABOUT -->
 <div class="section">
 <h2>About</h2>
 <div class="card">
-The platform focuses on secure staking, community growth, and sustainable rewards.
+The platform focuses on transparency, security, and community growth.  
+Our goal is to build a reliable staking platform with sustainable rewards.
 </div>
 </div>
 
+<!-- CORE -->
 <div class="section">
 <h2>Core Value</h2>
 <div class="card">
-Transparency • Security • Community • Long-term vision
+• Transparency  
+• Smart contract security  
+• Community driven  
+• Long-term vision
 </div>
 </div>
 
+<!-- VISION -->
 <div class="section">
 <h2>Vision</h2>
 <div class="card">
-To become a trusted global staking platform within the DeFi ecosystem.
+To become a globally trusted staking platform within the DeFi ecosystem.
 </div>
 </div>
 
+<!-- MISSION -->
 <div class="section">
 <h2>Mission</h2>
 <div class="card">
-Provide secure and transparent staking rewards through verified smart contracts.
+Provide secure staking rewards and a transparent decentralized ecosystem for users worldwide.
 </div>
 </div>
 
+<!-- MARKET -->
 <div class="section">
 <h2>Market Analysis</h2>
 <div class="card">
-BNB Smart Chain DeFi adoption continues to grow.  
+BNB Smart Chain DeFi adoption continues to grow rapidly.  
 DimeX aims to provide stable staking and long-term ecosystem expansion.
 </div>
 </div>
 
+<!-- ROADMAP -->
 <div class="section">
 <h2>Roadmap</h2>
 <div class="card">
-Phase 1 – Token launch<br>
-Phase 2 – Staking launch<br>
-Phase 3 – DEX visibility
+Phase 1 – Token Launch<br>
+Phase 2 – Staking Launch<br>
+Phase 3 – Growth & DEX Visibility
 </div>
 </div>
 
+<!-- DECLARATION -->
 <div class="section">
 <h2>Declaration</h2>
 <div class="card">
-Crypto investments carry risk.  
+Cryptocurrency investments involve risk.  
 Users should conduct independent research before participating.
 </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dash" style="display:none;" class="section">
+<h2>Dashboard</h2>
+
+<div class="card">
+<h3>Stake DX</h3>
+<button>Stake</button>
+</div>
+
+<div class="card">
+<h3>Claim Rewards</h3>
+<button>Claim</button>
+</div>
+
 </div>
 
 <script>
 async function connectWallet(){
 
-if(typeof window.ethereum === "undefined"){
-let url = window.location.href.replace("https://","");
+if(typeof window.ethereum==="undefined"){
+let url=window.location.href.replace("https://","");
 window.location.href="https://metamask.app.link/dapp/"+url;
 return;
 }
 
 try{
-const provider=new ethers.providers.Web3Provider(window.ethereum);
+const provider=new ethers.providers.Web3Provider(window.ethereum,"any");
 await provider.send("eth_requestAccounts",[]);
 const signer=provider.getSigner();
 const address=await signer.getAddress();
 
 document.getElementById("wallet").innerHTML="Connected: "+address;
+document.getElementById("dash").style.display="block";
 
 }catch(e){
-alert("Wallet connect failed");
+alert("Wallet connection failed");
 }
+
 }
 </script>
 
