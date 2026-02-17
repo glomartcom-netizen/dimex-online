@@ -2,180 +2,208 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DimeX</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DimeX Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.11.0/dist/index.umd.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-body{
-background:#000;
-color:#fff;
-font-family:Arial;
-margin:0;
-text-align:center;
-}
+body{margin:0;background:#000;color:#fff;font-family:Arial;text-align:center}
 
-header{
-padding:20px;
-font-size:28px;
-color:gold;
-border-bottom:1px solid #222;
-}
+.logo{width:80px;margin-top:20px}
+.title{color:gold;font-size:24px;margin-bottom:10px}
 
-.hero{
-padding:60px 20px;
-}
-
-button{
-padding:16px 30px;
+.btn{
 background:gold;
 border:none;
-font-size:18px;
-border-radius:10px;
-margin:10px;
-}
-
-.section{
-max-width:900px;
-margin:40px auto;
+padding:12px 18px;
+border-radius:8px;
+font-weight:bold;
+font-size:15px;
+cursor:pointer;
+min-width:200px;
+margin:8px;
 }
 
 .card{
 background:#111;
-padding:25px;
+padding:18px;
 border-radius:12px;
-margin-top:20px;
+margin:12px auto;
+width:92%;
+max-width:420px;
 }
 
-h2{color:gold;}
+.statGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+width:92%;
+max-width:420px;
+margin:auto;
+}
+
+.statBox{
+background:#111;
+padding:12px;
+border-radius:10px;
+}
+
+.statValue{
+color:gold;
+font-size:18px;
+margin-top:5px;
+}
+
+input{
+width:90%;
+padding:12px;
+background:#000;
+color:#fff;
+border:1px solid #333;
+border-radius:8px;
+margin:10px;
+}
 </style>
 </head>
 
 <body>
 
-<header>DimeX (DX)</header>
+<img src="https://i.ibb.co/zVB8fHMD/logo.png" class="logo">
+<div class="title">DimeX Dashboard</div>
 
-<div class="hero">
-<h1>BNB Smart Chain Staking</h1>
-<p>Secure • Transparent • Community Driven</p>
+<button class="btn" onclick="connect()">CONNECT WALLET</button>
 
-<button onclick="connectWallet()">CONNECT WALLET</button>
-<div id="wallet" style="color:gold;margin-top:10px;"></div>
-</div>
+<div id="wallet"></div>
+<div id="status" style="color:gold"></div>
 
-<!-- INTRO -->
-<div class="section">
-<h2>Introduction</h2>
+<!-- 🔴 CONTRACT DETAILS -->
 <div class="card">
-DimeX is a decentralized staking ecosystem built on BNB Smart Chain.  
-Users can stake DX tokens and earn rewards through secure smart contracts designed for long-term sustainability.
-</div>
+<h3>Contract Details</h3>
+
+<input value="PASTE STAKING CONTRACT ADDRESS">
+<input value="PASTE DX TOKEN ADDRESS">
+<input value="PASTE ADMIN WALLET ADDRESS">
+
 </div>
 
-<!-- ABOUT -->
-<div class="section">
-<h2>About</h2>
+<!-- STATS -->
+<div class="statGrid">
+
+<div class="statBox">Total Stake
+<div class="statValue">0</div>
+</div>
+
+<div class="statBox">Daily Rewards
+<div class="statValue">0</div>
+</div>
+
+<div class="statBox">Direct Income
+<div class="statValue">0</div>
+</div>
+
+<div class="statBox">Level Income
+<div class="statValue">0</div>
+</div>
+
+<div class="statBox">Total Income
+<div class="statValue">0</div>
+</div>
+
+<div class="statBox">Team Count
+<div class="statValue">0</div>
+</div>
+
+</div>
+
+<!-- REF -->
 <div class="card">
-The platform focuses on transparency, security, and community growth.  
-Our goal is to build a reliable staking platform with sustainable rewards.
-</div>
+<h3>Referral Link</h3>
+<input id="refInput" readonly>
+<button class="btn" onclick="copyRef()">COPY</button>
 </div>
 
-<!-- CORE -->
-<div class="section">
-<h2>Core Value</h2>
+<!-- STAKE -->
 <div class="card">
-• Transparency  
-• Smart contract security  
-• Community driven  
-• Long-term vision
-</div>
+<button class="btn">STAKE</button>
+<button class="btn">USDT</button>
+<button class="btn">DMX</button>
 </div>
 
-<!-- VISION -->
-<div class="section">
-<h2>Vision</h2>
+<!-- CLAIM -->
 <div class="card">
-To become a globally trusted staking platform within the DeFi ecosystem.
-</div>
+<h3>Claim</h3>
+<div style="color:gold;font-size:22px">0</div>
+<button class="btn">CLAIM</button>
 </div>
 
-<!-- MISSION -->
-<div class="section">
-<h2>Mission</h2>
+<!-- EXTRA -->
 <div class="card">
-Provide secure staking rewards and a transparent decentralized ecosystem for users worldwide.
-</div>
-</div>
-
-<!-- MARKET -->
-<div class="section">
-<h2>Market Analysis</h2>
-<div class="card">
-BNB Smart Chain DeFi adoption continues to grow rapidly.  
-DimeX aims to provide stable staking and long-term ecosystem expansion.
-</div>
-</div>
-
-<!-- ROADMAP -->
-<div class="section">
-<h2>Roadmap</h2>
-<div class="card">
-Phase 1 – Token Launch<br>
-Phase 2 – Staking Launch<br>
-Phase 3 – Growth & DEX Visibility
-</div>
-</div>
-
-<!-- DECLARATION -->
-<div class="section">
-<h2>Declaration</h2>
-<div class="card">
-Cryptocurrency investments involve risk.  
-Users should conduct independent research before participating.
-</div>
-</div>
-
-<!-- DASHBOARD -->
-<div id="dash" style="display:none;" class="section">
-<h2>Dashboard</h2>
-
-<div class="card">
-<h3>Stake DX</h3>
-<button>Stake</button>
-</div>
-
-<div class="card">
-<h3>Claim Rewards</h3>
-<button>Claim</button>
-</div>
-
+<button class="btn">VIEW DOWNLINE</button>
+<button class="btn">CLAIM HISTORY</button>
 </div>
 
 <script>
-async function connectWallet(){
 
-if(typeof window.ethereum==="undefined"){
-let url=window.location.href.replace("https://","");
-window.location.href="https://metamask.app.link/dapp/"+url;
-return;
-}
+let provider, signer;
+
+async function connect(){
 
 try{
-const provider=new ethers.providers.Web3Provider(window.ethereum,"any");
-await provider.send("eth_requestAccounts",[]);
-const signer=provider.getSigner();
-const address=await signer.getAddress();
 
-document.getElementById("wallet").innerHTML="Connected: "+address;
-document.getElementById("dash").style.display="block";
+document.getElementById("status").innerHTML="Connecting...";
+
+let providerInstance;
+
+if(window.ethereum){
+providerInstance = new ethers.providers.Web3Provider(window.ethereum);
+await providerInstance.send("eth_requestAccounts", []);
+}
+else{
+
+const wc = await window.EthereumProvider.init({
+projectId:"62a73933d62534edcd2f54b8a06c4319",
+chains:[56],
+showQrModal:true,
+metadata:{
+name:"DimeX",
+description:"DimeX",
+url:window.location.origin,
+icons:["https://i.ibb.co/zVB8fHMD/logo.png"]
+}
+});
+
+await wc.enable();
+providerInstance = new ethers.providers.Web3Provider(wc);
+
+}
+
+provider = providerInstance;
+signer = provider.getSigner();
+
+let addr = await signer.getAddress();
+
+document.getElementById("wallet").innerHTML="Wallet: "+addr;
+document.getElementById("status").innerHTML="Wallet Connected";
+
+document.getElementById("refInput").value =
+window.location.origin + "?ref=" + addr;
 
 }catch(e){
-alert("Wallet connection failed");
+alert("Wallet connect failed");
 }
 
 }
+
+function copyRef(){
+let copyText = document.getElementById("refInput");
+copyText.select();
+document.execCommand("copy");
+alert("Copied");
+}
+
 </script>
 
 </body>
