@@ -12,8 +12,9 @@
 <style>
 body{margin:0;background:#000;color:#fff;font-family:Arial;text-align:center}
 
-.logo{width:80px;margin-top:20px}
-.title{color:gold;font-size:24px;margin-bottom:10px}
+.header{padding:20px}
+.logo{width:70px}
+.title{color:gold;font-size:24px;font-weight:bold}
 
 .btn{
 background:gold;
@@ -23,15 +24,15 @@ border-radius:8px;
 font-weight:bold;
 font-size:15px;
 cursor:pointer;
-min-width:200px;
+min-width:180px;
 margin:8px;
 }
 
 .card{
 background:#111;
 padding:18px;
-border-radius:12px;
-margin:12px auto;
+border-radius:14px;
+margin:14px auto;
 width:92%;
 max-width:420px;
 }
@@ -39,169 +40,233 @@ max-width:420px;
 .statGrid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:10px;
+gap:12px;
 width:92%;
-max-width:420px;
 margin:auto;
+max-width:500px;
 }
 
 .statBox{
 background:#111;
-padding:12px;
-border-radius:10px;
+padding:14px;
+border-radius:12px;
 }
 
 .statValue{
 color:gold;
+font-weight:bold;
 font-size:18px;
-margin-top:5px;
+margin-top:6px;
 }
 
 input{
+padding:14px;
 width:90%;
-padding:12px;
+margin:10px;
 background:#000;
 color:#fff;
 border:1px solid #333;
 border-radius:8px;
-margin:10px;
+}
+
+.popup{
+display:none;
+position:fixed;
+top:0;left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.9);
+z-index:999;
+}
+
+.popupBox{
+background:#111;
+padding:20px;
+margin:60px auto;
+width:90%;
+max-width:400px;
+border-radius:12px;
 }
 </style>
 </head>
 
 <body>
 
+<div class="header">
 <img src="https://i.ibb.co/zVB8fHMD/logo.png" class="logo">
 <div class="title">DimeX Dashboard</div>
+</div>
 
 <button class="btn" onclick="connect()">CONNECT WALLET</button>
 
 <div id="wallet"></div>
 <div id="status" style="color:gold"></div>
 
-<!-- 🔴 CONTRACT DETAILS -->
-<div class="card">
-<h3>Contract Details</h3>
-
-<input value="PASTE STAKING CONTRACT ADDRESS">
-<input value="PASTE DX TOKEN ADDRESS">
-<input value="PASTE ADMIN WALLET ADDRESS">
-
-</div>
-
 <!-- STATS -->
 <div class="statGrid">
 
 <div class="statBox">Total Stake
-<div class="statValue">0</div>
-</div>
+<div id="totalStake" class="statValue">0</div></div>
 
-<div class="statBox">Daily Rewards
-<div class="statValue">0</div>
-</div>
+<div class="statBox">Daily Reward
+<div id="dailyReward" class="statValue">0</div></div>
 
 <div class="statBox">Direct Income
-<div class="statValue">0</div>
-</div>
+<div id="directIncome" class="statValue">0</div></div>
 
 <div class="statBox">Level Income
-<div class="statValue">0</div>
-</div>
+<div id="levelIncome" class="statValue">0</div></div>
 
 <div class="statBox">Total Income
-<div class="statValue">0</div>
-</div>
+<div id="totalIncome" class="statValue">0</div></div>
 
 <div class="statBox">Team Count
-<div class="statValue">0</div>
-</div>
+<div id="teamCount" class="statValue">0</div></div>
 
 </div>
 
-<!-- REF -->
+<!-- REFERRAL -->
 <div class="card">
-<h3>Referral Link</h3>
+Referral Link
 <input id="refInput" readonly>
 <button class="btn" onclick="copyRef()">COPY</button>
 </div>
 
 <!-- STAKE -->
 <div class="card">
-<button class="btn">STAKE</button>
-<button class="btn">USDT</button>
-<button class="btn">DMX</button>
+<button class="btn" onclick="toggleStake()">STAKE</button>
+</div>
+
+<div id="stakeBox" style="display:none">
+
+<div class="card">
+<h3>USDT</h3>
+<input placeholder="Amount">
+<button class="btn">Approve</button>
+<button class="btn">Stake</button>
+</div>
+
+<div class="card">
+<h3>DMX</h3>
+<input placeholder="Amount">
+<button class="btn">Approve</button>
+<button class="btn">Stake</button>
+</div>
+
 </div>
 
 <!-- CLAIM -->
 <div class="card">
-<h3>Claim</h3>
-<div style="color:gold;font-size:22px">0</div>
+Claimable: <span style="color:gold">0</span>
+<br>
 <button class="btn">CLAIM</button>
 </div>
 
-<!-- EXTRA -->
+<!-- DOWNLINE + HISTORY -->
 <div class="card">
-<button class="btn">VIEW DOWNLINE</button>
-<button class="btn">CLAIM HISTORY</button>
+<button class="btn" onclick="openDownline()">VIEW DOWNLINE</button>
+<button class="btn" onclick="openHistory()">CLAIM HISTORY</button>
+</div>
+
+<!-- DOWNLINE POPUP -->
+<div id="downlineBox" class="popup">
+<div class="popupBox">
+<h3>Downline</h3>
+User1<br>User2<br>
+<button class="btn" onclick="closeDownline()">CLOSE</button>
+</div>
+</div>
+
+<!-- HISTORY POPUP -->
+<div id="historyBox" class="popup">
+<div class="popupBox">
+<h3>Claim History</h3>
+10 USDT<br>5 USDT
+<br><br>
+<button class="btn" onclick="downloadHistory()">DOWNLOAD</button>
+<button class="btn" onclick="closeHistory()">CLOSE</button>
+</div>
 </div>
 
 <script>
 
 let provider, signer;
 
+// CONNECT
 async function connect(){
 
 try{
-
-document.getElementById("status").innerHTML="Connecting...";
 
 let providerInstance;
 
 if(window.ethereum){
 providerInstance = new ethers.providers.Web3Provider(window.ethereum);
 await providerInstance.send("eth_requestAccounts", []);
-}
-else{
+}else{
 
 const wc = await window.EthereumProvider.init({
 projectId:"62a73933d62534edcd2f54b8a06c4319",
 chains:[56],
-showQrModal:true,
-metadata:{
-name:"DimeX",
-description:"DimeX",
-url:window.location.origin,
-icons:["https://i.ibb.co/zVB8fHMD/logo.png"]
-}
+showQrModal:true
 });
 
 await wc.enable();
 providerInstance = new ethers.providers.Web3Provider(wc);
-
 }
 
-provider = providerInstance;
-signer = provider.getSigner();
+provider=providerInstance;
+signer=provider.getSigner();
 
 let addr = await signer.getAddress();
-
 document.getElementById("wallet").innerHTML="Wallet: "+addr;
-document.getElementById("status").innerHTML="Wallet Connected";
 
-document.getElementById("refInput").value =
-window.location.origin + "?ref=" + addr;
+document.getElementById("refInput").value=
+window.location.origin+"?ref="+addr;
+
+document.getElementById("status").innerHTML="Connected";
 
 }catch(e){
-alert("Wallet connect failed");
+alert("Wallet failed");
 }
 
 }
 
+// stake toggle
+function toggleStake(){
+let b=document.getElementById("stakeBox");
+b.style.display=b.style.display=="none"?"block":"none";
+}
+
+// copy ref
 function copyRef(){
-let copyText = document.getElementById("refInput");
-copyText.select();
+let x=document.getElementById("refInput");
+x.select();
 document.execCommand("copy");
-alert("Copied");
+}
+
+// downline
+function openDownline(){
+document.getElementById("downlineBox").style.display="block";
+}
+function closeDownline(){
+document.getElementById("downlineBox").style.display="none";
+}
+
+// history
+function openHistory(){
+document.getElementById("historyBox").style.display="block";
+}
+function closeHistory(){
+document.getElementById("historyBox").style.display="none";
+}
+
+function downloadHistory(){
+let data="Claim history";
+let blob=new Blob([data]);
+let a=document.createElement("a");
+a.href=URL.createObjectURL(blob);
+a.download="history.txt";
+a.click();
 }
 
 </script>
