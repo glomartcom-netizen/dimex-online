@@ -49,11 +49,9 @@ input{padding:12px;width:90%;background:#000;color:#fff;border:1px solid #333;bo
 <div class="title">DimeX Dashboard</div>
 </div>
 
-<div class="btnRow">
-<button class="centerBtn" onclick="connect()">
-CONNECT WALLET
+<button class="btn" onclick="connect()">
+<i class="fa-solid fa-wallet"></i> CONNECT WALLET
 </button>
-</div>
 
 <div id="wallet"></div>
 <div id="status" style="color:gold"></div>
@@ -107,9 +105,9 @@ Team Count
 </div>
 
 <!-- STAKE -->
-<div class="btnRow">
-<button class="centerBtn" onclick="toggleStake()">
-STAKE
+<div class="card">
+<button class="btn" onclick="toggleStake()">
+<i class="fa-solid fa-lock"></i> STAKE
 </button>
 </div>
 
@@ -139,13 +137,12 @@ STAKE
 </div>
 
 <!-- DOWNLINE -->
-<div class="btnRow">
-<button class="centerBtn" onclick="openDownline()">
-VIEW DOWNLINE
+<div class="card">
+<button class="btn" onclick="openDownline()">
+<i class="fa-solid fa-network-wired"></i> VIEW DOWNLINE
 </button>
-
-<button class="centerBtn" onclick="openHistory()">
-CLAIM HISTORY
+<button class="btn" onclick="openHistory()">
+<i class="fa-solid fa-clock"></i> CLAIM HISTORY 
 </button>
 </div>
 
