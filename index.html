@@ -44,9 +44,11 @@ input{padding:12px;width:90%;background:#000;color:#fff;border:1px solid #333;bo
 <div class="title">DimeX Dashboard</div>
 </div>
 
-<button class="btn centerBtn" onclick="connect()">Connect Wallet</button>
-<i class="fa-solid fa-wallet"></i> Connect Wallet
-</button>
+<div class="centerWrap">
+  <button class="centerBtn" onclick="connect()">
+    CONNECT WALLET
+  </button>
+</div>
 
 <div id="wallet"></div>
 <div id="status" style="color:gold"></div>
@@ -100,16 +102,16 @@ Team Count
 </div>
 
 <!-- STAKE -->
-<div class="card">
-<button class="btn centerBtn" onclick="toggleStake()">Stake</button>
-<i class="fa-solid fa-lock"></i> Stake
-</button>
+<div class="centerWrap">
+  <button class="centerBtn" onclick="toggleStake()">
+    STAKE
+  </button>
 </div>
 
 <div id="stakeBox" style="display:none">
 
 <div class="card">
-<h3>USDT</h3>
+<h3>USDT(BEP20)</h3>
 <input id="usdtAmount" placeholder="Amount">
 <button class="btn" onclick="approveUSDT()">Approve</button>
 <button class="btn" onclick="stakeUSDT()">Stake</button>
@@ -132,13 +134,15 @@ Team Count
 </div>
 
 <!-- DOWNLINE -->
-<div class="card">
-<button class="btn centerBtn">View Downline</button>
-<i class="fa-solid fa-network-wired"></i> View Downline
-</button>
-<button class="btn centerBtn">Claim History</button>
-<i class="fa-solid fa-clock"></i> Claim History
-</button>
+<div class="centerWrap">
+  <button class="centerBtn" onclick="openDownline()">
+    VIEW DOWNLINE
+  </button>
+</div>
+<div class="centerWrap">
+  <button class="centerBtn" onclick="openHistory()">
+    CLAIM HISTORY
+  </button>
 </div>
 
 <!-- POPUPS -->
