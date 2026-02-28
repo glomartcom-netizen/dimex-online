@@ -1,1 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clean Test</title>
 
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+
+</head>
+
+<body style="background:black;color:white;text-align:center;padding-top:100px;">
+
+<h2>Clean Wallet Test</h2>
+<button onclick="connectWallet()">Connect</button>
+<div id="out" style="margin-top:20px;color:gold;"></div>
+
+<script>
+
+async function connectWallet(){
+
+  try{
+
+    if(!window.ethereum){
+      alert("No wallet detected");
+      return;
+    }
+
+    await window.ethereum.request({ method:"eth_requestAccounts" });
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const addr = await signer.getAddress();
+
+    document.getElementById("out").innerHTML =
+      "Connected: " + addr;
+
+  }catch(e){
+    alert("Error: " + e.message);
+  }
+
+}
+
+</script>
+
+</body>
+</html>
