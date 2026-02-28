@@ -39,17 +39,20 @@ button{
 
 <script>
 
+<script>
+
 let provider, signer, userAddress;
 let web3Modal;
 
-const projectId="d1b044ae2663b9697bc5ab584bfb57e5";
+const ADMIN = "0x53ba2d865be750d0e2d4d01bcb0a46ec1684c46b";
+const projectId = "d1b044ae2663b9697bc5ab584bfb57e5";
 
-const chains=[{
-  chainId:56,
-  name:"BNB Smart Chain",
-  currency:"BNB",
-  explorerUrl:"https://bscscan.com",
-  rpcUrl:"https://bsc-dataseed.binance.org/"
+const chains = [{
+  chainId: 56,
+  name: "BNB Smart Chain",
+  currency: "BNB",
+  explorerUrl: "https://bscscan.com",
+  rpcUrl: "https://bsc-dataseed.binance.org/"
 }];
 
 const { EthereumClient } = window.Web3ModalEthereum;
@@ -62,33 +65,64 @@ const ethereumClient = new EthereumClient({
 
 web3Modal = new Web3Modal({
   projectId,
-  themeMode:"dark"
+  themeMode: "dark"
 }, ethereumClient);
 
-async function connectWallet(){
+async function connectWallet() {
 
-  try{
+  try {
 
-    const walletProvider = await web3Modal.connect();
+    // 🔥 PRIORITY 1: If wallet injected (MetaMask browser / Trust browser)
+    if (window.ethereum) {
 
-    provider = new ethers.providers.Web3Provider(walletProvider);
-    signer = provider.getSigner();
-    userAddress = await signer.getAddress();
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts"
+      });
+
+      provider = new ethers.providers.Web3Provider(window.ethereum);
+      signer = provider.getSigner();
+      userAddress = accounts[0];
+
+    } else {
+
+      // 🔥 PRIORITY 2: Outside browser → WalletConnect
+      const walletProvider = await web3Modal.connect();
+
+      provider = new ethers.providers.Web3Provider(walletProvider);
+      signer = provider.getSigner();
+      userAddress = await signer.getAddress();
+    }
 
     const network = await provider.getNetwork();
 
-    if(network.chainId !== 56){
-      alert("Switch to BNB Smart Chain");
-      return;
+    // 🔥 Auto switch to BSC
+    if (network.chainId !== 56) {
+
+      try {
+        await provider.provider.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: "0x38" }]
+        });
+      } catch (err) {
+        alert("Please switch to BNB Smart Chain");
+        return;
+      }
     }
 
     document.getElementById("walletDisplay").innerHTML =
       "Connected: " + userAddress;
 
-    alert("Wallet Connected Successfully");
+    // ✅ ADMIN CHECK
+    if (userAddress.toLowerCase() === ADMIN.toLowerCase()) {
+      document.getElementById("adminPanel").style.display = "block";
+      if (typeof loadRates === "function") await loadRates();
+    }
 
-  }catch(e){
-    console.log(e);
+    if (typeof loadData === "function") await loadData();
+    if (typeof loadLivePrice === "function") await loadLivePrice();
+
+  } catch (err) {
+    console.log(err);
     alert("Connection Failed");
   }
 }
