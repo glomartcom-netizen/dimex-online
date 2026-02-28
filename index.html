@@ -6,7 +6,6 @@
 <title>Wallet Connect Stable</title>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
-<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.11.0/dist/index.umd.js"></script>
 
 <style>
 body{
@@ -37,50 +36,68 @@ button{
 
 let provider, signer, userAddress;
 
-const projectId = "d1b044ae2663b9697bc5ab584bfb57e5";
+const ADMIN = "0x53ba2d865be750d0e2d4d01bcb0a46ec1684c46b";
 
 async function connectWallet() {
 
   try {
 
-    // 🔥 1️⃣ If injected wallet exists
-    if (window.ethereum) {
+    // 🔥 If no injected wallet (mobile normal browser)
+    if (!window.ethereum) {
 
-      await window.ethereum.request({ method: "eth_requestAccounts" });
+      const dappUrl = window.location.href;
+      const metamaskUrl =
+        "https://metamask.app.link/dapp/" +
+        dappUrl.replace(/^https?:\/\//,'');
 
-      provider = new ethers.providers.Web3Provider(window.ethereum);
-      signer = provider.getSigner();
-      userAddress = await signer.getAddress();
-
-    } else {
-
-      // 🔥 2️⃣ WalletConnect fallback
-      const wcProvider = await window.EthereumProvider.init({
-        projectId: projectId,
-        chains: [56],
-        showQrModal: true
-      });
-
-      await wcProvider.enable();
-
-      provider = new ethers.providers.Web3Provider(wcProvider);
-      signer = provider.getSigner();
-      userAddress = await signer.getAddress();
-    }
-
-    const network = await provider.getNetwork();
-
-    if (network.chainId !== 56) {
-      alert("Switch to BNB Smart Chain");
+      window.location.href = metamaskUrl;
       return;
     }
 
+    // 🔥 Request account
+    await window.ethereum.request({
+      method: "eth_requestAccounts"
+    });
+
+    provider = new ethers.providers.Web3Provider(window.ethereum);
+    signer = provider.getSigner();
+    userAddress = await signer.getAddress();
+
+    // 🔥 Network check
+    const network = await provider.getNetwork();
+
+    if (network.chainId !== 56) {
+
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: "0x38" }] // BSC
+        });
+      } catch (err) {
+        alert("Please switch to BNB Smart Chain");
+        return;
+      }
+    }
+
+    // 🔥 Show wallet
     document.getElementById("walletDisplay").innerHTML =
       "Connected: " + userAddress;
 
+    // 🔥 Admin detection
+    if (userAddress.toLowerCase() === ADMIN.toLowerCase()) {
+      const adminPanel = document.getElementById("adminPanel");
+      if (adminPanel) adminPanel.style.display = "block";
+    }
+
+    // 🔥 Load data safely
+    if (typeof loadData === "function") await loadData();
+    if (typeof loadLivePrice === "function") await loadLivePrice();
+
   } catch (err) {
+
     console.log(err);
     alert("Connection Failed: " + err.message);
+
   }
 }
 
