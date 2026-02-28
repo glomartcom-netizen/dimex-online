@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wallet Connect Test</title>
+<title>Wallet Connect Stable</title>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
-<script src="https://unpkg.com/@web3modal/ethereum@2.7.1/dist/index.umd.js"></script>
-<script src="https://unpkg.com/@web3modal/html@2.7.1/dist/index.umd.js"></script>
+<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.11.0/dist/index.umd.js"></script>
 
 <style>
 body{
@@ -30,59 +29,41 @@ button{
 
 <body>
 
-<h2>Wallet Connect Test</h2>
-
+<h2>Universal Wallet Connect</h2>
 <button onclick="connectWallet()">Connect Wallet</button>
-
 <div id="walletDisplay" style="margin-top:20px;color:gold;"></div>
 
 <script>
 
 let provider, signer, userAddress;
-let web3Modal;
 
 const projectId = "d1b044ae2663b9697bc5ab584bfb57e5";
-
-const chains = [{
-  chainId: 56,
-  name: "BNB Smart Chain",
-  currency: "BNB",
-  explorerUrl: "https://bscscan.com",
-  rpcUrl: "https://bsc-dataseed.binance.org/"
-}];
-
-const { EthereumClient } = window.Web3ModalEthereum;
-const { Web3Modal } = window.Web3Modal;
-
-const ethereumClient = new EthereumClient({
-  chains,
-  projectId
-});
-
-web3Modal = new Web3Modal({
-  projectId,
-  themeMode: "dark"
-}, ethereumClient);
 
 async function connectWallet() {
 
   try {
 
+    // 🔥 1️⃣ If injected wallet exists
     if (window.ethereum) {
 
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts"
-      });
+      await window.ethereum.request({ method: "eth_requestAccounts" });
 
       provider = new ethers.providers.Web3Provider(window.ethereum);
       signer = provider.getSigner();
-      userAddress = accounts[0];
+      userAddress = await signer.getAddress();
 
     } else {
 
-      const walletProvider = await web3Modal.connect();
+      // 🔥 2️⃣ WalletConnect fallback
+      const wcProvider = await window.EthereumProvider.init({
+        projectId: projectId,
+        chains: [56],
+        showQrModal: true
+      });
 
-      provider = new ethers.providers.Web3Provider(walletProvider);
+      await wcProvider.enable();
+
+      provider = new ethers.providers.Web3Provider(wcProvider);
       signer = provider.getSigner();
       userAddress = await signer.getAddress();
     }
@@ -90,7 +71,7 @@ async function connectWallet() {
     const network = await provider.getNetwork();
 
     if (network.chainId !== 56) {
-      alert("Please switch to BNB Smart Chain");
+      alert("Switch to BNB Smart Chain");
       return;
     }
 
@@ -99,7 +80,7 @@ async function connectWallet() {
 
   } catch (err) {
     console.log(err);
-    alert("Connection Failed");
+    alert("Connection Failed: " + err.message);
   }
 }
 
