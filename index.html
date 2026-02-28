@@ -6,7 +6,6 @@
 <title>Wallet Connect Test</title>
 
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
-
 <script src="https://unpkg.com/@web3modal/ethereum@2.7.1/dist/index.umd.js"></script>
 <script src="https://unpkg.com/@web3modal/html@2.7.1/dist/index.umd.js"></script>
 
@@ -39,12 +38,9 @@ button{
 
 <script>
 
-<script>
-
 let provider, signer, userAddress;
 let web3Modal;
 
-const ADMIN = "0x53ba2d865be750d0e2d4d01bcb0a46ec1684c46b";
 const projectId = "d1b044ae2663b9697bc5ab584bfb57e5";
 
 const chains = [{
@@ -72,7 +68,6 @@ async function connectWallet() {
 
   try {
 
-    // 🔥 PRIORITY 1: If wallet injected (MetaMask browser / Trust browser)
     if (window.ethereum) {
 
       const accounts = await window.ethereum.request({
@@ -85,7 +80,6 @@ async function connectWallet() {
 
     } else {
 
-      // 🔥 PRIORITY 2: Outside browser → WalletConnect
       const walletProvider = await web3Modal.connect();
 
       provider = new ethers.providers.Web3Provider(walletProvider);
@@ -95,31 +89,13 @@ async function connectWallet() {
 
     const network = await provider.getNetwork();
 
-    // 🔥 Auto switch to BSC
     if (network.chainId !== 56) {
-
-      try {
-        await provider.provider.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: "0x38" }]
-        });
-      } catch (err) {
-        alert("Please switch to BNB Smart Chain");
-        return;
-      }
+      alert("Please switch to BNB Smart Chain");
+      return;
     }
 
     document.getElementById("walletDisplay").innerHTML =
       "Connected: " + userAddress;
-
-    // ✅ ADMIN CHECK
-    if (userAddress.toLowerCase() === ADMIN.toLowerCase()) {
-      document.getElementById("adminPanel").style.display = "block";
-      if (typeof loadRates === "function") await loadRates();
-    }
-
-    if (typeof loadData === "function") await loadData();
-    if (typeof loadLivePrice === "function") await loadLivePrice();
 
   } catch (err) {
     console.log(err);
