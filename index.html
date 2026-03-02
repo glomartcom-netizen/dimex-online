@@ -1,1 +1,278 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DimeX - Exclusive Admin Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        *{box-sizing:border-box}
+        body{margin:0;font-family:Poppins;background:#000;color:#fff;}
+        .topbar{display:flex;justify-content:space-between;align-items:center;padding:18px 25px;background:#0b0b0b;border-bottom:1px solid #222;}
+        .logoText{color:gold;font-size:22px;font-weight:600;letter-spacing:1px;}
+        .container{max-width:800px;margin:auto;padding:30px 20px;}
+        .card{background:#111;border:1px solid rgba(255,215,0,0.5);padding:25px;border-radius:18px;margin-bottom:25px;}
+        h3{margin-top:0;color:gold;border-bottom:1px solid #333;padding-bottom:10px;}
+        h4{color:gold;margin-bottom:10px;}
+        input, select{width:100%;padding:12px;background:#000;border:1px solid #333;color:#fff;border-radius:8px;margin-bottom:10px;}
+        button{padding:12px;border:none;border-radius:8px;background:gold;font-weight:bold;cursor:pointer;width:100%;margin-bottom:10px;transition: 0.3s;}
+        button:hover{background: #e6c200; transform: scale(1.01);}
+        .status-badge{background:#1a1a1a; padding:10px; border-radius:8px; color:gold; margin-bottom:20px; border-left:4px solid gold;}
+        hr{border:0; border-top:1px solid #333; margin:20px 0;}
+        .grid-2{display:grid; grid-template-columns: 1fr 1fr; gap:15px;}
+        #walletDisplay{color:gold; font-size:13px; text-align:right;}
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="logoText"><i class="fa-solid fa-user-shield"></i> DIMEX ADMIN</div>
+    <div id="walletDisplay">Not Connected</div>
+</div>
+
+<div class="container">
+    <button id="connectBtn" onclick="connectAdminWallet()" style="background:linear-gradient(90deg,#ffd700,#ffb700); color:black;">Connect Admin Wallet</button>
+
+    <div id="adminContent" style="display:none;">
+        <div class="status-badge">
+            <i class="fa-solid fa-circle-check"></i> Admin Session Active
+        </div>
+
+        <div class="card">
+            <h3><i class="fa-solid fa-gears"></i> Global Controls</h3>
+            <div class="grid-2">
+                <button onclick="pauseStaking()" style="background:#ff4444; color:white;">Pause Staking</button>
+                <button onclick="unpauseStaking()" style="background:#00c851; color:white;">Unpause Staking</button>
+            </div>
+            <hr>
+            <h4>DMX Price Control</h4>
+            <p>Live Price: <span id="livePriceAdmin" style="color:gold;">--</span> | Mode: <span id="priceModeAdmin" style="color:gold;">--</span></p>
+            <input id="manualPrice" placeholder="New Price (e.g. 0.25)">
+            <button onclick="setManualPrice()">Set Manual Price</button>
+            <select id="priceMode">
+                <option value="true">Enable Manual Price</option>
+                <option value="false">Use Live Pancake Price</option>
+            </select>
+            <button onclick="togglePriceMode()">Update Price Mode</button>
+        </div>
+
+        <div class="card">
+            <h3><i class="fa-solid fa-chart-line"></i> Plan Reward Rates (%)</h3>
+            <p>Current: 90D: <span id="rate90">--</span> | 180D: <span id="rate180">--</span> | 365D: <span id="rate365">--</span></p>
+            <div class="grid-2">
+                <input id="rateInput90" placeholder="New % for 90D">
+                <button onclick="updatePlanRate(90)">Update 90D</button>
+                <input id="rateInput180" placeholder="New % for 180D">
+                <button onclick="updatePlanRate(180)">Update 180D</button>
+                <input id="rateInput365" placeholder="New % for 365D">
+                <button onclick="updatePlanRate(365)">Update 365D</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fa-solid fa-coins"></i> Minimum Limits</h3>
+            <input id="minUSDT" placeholder="New Minimum USDT">
+            <button onclick="updateMinUSDT()">Update USDT Min</button>
+            <input id="minDMX" placeholder="New Minimum DMX">
+            <button onclick="updateMinDMX()">Update DMX Min</button>
+        </div>
+
+        <div class="card">
+            <h3><i class="fa-solid fa-sitemap"></i> Referral Bonuses</h3>
+            <h4>Direct Bonus</h4>
+            <input id="directPercent" placeholder="New Direct %">
+            <button onclick="updateDirect()">Update Direct %</button>
+            <hr>
+            <h4>Level Bonus</h4>
+            <input id="levelNumber" placeholder="Level (1-25)">
+            <input id="levelPercent" placeholder="New Percent %">
+            <button onclick="updateLevel()">Update Level %</button>
+        </div>
+
+        <div class="card">
+            <h3><i class="fa-solid fa-shield-halved"></i> Security & Treasury</h3>
+            <h4>Emergency Withdraw</h4>
+            <select id="withdrawToken">
+                <option value="USDT">USDT</option>
+                <option value="DMX">DMX</option>
+            </select>
+            <input id="withdrawAmount" placeholder="Amount">
+            <button onclick="emergencyWithdraw()" style="background:#ff4444; color:white;">Withdraw to Admin</button>
+            <hr>
+            <h4>Update Treasury Address</h4>
+            <input id="newTreasury" placeholder="New Address">
+            <button onclick="updateTreasury()">Set New Treasury</button>
+            <hr>
+            <h4>Transfer Ownership</h4>
+            <input id="newOwner" placeholder="New Owner Address" style="border: 1px solid red;">
+            <button onclick="transferOwner()" style="background:red; color:white;">Transfer Owner Permanently</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+
+<script>
+    let provider, signer, userAddress;
+
+    // --- CONFIGURATION ---
+    const ADMIN_ADDRESS = "0x53ba2d865be750d0e2d4d01bcb0a46ec1684c46b";
+    const STAKING_CONTRACT = "PUT_STAKING_CONTRACT"; 
+    const USDT = "0x55d398326f99059fF775485246999027B3197955";
+    const DMX = "PUT_DMX_TOKEN";
+
+    const STAKE_ABI = [
+        "function pauseStaking() external",
+        "function unpauseStaking() external",
+        "function setManualPrice(uint256) external",
+        "function toggleManualPrice(bool) external",
+        "function getDMXPrice() view returns(uint256)",
+        "function manualPriceEnabled() view returns(bool)",
+        "function setRewardRate(uint256,uint256) external",
+        "function rewardRates(uint256) view returns(uint256)",
+        "function setMinimumUSDT(uint256) external",
+        "function setMinimumDMX(uint256) external",
+        "function emergencyWithdrawToken(address,uint256) external",
+        "function setTreasury(address) external",
+        "function transferOwnership(address) external",
+        "function setDirectPercent(uint256) external",
+        "function setLevelPercent(uint256,uint256) external"
+    ];
+
+    async function connectAdminWallet() {
+        if(!window.ethereum) return alert("Please use MetaMask/TrustWallet Browser");
+        
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        userAddress = accounts[0];
+
+        if(userAddress.toLowerCase() !== ADMIN_ADDRESS.toLowerCase()) {
+            alert("Access Denied: You are not the authorized Admin.");
+            return;
+        }
+
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        signer = provider.getSigner();
+
+        document.getElementById("walletDisplay").innerHTML = "Admin: " + userAddress.slice(0,6) + "...";
+        document.getElementById("adminContent").style.display = "block";
+        document.getElementById("connectBtn").style.display = "none";
+
+        loadLivePrice();
+        loadRates();
+    }
+
+    // --- ACTION FUNCTIONS ---
+
+    async function pauseStaking(){
+        const c = new ethers.Contract(STAKING_CONTRACT, STAKE_ABI, signer);
+        await (await c.pauseStaking()).wait();
+        alert("Paused!");
+    }
+
+    async function unpauseStaking(){
+        const c = new ethers.Contract(STAKING_CONTRACT, STAKE_ABI, signer);
+        await (await c.unpauseStaking()).wait();
+        alert("Unpaused!");
+    }
+
+    async function loadLivePrice(){
+        const c = new ethers.Contract(STAKING_CONTRACT, STAKE_ABI, provider);
+        const price = await c.getDMXPrice();
+        const mode = await c.manualPriceEnabled();
+        document.getElementById("livePriceAdmin").innerText = ethers.utils.formatUnits(price,18) + " USDT";
+        document.getElementById("priceModeAdmin").innerText = mode ? "Manual" : "Live";
+    }
+
+    async function setManualPrice(){
+        const val = document.getElementById("manualPrice").value;
+        const c = new ethers.Contract(STAKING_CONTRACT, STAKE_ABI, signer);
+        await (await c.setManualPrice(ethers.utils.parseUnits(val,18))).wait();
+        alert("Price Set!");
+        loadLivePrice();
+    }
+
+    async function togglePriceMode(){
+        const mode = document.getElementById("priceMode").value === "true";
+        const c = new ethers.Contract(STAKING_CONTRACT, STAKE_ABI, signer);
+        await (await c.toggleManualPrice(mode)).wait();
+        alert("Mode Updated!");
+        loadLivePrice();
+    }
+
+    async function updatePlanRate(days){
+        const val = document.getElementById("rateInput"+days).value;
+        const duration = days * 86400;
+        const c = new ethers.Contract(STAKING_CONTRACT, STAKE_ABI, signer);
+        await (await c.setRewardRate(duration, Math.round(val * 100))).wait();
+        alert(days + "D Rate Updated!");
+    }
+
+    async function loadRates(){
+        const c = new ethers.Contract(STAKING_CONTRACT, STAKE_ABI, provider);
+        const r90 = await c.rewardRates(90*86400);
+        const r180 = await c.rewardRates(180*86400);
+        const r365 = await c.rewardRates(365*86400);
+        document.getElementById("rate90").innerText = (r90/100) + "%";
+        document.getElementById("rate180").innerText = (r180/100) + "%";
+        document.getElementById("rate365").innerText = (r365/100) + "%";
+    }
+
+    async function updateMinUSDT(){
+        const val = document.getElementById("minUSDT").value;
+        const c = new ethers.Contract(STAKING_CONTRACT, STAKE_ABI, signer);
+        await (await c.setMinimumUSDT(ethers.utils.parseUnits(val,18))).wait();
+        alert("USDT Min Updated!");
+    }
+
+    async function updateMinDMX(){
+        const val = document.getElementById("minDMX").value;
+        const c = new ethers.Contract(STAKING_CONTRACT, STAKE_ABI, signer);
+        await (await c.setMinimumDMX(ethers.utils.parseUnits(val,18))).wait();
+        alert("DMX Min Updated!");
+    }
+
+    async function emergencyWithdraw(){
+        const type = document.getElementById("withdrawToken").value;
+        const amt = document.getElementById("withdrawAmount").value;
+        const tokenAddr = (type === "USDT") ? USDT : DMX;
+        const c = new ethers.Contract(STAKING_CONTRACT, STAKE_ABI, signer);
+        await (await c.emergencyWithdrawToken(tokenAddr, ethers.utils.parseUnits(amt,18))).wait();
+        alert("Withdrawn Successfully!");
+    }
+
+    async function updateTreasury(){
+        const addr = document.getElementById("newTreasury").value;
+        const c = new ethers.Contract(STAKING_CONTRACT, STAKE_ABI, signer);
+        await (await c.setTreasury(addr)).wait();
+        alert("Treasury Address Updated!");
+    }
+
+    async function transferOwner(){
+        if(!confirm("Are you sure? This transfers ALL power!")) return;
+        const addr = document.getElementById("newOwner").value;
+        const c = new ethers.Contract(STAKING_CONTRACT, STAKE_ABI, signer);
+        await (await c.transferOwnership(addr)).wait();
+        alert("Ownership Transferred!");
+    }
+
+    async function updateDirect(){
+        const val = document.getElementById("directPercent").value;
+        const c = new ethers.Contract(STAKING_CONTRACT, STAKE_ABI, signer);
+        await (await c.setDirectPercent(val)).wait();
+        alert("Direct Bonus Updated!");
+    }
+
+    async function updateLevel(){
+        const lvl = document.getElementById("levelNumber").value;
+        const pct = document.getElementById("levelPercent").value;
+        const c = new ethers.Contract(STAKING_CONTRACT, STAKE_ABI, signer);
+        await (await c.setLevelPercent(lvl, pct)).wait();
+        alert("Level Bonus Updated!");
+    }
+</script>
+
+</body>
+</html>
 
