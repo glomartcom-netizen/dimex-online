@@ -385,24 +385,6 @@ alert("Reward Sent");
 alert("Reward Failed");
 }
 
-async function sendRankReward(){
-try{
-const user=document.getElementById("rewardUser").value;
-const amt=document.getElementById("rankRewardAmount").value;
-
-if(!ethers.utils.isAddress(user))
-return alert("Invalid Address");
-
-await (await new ethers.Contract(CONTRACT,ABI,signer)
-.giveRankReward(user,
-ethers.utils.parseUnits(amt,18))).wait();
-
-alert("Rank Reward Sent");
-
-}catch(e){
-alert("Rank Reward Failed");
-}
-
 async function loadBusinessLeaderboard(){
 const contract=new ethers.Contract(CONTRACT,ABI,provider);
 const currentBlock=await provider.getBlockNumber();
@@ -443,6 +425,40 @@ document.getElementById("dailyLeaderboard").innerHTML=
 dailyHTML||"No Data";
 }
 
+ // MONTHLY
+const monthlyLogs=await contract.queryFilter(
+contract.filters.Staked(),
+currentBlock-monthlyBlocks
+);
+
+let monthlyMap={};
+
+monthlyLogs.forEach(log=>{
+const user=log.args.user.toLowerCase();
+const amount=parseFloat(
+ethers.utils.formatUnits(log.args.amount,18)
+);
+
+if(!monthlyMap[user]) monthlyMap[user]=0;
+monthlyMap[user]+=amount;
+});
+
+let monthlySorted=Object.entries(monthlyMap)
+.sort((a,b)=>b[1]-a[1]);
+
+let monthlyHTML="";
+monthlySorted.slice(0,10).forEach((item,index)=>{
+monthlyHTML+=`<div>
+${index+1}. ${item[0].slice(0,6)}...
+<span style="float:right;color:gold">
+$${item[1].toFixed(2)}
+</span></div>`;
+});
+
+document.getElementById("monthlyLeaderboard").innerHTML=
+monthlyHTML||"No Data";
+ }
+ 
 async function freezeUser(){
 await (await new ethers.Contract(CONTRACT,ABI,signer)
 .freezeUser(document.getElementById("userAddr").value)).wait();
