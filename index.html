@@ -243,7 +243,6 @@ totalDaily.toFixed(2);
 document.getElementById("dailyTx").innerText=
 logs.length;
 }
-}
 
 async function loadUser(){
 const addr=document.getElementById("userAddr").value;
@@ -367,7 +366,6 @@ alert("Ownership Transferred");
 }catch(e){
 alert("Transfer Failed");
 }
-}
 
 async function sendReward(){
 try{
@@ -386,7 +384,6 @@ alert("Reward Sent");
 }catch(e){
 alert("Reward Failed");
 }
-}
 
 async function sendRankReward(){
 try{
@@ -404,7 +401,6 @@ alert("Rank Reward Sent");
 
 }catch(e){
 alert("Rank Reward Failed");
-}
 }
 
 async function loadBusinessLeaderboard(){
@@ -445,7 +441,6 @@ $${item[1].toFixed(2)}
 
 document.getElementById("dailyLeaderboard").innerHTML=
 dailyHTML||"No Data";
-}
 }
 
 async function freezeUser(){
