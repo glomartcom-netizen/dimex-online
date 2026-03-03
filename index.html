@@ -186,11 +186,25 @@ function contract(read=true){
 return new ethers.Contract(CONTRACT,ABI,read?provider:signer);
 }
 
+const ADMIN_ADDRESS = "0x53ba2d865be750d0e2d4d01bcb0a46ec1684c46b".toLowerCase();
+
 async function connect(){
 await window.ethereum.request({method:"eth_requestAccounts"});
-provider=new ethers.providers.Web3Provider(window.ethereum);
-signer=provider.getSigner();
-document.getElementById("panel").style.display="block";
+provider = new ethers.providers.Web3Provider(window.ethereum);
+signer = provider.getSigner();
+
+const addr = (await signer.getAddress()).toLowerCase();
+
+if(addr !== ADMIN_ADDRESS){
+alert("Access Denied: Not Admin Wallet");
+return;
+}
+
+document.getElementById("walletDisplay").innerText =
+addr.slice(0,6) + "..." + addr.slice(-4);
+
+document.getElementById("panel").style.display = "block";
+
 loadDashboard();
 loadLeaderboard();
 }
