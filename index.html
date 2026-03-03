@@ -1,1 +1,472 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DimeX Master Enterprise Admin</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+
+<style>
+body{margin:0;background:#000;color:#fff;font-family:Poppins}
+.topbar{padding:20px;background:#0d0d0d;display:flex;justify-content:space-between}
+.container{max-width:1200px;margin:auto;padding:25px}
+.card{background:#111;padding:20px;border-radius:12px;margin-bottom:20px;border:1px solid #222}
+h3{color:gold;margin-top:0}
+input,select,textarea{width:100%;padding:10px;margin-bottom:10px;background:#000;border:1px solid #333;color:#fff;border-radius:6px}
+button{padding:10px;background:gold;color:#000;border:none;border-radius:6px;font-weight:bold;cursor:pointer}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.stat{font-size:18px;color:gold}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+<div><b style="color:gold">DIMEX MASTER ADMIN</b></div>
+<div id="walletDisplay">Not Connected</div>
+</div>
+
+<div class="container">
+
+<button onclick="connect()">CONNECT ADMIN</button>
+
+<div id="panel" style="display:none">
+
+<!-- DASHBOARD -->
+<div class="card">
+<h3>Dashboard Analytics</h3>
+<div class="grid2">
+<div>Total Business: <div id="totalBusiness" class="stat">--</div></div>
+<div>Total Paid Out: <div id="totalPaid" class="stat">--</div></div>
+<div>Daily Business: <div id="dailyBusiness" class="stat">--</div></div>
+<div>Daily Transactions: <div id="dailyTx" class="stat">--</div></div>
+</div>
+</div>
+
+<!-- USER PANEL -->
+<div class="card">
+<h3>User Management</h3>
+<input id="userAddr" placeholder="Wallet Address">
+<button onclick="loadUser()">Load User</button>
+<div id="userBox" style="display:none">
+<div>Stake: <span id="uStake"></span></div>
+<div>Earned: <span id="uEarn"></span></div>
+<div>Level: <span id="uLevel"></span></div>
+<button onclick="freezeUser()">Freeze</button>
+<button onclick="resetCap()">Reset 4X</button>
+</div>
+</div>
+
+<!-- REFERRAL CONTROL -->
+<div class="card">
+<h3>Referral Control</h3>
+<input id="directPercent" placeholder="Direct %">
+<button onclick="updateDirect()">Update Direct %</button>
+<input id="levelNo" placeholder="Level Number">
+<input id="levelPercent" placeholder="Level %">
+<button onclick="updateLevel()">Update Level %</button>
+</div>
+
+<!-- PLAN RATE -->
+<div class="card">
+<h3>Reward Rate Control</h3>
+<input id="planDays" placeholder="Plan Days (90/180)">
+<input id="planPercent" placeholder="Percent">
+<button onclick="updatePlan()">Update Plan Rate</button>
+</div>
+
+<!-- CORE SYSTEM -->
+<div class="card">
+<h3>Core Controls</h3>
+<input id="incomeCap" placeholder="4X Multiplier">
+<button onclick="updateCap()">Update 4X</button>
+
+<input id="dailyCap" placeholder="Daily Reward Cap">
+<button onclick="updateDailyCap()">Update Daily Cap</button>
+
+<input id="minClaim" placeholder="Minimum Claim">
+<button onclick="updateMinClaim()">Update Min Claim</button>
+
+<input id="unlockVol" placeholder="Level Unlock Volume">
+<button onclick="updateUnlock()">Update Unlock</button>
+
+<input id="restakeBonus" placeholder="Restake Bonus %">
+<button onclick="updateRestake()">Update Restake</button>
+</div>
+
+<!-- PRICE CONTROL -->
+<div class="card">
+<h3>DMX Price Control</h3>
+<input id="manualPrice" placeholder="Manual Price">
+<button onclick="setManualPrice()">Set Manual</button>
+<select id="priceMode">
+<option value="true">Manual</option>
+<option value="false">Live Pancake</option>
+</select>
+<button onclick="togglePrice()">Switch Mode</button>
+</div>
+
+<!-- ANNOUNCEMENT -->
+<div class="card">
+<h3>Global Announcement</h3>
+<textarea id="announceText" placeholder="Message"></textarea>
+<input id="announcePoster" placeholder="Poster URL">
+<button onclick="setAnnouncement()">Publish</button>
+</div>
+
+<div class="card">
+<h3>🏆 Business Leaderboard</h3>
+
+<h4>Daily Top Business (24H)</h4>
+<div id="dailyLeaderboard" style="max-height:300px;overflow:auto;"></div>
+
+<hr>
+
+<h4>Monthly Top Business (30 Days)</h4>
+<div id="monthlyLeaderboard" style="max-height:300px;overflow:auto;"></div>
+
+</div>
+
+ <div class="card">
+<h3>Rewards & Awards System</h3>
+
+<h4>Manual Reward</h4>
+<input id="rewardUser" placeholder="User Address">
+<input id="rewardAmount" placeholder="USDT Amount">
+<button onclick="sendReward()">Send Reward</button>
+
+<hr>
+
+<h4>Rank Based Award</h4>
+<select id="rankType">
+<option value="Leader">Leader</option>
+<option value="Director">Director</option>
+<option value="Crown Director">Crown Director</option>
+<option value="Ambassador">Ambassador</option>
+</select>
+
+<input id="rankRewardAmount" placeholder="Reward Amount">
+<button onclick="sendRankReward()">Give Rank Award</button>
+
+ </div> 
+
+<!-- TREASURY -->
+<div class="card">
+<h3>Treasury & Security</h3>
+<button onclick="pause()">Pause System</button>
+<button onclick="unpause()">Unpause</button>
+<input id="withdrawAmt" placeholder="Withdraw Amount">
+<button onclick="withdraw()">Emergency Withdraw</button>
+<input id="newOwner" placeholder="New Owner Wallet Address">
+<button onclick="transferOwner()" style="background:red;color:white;">
+Transfer Ownership (Permanent)
+</button>  
+</div>
+
+</div>
+</div>
+
+<script>
+
+let provider, signer;
+const CONTRACT="PUT_YOUR_CONTRACT_ADDRESS";
+
+const ABI=[
+"function totalBusiness() view returns(uint256)",
+"function totalPaidOut() view returns(uint256)",
+"function users(address) view returns(uint256,uint256,uint256,bool,uint256)",
+"function freezeUser(address)",
+"function resetCap(address)",
+"function setDirectPercent(uint256)",
+"function setLevelPercent(uint256,uint256)",
+"function setRewardRate(uint256,uint256)",
+"function setIncomeCap(uint256)",
+"function setDailyRewardCap(uint256)",
+"function setMinimumClaim(uint256)",
+"function setLevelUnlockVolume(uint256)",
+"function setRestakeBonus(uint256)",
+"function setManualPrice(uint256)",
+"function toggleManualPrice(bool)",
+"function setAnnouncement(string,string)",
+"function transferOwnership(address)",
+"function manualReward(address,uint256)",
+"function giveRankReward(address,uint256)",
+"function pause()",
+"function unpause()",
+"function emergencyWithdrawToken(address,uint256)",
+"event Staked(address indexed user,uint256 amount,uint256)"
+];
+
+async function connect(){
+await window.ethereum.request({method:"eth_requestAccounts"});
+provider=new ethers.providers.Web3Provider(window.ethereum);
+signer=provider.getSigner();
+document.getElementById("panel").style.display="block";
+loadDashboard();
+}
+
+async function loadDashboard(){
+const c=new ethers.Contract(CONTRACT,ABI,provider);
+const biz=await c.totalBusiness();
+const paid=await c.totalPaidOut();
+document.getElementById("totalBusiness").innerText=ethers.utils.formatUnits(biz,18);
+document.getElementById("totalPaid").innerText=ethers.utils.formatUnits(paid,18);
+
+const filter=c.filters.Staked();
+const logs=await c.queryFilter(filter,-5000);
+document.getElementById("dailyBusiness").innerText=logs.length;
+document.getElementById("dailyTx").innerText=logs.length;
+}
+
+async function loadUser(){
+const addr=document.getElementById("userAddr").value;
+const c=new ethers.Contract(CONTRACT,ABI,provider);
+const data=await c.users(addr);
+document.getElementById("uStake").innerText=ethers.utils.formatUnits(data[0],18);
+document.getElementById("uEarn").innerText=ethers.utils.formatUnits(data[1],18);
+document.getElementById("uLevel").innerText=data[2];
+document.getElementById("userBox").style.display="block";
+}
+
+async function updateDirect(){
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.setDirectPercent(document.getElementById("directPercent").value)).wait();
+alert("Updated");
+}
+
+async function updateLevel(){
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.setLevelPercent(
+document.getElementById("levelNo").value,
+document.getElementById("levelPercent").value)).wait();
+alert("Updated");
+}
+
+async function updatePlan(){
+const days=document.getElementById("planDays").value;
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.setRewardRate(days*86400,
+document.getElementById("planPercent").value)).wait();
+alert("Updated");
+}
+
+async function updateCap(){
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.setIncomeCap(document.getElementById("incomeCap").value)).wait();
+alert("Updated");
+}
+
+async function updateDailyCap(){
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.setDailyRewardCap(
+ethers.utils.parseUnits(document.getElementById("dailyCap").value,18))).wait();
+alert("Updated");
+}
+
+async function updateMinClaim(){
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.setMinimumClaim(
+ethers.utils.parseUnits(document.getElementById("minClaim").value,18))).wait();
+alert("Updated");
+}
+
+async function updateUnlock(){
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.setLevelUnlockVolume(
+ethers.utils.parseUnits(document.getElementById("unlockVol").value,18))).wait();
+alert("Updated");
+}
+
+async function updateRestake(){
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.setRestakeBonus(document.getElementById("restakeBonus").value)).wait();
+alert("Updated");
+}
+
+async function setManualPrice(){
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.setManualPrice(
+ethers.utils.parseUnits(document.getElementById("manualPrice").value,18))).wait();
+alert("Manual Price Set");
+}
+
+async function togglePrice(){
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.toggleManualPrice(
+document.getElementById("priceMode").value==="true")).wait();
+alert("Mode Changed");
+}
+
+async function setAnnouncement(){
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.setAnnouncement(
+document.getElementById("announceText").value,
+document.getElementById("announcePoster").value)).wait();
+alert("Announcement Published");
+}
+
+async function pause(){
+await (await new ethers.Contract(CONTRACT,ABI,signer).pause()).wait();
+alert("Paused");
+}
+
+async function unpause(){
+await (await new ethers.Contract(CONTRACT,ABI,signer).unpause()).wait();
+alert("Resumed");
+}
+
+async function withdraw(){
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.emergencyWithdrawToken(
+"0x55d398326f99059fF775485246999027B3197955",
+ethers.utils.parseUnits(document.getElementById("withdrawAmt").value,18))).wait();
+alert("Withdrawn");
+}
+  
+async function transferOwner(){
+try{
+const addr=document.getElementById("newOwner").value;
+if(!ethers.utils.isAddress(addr)) return alert("Invalid Address");
+
+if(!confirm("This action is permanent. Continue?")) return;
+
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.transferOwnership(addr)).wait();
+
+alert("Ownership Transferred Successfully");
+
+}catch(e){
+alert("Transfer Failed");
+}
+
+async function sendReward(){
+try{
+const user=document.getElementById("rewardUser").value;
+const amt=document.getElementById("rewardAmount").value;
+
+if(!ethers.utils.isAddress(user)) return alert("Invalid Address");
+
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.manualReward(user,
+ethers.utils.parseUnits(amt,18))).wait();
+
+alert("Reward Sent Successfully");
+
+}catch(e){
+alert("Reward Failed");
+}
+
+async function sendRankReward(){
+try{
+const rank=document.getElementById("rankType").value;
+const amt=document.getElementById("rankRewardAmount").value;
+
+alert("Rank Award Distributed: "+rank+" | Amount: "+amt);
+
+}catch(e){
+alert("Rank Reward Failed");
+}
+  
+async function loadBusinessLeaderboard(){
+
+const contract = new ethers.Contract(CONTRACT, ABI, provider);
+const currentBlock = await provider.getBlockNumber();
+
+const dailyBlocks = 6500;      // approx 24h
+const monthlyBlocks = 195000;  // approx 30 days
+
+// ========== DAILY ==========
+const dailyLogs = await contract.queryFilter(
+contract.filters.Staked(),
+currentBlock - dailyBlocks
+);
+
+let dailyMap = {};
+
+dailyLogs.forEach(log => {
+const user = log.args.user.toLowerCase();
+const amount = parseFloat(
+ethers.utils.formatUnits(log.args.amount,18)
+);
+
+if(!dailyMap[user]) dailyMap[user] = 0;
+dailyMap[user] += amount;
+});
+
+let dailySorted = Object.entries(dailyMap)
+.sort((a,b)=>b[1]-a[1]);
+
+let dailyHTML = "";
+
+dailySorted.forEach((item,index)=>{
+dailyHTML += `
+<div style="padding:6px;border-bottom:1px solid #222">
+<b>${index+1}.</b>
+${item[0].slice(0,6)}...${item[0].slice(-4)}
+<span style="float:right;color:gold">
+$${item[1].toFixed(2)}
+</span>
+</div>`;
+});
+
+document.getElementById("dailyLeaderboard").innerHTML =
+dailyHTML || "No Data";
+
+// ========== MONTHLY ==========
+const monthlyLogs = await contract.queryFilter(
+contract.filters.Staked(),
+currentBlock - monthlyBlocks
+);
+
+let monthlyMap = {};
+
+monthlyLogs.forEach(log => {
+const user = log.args.user.toLowerCase();
+const amount = parseFloat(
+ethers.utils.formatUnits(log.args.amount,18)
+);
+
+if(!monthlyMap[user]) monthlyMap[user] = 0;
+monthlyMap[user] += amount;
+});
+
+let monthlySorted = Object.entries(monthlyMap)
+.sort((a,b)=>b[1]-a[1]);
+
+let monthlyHTML = "";
+
+monthlySorted.forEach((item,index)=>{
+monthlyHTML += `
+<div style="padding:6px;border-bottom:1px solid #222">
+<b>${index+1}.</b>
+${item[0].slice(0,6)}...${item[0].slice(-4)}
+<span style="float:right;color:gold">
+$${item[1].toFixed(2)}
+</span>
+</div>`;
+});
+
+document.getElementById("monthlyLeaderboard").innerHTML =
+monthlyHTML || "No Data";
+
+}
+
+async function freezeUser(){
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.freezeUser(document.getElementById("userAddr").value)).wait();
+alert("Frozen");
+}
+
+async function resetCap(){
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.resetCap(document.getElementById("userAddr").value)).wait();
+alert("Cap Reset");
+}
+
+</script>
+
+</body>
+</html>
