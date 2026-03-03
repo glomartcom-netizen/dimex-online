@@ -366,6 +366,8 @@ alert("Ownership Transferred");
 }catch(e){
 alert("Transfer Failed");
 }
+}  // ✅ CLOSED PROPERLY
+
 
 async function sendReward(){
 try{
@@ -384,14 +386,17 @@ alert("Reward Sent");
 }catch(e){
 alert("Reward Failed");
 }
+}
 
 async function loadBusinessLeaderboard(){
+
 const contract=new ethers.Contract(CONTRACT,ABI,provider);
 const currentBlock=await provider.getBlockNumber();
 
 const dailyBlocks=6500;
 const monthlyBlocks=195000;
 
+// ===== DAILY =====
 const dailyLogs=await contract.queryFilter(
 contract.filters.Staked(),
 currentBlock-dailyBlocks
@@ -423,9 +428,9 @@ $${item[1].toFixed(2)}
 
 document.getElementById("dailyLeaderboard").innerHTML=
 dailyHTML||"No Data";
-}
 
- // MONTHLY
+
+// ===== MONTHLY =====
 const monthlyLogs=await contract.queryFilter(
 contract.filters.Staked(),
 currentBlock-monthlyBlocks
@@ -457,7 +462,8 @@ $${item[1].toFixed(2)}
 
 document.getElementById("monthlyLeaderboard").innerHTML=
 monthlyHTML||"No Data";
- }
+
+}
  
 async function freezeUser(){
 await (await new ethers.Contract(CONTRACT,ABI,signer)
