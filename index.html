@@ -200,25 +200,49 @@ const ABI=[
 "event Staked(address indexed user,uint256 amount,uint256)"
 ];
 
+
 async function connect(){
 await window.ethereum.request({method:"eth_requestAccounts"});
 provider=new ethers.providers.Web3Provider(window.ethereum);
 signer=provider.getSigner();
 document.getElementById("panel").style.display="block";
 loadDashboard();
+loadBusinessLeaderboard();
 }
 
 async function loadDashboard(){
 const c=new ethers.Contract(CONTRACT,ABI,provider);
+
 const biz=await c.totalBusiness();
 const paid=await c.totalPaidOut();
-document.getElementById("totalBusiness").innerText=ethers.utils.formatUnits(biz,18);
-document.getElementById("totalPaid").innerText=ethers.utils.formatUnits(paid,18);
 
-const filter=c.filters.Staked();
-const logs=await c.queryFilter(filter,-5000);
-document.getElementById("dailyBusiness").innerText=logs.length;
-document.getElementById("dailyTx").innerText=logs.length;
+document.getElementById("totalBusiness").innerText=
+ethers.utils.formatUnits(biz,18);
+
+document.getElementById("totalPaid").innerText=
+ethers.utils.formatUnits(paid,18);
+
+const currentBlock=await provider.getBlockNumber();
+const dailyBlocks=6500;
+
+const logs=await c.queryFilter(
+c.filters.Staked(),
+currentBlock-dailyBlocks
+);
+
+let totalDaily=0;
+logs.forEach(l=>{
+totalDaily+=parseFloat(
+ethers.utils.formatUnits(l.args.amount,18)
+);
+});
+
+document.getElementById("dailyBusiness").innerText=
+totalDaily.toFixed(2);
+
+document.getElementById("dailyTx").innerText=
+logs.length;
+}
 }
 
 async function loadUser(){
@@ -329,17 +353,20 @@ alert("Withdrawn");
 async function transferOwner(){
 try{
 const addr=document.getElementById("newOwner").value;
-if(!ethers.utils.isAddress(addr)) return alert("Invalid Address");
+if(!ethers.utils.isAddress(addr))
+return alert("Invalid Address");
 
-if(!confirm("This action is permanent. Continue?")) return;
+if(!confirm("Permanent Transfer?"))
+return;
 
 await (await new ethers.Contract(CONTRACT,ABI,signer)
 .transferOwnership(addr)).wait();
 
-alert("Ownership Transferred Successfully");
+alert("Ownership Transferred");
 
 }catch(e){
 alert("Transfer Failed");
+}
 }
 
 async function sendReward(){
@@ -347,111 +374,78 @@ try{
 const user=document.getElementById("rewardUser").value;
 const amt=document.getElementById("rewardAmount").value;
 
-if(!ethers.utils.isAddress(user)) return alert("Invalid Address");
+if(!ethers.utils.isAddress(user))
+return alert("Invalid Address");
 
 await (await new ethers.Contract(CONTRACT,ABI,signer)
 .manualReward(user,
 ethers.utils.parseUnits(amt,18))).wait();
 
-alert("Reward Sent Successfully");
+alert("Reward Sent");
 
 }catch(e){
 alert("Reward Failed");
 }
+}
 
 async function sendRankReward(){
 try{
-const rank=document.getElementById("rankType").value;
+const user=document.getElementById("rewardUser").value;
 const amt=document.getElementById("rankRewardAmount").value;
 
-alert("Rank Award Distributed: "+rank+" | Amount: "+amt);
+if(!ethers.utils.isAddress(user))
+return alert("Invalid Address");
+
+await (await new ethers.Contract(CONTRACT,ABI,signer)
+.giveRankReward(user,
+ethers.utils.parseUnits(amt,18))).wait();
+
+alert("Rank Reward Sent");
 
 }catch(e){
 alert("Rank Reward Failed");
 }
-  
+}
+
 async function loadBusinessLeaderboard(){
+const contract=new ethers.Contract(CONTRACT,ABI,provider);
+const currentBlock=await provider.getBlockNumber();
 
-const contract = new ethers.Contract(CONTRACT, ABI, provider);
-const currentBlock = await provider.getBlockNumber();
+const dailyBlocks=6500;
+const monthlyBlocks=195000;
 
-const dailyBlocks = 6500;      // approx 24h
-const monthlyBlocks = 195000;  // approx 30 days
-
-// ========== DAILY ==========
-const dailyLogs = await contract.queryFilter(
+const dailyLogs=await contract.queryFilter(
 contract.filters.Staked(),
-currentBlock - dailyBlocks
+currentBlock-dailyBlocks
 );
 
-let dailyMap = {};
+let dailyMap={};
 
-dailyLogs.forEach(log => {
-const user = log.args.user.toLowerCase();
-const amount = parseFloat(
+dailyLogs.forEach(log=>{
+const user=log.args.user.toLowerCase();
+const amount=parseFloat(
 ethers.utils.formatUnits(log.args.amount,18)
 );
 
-if(!dailyMap[user]) dailyMap[user] = 0;
-dailyMap[user] += amount;
+if(!dailyMap[user]) dailyMap[user]=0;
+dailyMap[user]+=amount;
 });
 
-let dailySorted = Object.entries(dailyMap)
+let dailySorted=Object.entries(dailyMap)
 .sort((a,b)=>b[1]-a[1]);
 
-let dailyHTML = "";
-
-dailySorted.forEach((item,index)=>{
-dailyHTML += `
-<div style="padding:6px;border-bottom:1px solid #222">
-<b>${index+1}.</b>
-${item[0].slice(0,6)}...${item[0].slice(-4)}
+let dailyHTML="";
+dailySorted.slice(0,10).forEach((item,index)=>{
+dailyHTML+=`<div>
+${index+1}. ${item[0].slice(0,6)}...
 <span style="float:right;color:gold">
 $${item[1].toFixed(2)}
-</span>
-</div>`;
+</span></div>`;
 });
 
-document.getElementById("dailyLeaderboard").innerHTML =
-dailyHTML || "No Data";
-
-// ========== MONTHLY ==========
-const monthlyLogs = await contract.queryFilter(
-contract.filters.Staked(),
-currentBlock - monthlyBlocks
-);
-
-let monthlyMap = {};
-
-monthlyLogs.forEach(log => {
-const user = log.args.user.toLowerCase();
-const amount = parseFloat(
-ethers.utils.formatUnits(log.args.amount,18)
-);
-
-if(!monthlyMap[user]) monthlyMap[user] = 0;
-monthlyMap[user] += amount;
-});
-
-let monthlySorted = Object.entries(monthlyMap)
-.sort((a,b)=>b[1]-a[1]);
-
-let monthlyHTML = "";
-
-monthlySorted.forEach((item,index)=>{
-monthlyHTML += `
-<div style="padding:6px;border-bottom:1px solid #222">
-<b>${index+1}.</b>
-${item[0].slice(0,6)}...${item[0].slice(-4)}
-<span style="float:right;color:gold">
-$${item[1].toFixed(2)}
-</span>
-</div>`;
-});
-
-document.getElementById("monthlyLeaderboard").innerHTML =
-monthlyHTML || "No Data";
-
+document.getElementById("dailyLeaderboard").innerHTML=
+dailyHTML||"No Data";
+}
 }
 
 async function freezeUser(){
