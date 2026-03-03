@@ -352,6 +352,7 @@ alert("Withdrawn");
 async function transferOwner(){
 try{
 const addr=document.getElementById("newOwner").value;
+
 if(!ethers.utils.isAddress(addr))
 return alert("Invalid Address");
 
@@ -366,9 +367,12 @@ alert("Ownership Transferred");
 }catch(e){
 alert("Transfer Failed");
 }
-}  // ✅ CLOSED PROPERLY
+}
 
 
+// =========================
+// MANUAL REWARD
+// =========================
 async function sendReward(){
 try{
 const user=document.getElementById("rewardUser").value;
@@ -388,6 +392,10 @@ alert("Reward Failed");
 }
 }
 
+
+// =========================
+// LEADERBOARD
+// =========================
 async function loadBusinessLeaderboard(){
 
 const contract=new ethers.Contract(CONTRACT,ABI,provider);
@@ -395,6 +403,7 @@ const currentBlock=await provider.getBlockNumber();
 
 const dailyBlocks=6500;
 const monthlyBlocks=195000;
+
 
 // ===== DAILY =====
 const dailyLogs=await contract.queryFilter(
@@ -423,7 +432,8 @@ dailyHTML+=`<div>
 ${index+1}. ${item[0].slice(0,6)}...
 <span style="float:right;color:gold">
 $${item[1].toFixed(2)}
-</span></div>`;
+</span>
+</div>`;
 });
 
 document.getElementById("dailyLeaderboard").innerHTML=
@@ -457,14 +467,19 @@ monthlyHTML+=`<div>
 ${index+1}. ${item[0].slice(0,6)}...
 <span style="float:right;color:gold">
 $${item[1].toFixed(2)}
-</span></div>`;
+</span>
+</div>`;
 });
 
 document.getElementById("monthlyLeaderboard").innerHTML=
 monthlyHTML||"No Data";
 
 }
- 
+
+
+// =========================
+// USER ACTIONS
+// =========================
 async function freezeUser(){
 await (await new ethers.Contract(CONTRACT,ABI,signer)
 .freezeUser(document.getElementById("userAddr").value)).wait();
