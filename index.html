@@ -800,7 +800,6 @@ function toggleMaintenance(status){
     
 async function updatePrice(){
 
-    // ✅ SAFETY CHECK
     if(!contract || !provider) return;
 
     try{
@@ -816,7 +815,6 @@ async function updatePrice(){
 
         if(!priceEl || !modeEl) return;
 
-        // ✅ SAFE DISPLAY
         if(!formatted || Number(formatted) === 0){
             priceEl.innerText = "--";
         }else{
@@ -824,27 +822,21 @@ async function updatePrice(){
                 parseFloat(formatted).toFixed(4) + " DMX";
         }
 
-        // ✅ PRICE MODE
         const mode = await contract.isManualPrice();
 
         modeEl.innerText = mode ? "Manual" : "LP Based";
 
+        // ✅ FIX HERE
+        if(!mode){
+            modeEl.style.color = "#10b981";
+        }else{
+            modeEl.style.color = "#f59e0b";
+        }
+
     }catch(e){
-
         console.log("Price sync error:", e);
-
-        // optional fallback
-        const priceEl = document.getElementById("livePriceUser");
-        if(priceEl) priceEl.innerText = "--";
-
     }
-
 }
-    if(!mode){
-    modeEl.style.color = "#10b981"; // LP → green
-}else{
-    modeEl.style.color = "#f59e0b"; // Manual → yellow
-    }
     
     async function updateRewardPool(){  
 
