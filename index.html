@@ -839,32 +839,50 @@ async function updatePrice(){
     }
 
 }
+    if(!mode){
+    modeEl.style.color = "#10b981"; // LP → green
+}else{
+    modeEl.style.color = "#f59e0b"; // Manual → yellow
+    }
     
-    async function updateRewardPool(){    
-    
-    if(!provider) return;    
-    if(!document.getElementById("rewardPool")) return;    
-    
-    try{    
-    
-        const token = new ethers.Contract(    
-            DMX_ADDR,    
-            ["function balanceOf(address) view returns(uint256)"],    
-            provider    
-        );    
-    
-        const bal = await token.balanceOf(STAKE_ADDR);    
-    
-        const formatted = ethers.utils.formatEther(bal);    
-    
-        document.getElementById("rewardPool").innerText =    
-        parseFloat(formatted).toLocaleString() + " DMX";    
-    
-    }catch(e){    
-        console.log("Pool sync...");    
-    }    
-    
-}    
+    async function updateRewardPool(){  
+
+    // ✅ SAFETY CHECKS
+    if(!provider || !DMX_ADDR || !STAKE_ADDR) return;
+
+    const poolEl = document.getElementById("rewardPool");
+    if(!poolEl) return;
+
+    try{  
+
+        const token = new ethers.Contract(  
+            DMX_ADDR,  
+            ["function balanceOf(address) view returns(uint256)"],  
+            provider  
+        );  
+
+        const bal = await token.balanceOf(STAKE_ADDR);  
+
+        const formatted = ethers.utils.formatEther(bal);
+
+        // ✅ SAFE DISPLAY
+        if(!formatted || Number(formatted) === 0){
+            poolEl.innerText = "0 DMX";
+        }else{
+            poolEl.innerText =
+                Number(formatted).toLocaleString(undefined, {
+                    maximumFractionDigits: 2
+                }) + " DMX";
+        }
+
+    }catch(e){  
+        console.log("Reward pool error:", e);
+
+        // fallback
+        poolEl.innerText = "--";
+    }  
+
+}
         
     async function showTab(type) {    
     
