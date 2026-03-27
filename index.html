@@ -957,7 +957,8 @@ let html = `
 </div>    
 `;    
     
-for(let i=0;i<25;i++){    
+// ✅ SAFE LOOP
+for(let i = 0; i < levelPercents.length; i++){    
     
 html += `    
 <div class="p-3 bg-white/5 rounded-xl mt-2 grid grid-cols-5 text-xs">    
@@ -968,7 +969,7 @@ html += `
     
 <div class="text-amber-400">Auto</div>    
     
-<div class="text-gray-400">${levelPercents[i]}%</div>    
+<div class="text-gray-400">${levelPercents[i] || 0}%</div>    
     
 <div class="text-emerald-400 font-bold">Auto</div>    
     
@@ -979,7 +980,7 @@ html += `
     
 cont.innerHTML = html;    
     
-}    
+}
     
 else {    
     
