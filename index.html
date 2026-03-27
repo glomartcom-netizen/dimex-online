@@ -696,20 +696,45 @@ console.log("Dashboard sync error");
     }  
 } 
     
-    function updateTimer(expiry) {    
-        const diff = expiry - Math.floor(Date.now() / 1000);    
-        const el = document.getElementById('levelTimer'), badge = document.getElementById('levelBadge');    
-        if(diff > 0) {    
-            const d = Math.floor(diff / 86400), h = Math.floor((diff % 86400) / 3600);    
-            el.innerText = `${d}d ${h}h`;    
-            badge.innerText = "ACTIVE";    
-            badge.className = "bg-emerald-500/10 text-emerald-400 text-[8px] font-black px-3 py-1 rounded-full border border-emerald-500/20";    
-        } else {    
-            el.innerText = "Expired";    
-            badge.innerText = "LOCKED";    
-            badge.className = "bg-red-500/10 text-red-400 text-[8px] font-black px-3 py-1 rounded-full border border-red-500/20";    
-        }    
-    }    
+    function updateTimer(expiry) {  
+
+    const el = document.getElementById('levelTimer');
+    const badge = document.getElementById('levelBadge');
+
+    // ✅ SAFETY CHECK
+    if(!expiry || expiry <= 0){
+        el.innerText = "--";
+        badge.innerText = "LOCKED";
+        badge.className = "bg-red-500/10 text-red-400 text-[8px] font-black px-3 py-1 rounded-full border border-red-500/20";
+        return;
+    }
+
+    const now = Math.floor(Date.now() / 1000);
+    let diff = expiry - now;
+
+    // ✅ अगर negative வந்தாலும் safe
+    if(diff <= 0){
+        el.innerText = "Expired";
+        badge.innerText = "LOCKED";
+        badge.className = "bg-red-500/10 text-red-400 text-[8px] font-black px-3 py-1 rounded-full border border-red-500/20";
+        return;
+    }
+
+    // ✅ FULL TIME BREAKDOWN
+    const days = Math.floor(diff / 86400);
+    diff = diff % 86400;
+
+    const hours = Math.floor(diff / 3600);
+    diff = diff % 3600;
+
+    const minutes = Math.floor(diff / 60);
+
+    // ✅ DISPLAY (MORE CLEAN)
+    el.innerText = `${days}d ${hours}h ${minutes}m`;
+
+    badge.innerText = "ACTIVE";
+    badge.className = "bg-emerald-500/10 text-emerald-400 text-[8px] font-black px-3 py-1 rounded-full border border-emerald-500/20";
+}
     
 function setBanner(url){    
     
