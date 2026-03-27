@@ -1450,37 +1450,89 @@ announceIndex = 0;
 rotateAnnouncement();    
 setInterval(rotateAnnouncement,6000);    
     
-window.claimRewards = async function() {  
-    if (window.txPending) return;  
-    if (maintenanceMode) return alert("Platform is currently under maintenance.");  
-    if (!contract) return alert("Please connect your wallet first.");  
-  
-    const btn = document.getElementById("claimBtn");  
-    const originalText = "Claim Now (Min 100)";  
-  
-    try {  
-        window.txPending = true;  
-        btn.disabled = true;  
-        btn.innerText = "Processing Claim...";  
-        btn.classList.remove("claim-ready");  
-  
-        const tx = await contract.claim();  
-        console.log("Claim transaction sent:", tx.hash);  
-          
-        await tx.wait();  
-  
-        alert("Rewards claimed successfully! Check your wallet.");  
-        refreshData();  
-    } catch (error) {  
-        console.error("Claim error:", error);  
-        alert("Claim failed. Ensure you have BNB for gas and at least 100 DMX claimable.");  
-    } finally {  
-        window.txPending = false;  
-        btn.disabled = false;  
-        btn.innerText = originalText;  
-        // The refreshData() in try block will re-add claim-ready class if balance is still > 100  
-    }  
-}  
+window.claimRewards = async function() {
+
+    // =========================
+    // 🔹 BASIC SAFETY
+    // =========================
+    if (window.txPending) return;
+
+    if (maintenanceMode){
+        alert("Platform is under maintenance");
+        return;
+    }
+
+    if (!contract || !userAddress){
+        alert("Please connect your wallet first");
+        return;
+    }
+
+    const btn = document.getElementById("claimBtn");
+    if(!btn) return;
+
+    const originalText = "Claim Now (Min 100)";
+
+    // =========================
+    // 🔹 GAS CHECK
+    // =========================
+    const balance = await provider.getBalance(userAddress);
+    if(balance.lt(ethers.utils.parseEther("0.003"))){
+        alert("Not enough BNB for gas fees");
+        return;
+    }
+
+    // =========================
+    // 🔹 CLAIMABLE CHECK
+    // =========================
+    const claimable = parseFloat(
+        document.getElementById("claimableAmt")?.innerText || "0"
+    );
+
+    if(claimable < 100){
+        alert("Minimum 100 DMX required to claim");
+        return;
+    }
+
+    // =========================
+    // 🔹 START TX
+    // =========================
+    try {
+
+        window.txPending = true;
+
+        btn.disabled = true;
+        btn.innerText = "Processing Claim...";
+        btn.classList.remove("claim-ready");
+
+        const tx = await contract.claim();
+
+        console.log("Claim TX:", tx.hash);
+
+        await tx.wait();
+
+        alert("Rewards claimed successfully 💰");
+
+        refreshData();
+
+    } catch (error) {
+
+        console.error("Claim error:", error);
+
+        // ✅ USER FRIENDLY ERROR
+        if(error.code === 4001){
+            alert("Transaction Rejected by User");
+        }else{
+            alert("Claim failed - Check gas / balance");
+        }
+
+    } finally {
+
+        window.txPending = false;
+
+        btn.disabled = false;
+        btn.innerText = originalText;
+    }
+}
   
 window.restake = async function() {  
     if (window.txPending) return;  
