@@ -992,9 +992,15 @@ if(!directs.length){
     return;    
 }    
 
-const users = await Promise.all(    
-    directs.map(a => contract.users(a).catch(() => null))    
-);    
+const users = await Promise.all(
+    directs.map(async (a) => {
+        try{
+            return await contract.users(a);
+        }catch(e){
+            return null;
+        }
+    })
+);
 
 let html = "";    
 
