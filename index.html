@@ -984,35 +984,41 @@ cont.innerHTML = html;
     
     
 else {      
-      
+
 const directs = await contract.getDirects(userAddress);      
-      
+
 if(!directs.length){      
 cont.innerHTML = "No Directs";      
 return;      
 }      
-      
-/* load all users faster */      
+
+/* load all users faster (SAFE FIX) */      
 const users = await Promise.all(      
-directs.map(a => contract.users(a))      
+directs.map(async (a) => {
+    try{
+        return await contract.users(a);
+    }catch(e){
+        return null;
+    }
+})      
 );      
-      
+
 let html = "";      
-      
+
 let totalDirects = directs.length;      
 let totalBusiness = 0;      
-      
+
 for(let i=0;i<directs.length;i++){      
-      
+
 const addr = directs[i];      
 const u = users[i];      
-      
+
 if(!u) continue;      
-      
+
 let stake = "0";      
 let date = "-";      
 let time = "-";      
-      
+     
 try{      
       
 stake = ethers.utils.formatEther(u[1] || 0);      
