@@ -1412,43 +1412,26 @@ async function buyDMX(){
 }
           
         
-    // ==============================
-// 🔹 SET ANNOUNCEMENT
-// ==============================
 function setAnnouncement(msg){    
     const el = document.getElementById("announcementText");
-    if(el){
-        el.innerText = msg;
-    }
+    if(!el) return;
+    el.innerText = msg;
 }
 
-
-// ==============================
-// 🔹 ANNOUNCEMENT LIST (FINAL)
-// ==============================
 const announcements = [
-
 "🔥 Welcome to DimeX Staking Platform",
-
 "🔗 Connect your wallet and start staking",
-
 "💰 Earn daily rewards automatically",
-
-"🪙 Need DMX? Buy easily using USDT",
-
-"🔄 Sell your rewards anytime for USDT",
-
-"🚀 Grow your income with smart staking"
-
+"🪙 Buy DMX easily using USDT",
+"🔄 Sell rewards anytime",
+"🚀 Grow your income"
 ];
 
-
-// ==============================
-// 🔹 ROTATION SYSTEM (SAFE)
-// ==============================
 let announceIndex = 0;
 
 function rotateAnnouncement(){
+
+    console.log("Announcement running...");
 
     if(!announcements.length) return;
 
@@ -1461,12 +1444,11 @@ function rotateAnnouncement(){
     }
 }
 
-
-// ==============================
-// 🔹 START (ONLY ONCE)
-// ==============================
-rotateAnnouncement();
-setInterval(rotateAnnouncement, 5000); // 5 sec
+// ✅ IMPORTANT
+window.addEventListener("load", () => {
+    rotateAnnouncement();
+    setInterval(rotateAnnouncement, 5000);
+});
     
 window.claimRewards = async function() {
 
