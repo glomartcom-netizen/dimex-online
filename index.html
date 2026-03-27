@@ -982,110 +982,91 @@ cont.innerHTML = html;
     
 }
     
+    
 else {    
-    
+
 const directs = await contract.getDirects(userAddress);    
-    
+
 if(!directs.length){    
-cont.innerHTML = "No Directs";    
-return;    
+    cont.innerHTML = "No Directs";    
+    return;    
 }    
-    
-/* load all users faster */    
+
 const users = await Promise.all(    
-directs.map(a => contract.users(a))    
+    directs.map(a => contract.users(a).catch(() => null))    
 );    
-    
+
 let html = "";    
-    
+
 let totalDirects = directs.length;    
 let totalBusiness = 0;    
-    
-for(let i=0;i<directs.length;i++){    
-    
+
+for(let i = 0; i < directs.length; i++){    
+
 const addr = directs[i];    
 const u = users[i];    
-    
-if(!u) continue;    
-    
-let stake = "0";    
+
+if(!u || !addr) continue;    
+
+let stake = 0;    
 let date = "-";    
 let time = "-";    
-    
+
 try{    
-    
-stake = ethers.utils.formatEther(u[1] || 0);    
-    
-totalBusiness += parseFloat(stake);    
-    
+
+stake = parseFloat(ethers.utils.formatEther(u[1] || 0)) || 0;    
+
+totalBusiness += stake;    
+
 const join = Number(u[2] || 0);    
-    
+
 if(join > 0){    
-    
-const d = new Date(join * 1000);    
-    
-date = d.toLocaleDateString();    
-time = d.toLocaleTimeString();    
-    
+    const d = new Date(join * 1000);    
+    date = d.toLocaleDateString();    
+    time = d.toLocaleTimeString();    
 }    
-    
+
 }catch(e){    
 console.log("Downline load error");    
 }    
-    
+
 html += `    
 <div class="p-3 bg-white/5 rounded-xl mt-2">    
-    
+
 <div class="font-mono text-xs break-all text-amber-400">    
-${addr.slice(0,6)}...${addr.slice(-4)}    
+${addr ? addr.slice(0,6) + "..." + addr.slice(-4) : "-"}    
 </div>    
-    
+
 <div class="text-xs text-gray-400">    
 ${date} | ${time}    
 </div>    
-    
+
 <div class="text-sm text-emerald-400 font-bold">    
-Stake: ${parseFloat(stake).toFixed(2)} DMX    
+Stake: ${stake.toFixed(2)} DMX    
 </div>    
-    
+
 </div>    
 `;    
-    
+
 }    
-    
+
 cont.innerHTML = `    
-    
+
 <div class="p-3 bg-white/5 rounded-xl mb-3 text-center">    
-    
-<div class="text-xs text-gray-400">    
-Total Directs    
+
+<div class="text-xs text-gray-400">Total Directs</div>    
+
+<div class="text-lg font-bold text-amber-400">${totalDirects}</div>    
+
+<div class="text-xs text-gray-400 mt-2">Direct Business</div>    
+
+<div class="text-lg font-bold text-emerald-400">${totalBusiness.toFixed(2)} DMX</div>    
+
 </div>    
-    
-<div class="text-lg font-bold text-amber-400">    
-${totalDirects}    
-</div>    
-    
-<div class="text-xs text-gray-400 mt-2">    
-Direct Business    
-</div>    
-    
-<div class="text-lg font-bold text-emerald-400">    
-${totalBusiness.toFixed(2)} DMX    
-</div>    
-    
-</div>    
-    
+
 ` + html;    
-    
-}    
-    
-} catch(e) {    
-    
-cont.innerHTML = "Error loading data";    
-    
-}    
-    
-}    
+
+}
     
     async function performStake(type) {
 
