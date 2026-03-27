@@ -1771,7 +1771,25 @@ function setButtonState(isLoading) {
         }  
         if(btnDMX) { btnDMX.disabled = false; btnDMX.style.opacity = "1"; }  
     }  
-    }  
+    } 
+
+  setTimeout(() => {
+
+    console.log("🔥 FORCE ANNOUNCEMENT START");
+
+    if(typeof rotateAnnouncement === "function"){
+
+        rotateAnnouncement();
+
+        setInterval(rotateAnnouncement, 5000);
+
+    } else {
+
+        console.log("❌ rotateAnnouncement not found");
+
+    }
+
+}, 2000);  
        
 </script>    
 </body>    
