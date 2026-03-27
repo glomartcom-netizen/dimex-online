@@ -736,30 +736,66 @@ console.log("Dashboard sync error");
     badge.className = "bg-emerald-500/10 text-emerald-400 text-[8px] font-black px-3 py-1 rounded-full border border-emerald-500/20";
 }
     
-function setBanner(url){    
-    
-const banner = document.getElementById("announcementBanner");    
-    
-banner.src = url;    
-banner.classList.remove("hidden");    
-    
-}    
-    
-    let maintenanceMode = false;    
-    
-function toggleMaintenance(status){    
-    
-maintenanceMode = status;    
-    
-const banner = document.getElementById("maintenanceBanner");    
-    
-if(status){    
-banner.classList.remove("hidden");    
-}else{    
-banner.classList.add("hidden");    
-}    
-    
-    }    
+// ==============================
+// 🔹 ANNOUNCEMENT BANNER
+// ==============================
+function setBanner(url){
+
+    const banner = document.getElementById("announcementBanner");
+
+    // ✅ SAFETY CHECK
+    if(!banner) return;
+
+    // ✅ IF URL EMPTY → HIDE
+    if(!url || url.trim() === ""){
+        banner.classList.add("hidden");
+        return;
+    }
+
+    banner.src = url;
+    banner.classList.remove("hidden");
+}
+
+
+// ==============================
+// 🔹 MAINTENANCE MODE CONTROL
+// ==============================
+let maintenanceMode = false;
+
+function toggleMaintenance(status){
+
+    maintenanceMode = status;
+
+    const banner = document.getElementById("maintenanceBanner");
+
+    if(!banner) return;
+
+    if(status){
+        banner.classList.remove("hidden");
+    }else{
+        banner.classList.add("hidden");
+    }
+
+    // ✅ DISABLE ALL ACTION BUTTONS (IMPORTANT)
+    const buttons = document.querySelectorAll("button");
+
+    buttons.forEach(btn => {
+
+        // skip wallet connect button
+        if(btn.id === "walletBtn") return;
+
+        btn.disabled = status;
+
+        if(status){
+            btn.style.opacity = "0.5";
+            btn.style.cursor = "not-allowed";
+        }else{
+            btn.style.opacity = "1";
+            btn.style.cursor = "pointer";
+        }
+
+    });
+}
     
 async function updatePrice(){  
   
