@@ -1412,44 +1412,61 @@ async function buyDMX(){
 }
           
         
-    function setAnnouncement(msg){    
-document.getElementById("announcementText").innerText = msg;    
-}    
-    
-const announcements = [    
-{    
-msg:"🔥 DimeX Staking Platform Live"    
-},    
-{    
-msg:"🚀 DMX Staking 0.30% Daily Plan"    
-},    
-{    
-msg:"🎁 Restake Bonus 5% Available"    
-}    
-];    
-    
-let announceIndex = 0;    
-    
-function rotateAnnouncement(){    
-    
-const data = announcements[announceIndex];    
-    
-setAnnouncement(data.msg);    
-    
-if(data.banner){    
-setBanner(data.banner);    
-}    
-    
-announceIndex++;    
-    
-if(announceIndex >= announcements.length){    
-announceIndex = 0;    
-}    
-    
-}    
-    
-rotateAnnouncement();    
-setInterval(rotateAnnouncement,6000);    
+    // ==============================
+// 🔹 SET ANNOUNCEMENT
+// ==============================
+function setAnnouncement(msg){    
+    const el = document.getElementById("announcementText");
+    if(el){
+        el.innerText = msg;
+    }
+}
+
+
+// ==============================
+// 🔹 ANNOUNCEMENT LIST (FINAL)
+// ==============================
+const announcements = [
+
+"🔥 Welcome to DimeX Staking Platform",
+
+"🔗 Connect your wallet and start staking",
+
+"💰 Earn daily rewards automatically",
+
+"🪙 Need DMX? Buy easily using USDT",
+
+"🔄 Sell your rewards anytime for USDT",
+
+"🚀 Grow your income with smart staking"
+
+];
+
+
+// ==============================
+// 🔹 ROTATION SYSTEM (SAFE)
+// ==============================
+let announceIndex = 0;
+
+function rotateAnnouncement(){
+
+    if(!announcements.length) return;
+
+    setAnnouncement(announcements[announceIndex]);
+
+    announceIndex++;
+
+    if(announceIndex >= announcements.length){
+        announceIndex = 0;
+    }
+}
+
+
+// ==============================
+// 🔹 START (ONLY ONCE)
+// ==============================
+rotateAnnouncement();
+setInterval(rotateAnnouncement, 5000); // 5 sec
     
 window.claimRewards = async function() {
 
