@@ -1534,34 +1534,88 @@ window.claimRewards = async function() {
     }
 }
   
-window.restake = async function() {  
-    if (window.txPending) return;  
-    if (maintenanceMode) return alert("Platform is currently under maintenance.");  
-      
-    const btn = event.currentTarget || event.target;  
-    const originalText = "Restake + 5% Bonus";  
-  
-    try {  
-        window.txPending = true;  
-        btn.disabled = true;  
-        btn.innerText = "Processing Restake...";  
-  
-        const tx = await contract.restake();  
-        console.log("Restake transaction sent:", tx.hash);  
-  
-        await tx.wait();  
-  
-        alert("Restake Successful! Your +5% bonus has been added.");  
-        refreshData();  
-    } catch (error) {  
-        console.error("Restake error:", error);  
-        alert("Restake failed. Ensure you have claimable rewards available.");  
-    } finally {  
-        window.txPending = false;  
-        btn.disabled = false;  
-        btn.innerText = originalText;  
-    }  
-}  
+window.restake = async function() {
+
+    // =========================
+    // 🔹 BASIC SAFETY
+    // =========================
+    if (window.txPending) return;
+
+    if (maintenanceMode){
+        alert("Platform is under maintenance");
+        return;
+    }
+
+    if (!contract || !userAddress){
+        alert("Connect wallet first");
+        return;
+    }
+
+    const btn = document.getElementById("restakeBtn");
+    if(!btn) return;
+
+    const originalText = "Restake + 5% Bonus";
+
+    // =========================
+    // 🔹 GAS CHECK
+    // =========================
+    const balance = await provider.getBalance(userAddress);
+    if(balance.lt(ethers.utils.parseEther("0.003"))){
+        alert("Not enough BNB for gas fees");
+        return;
+    }
+
+    // =========================
+    // 🔹 CLAIMABLE CHECK
+    // =========================
+    const claimable = parseFloat(
+        document.getElementById("claimableAmt")?.innerText || "0"
+    );
+
+    if(claimable <= 0){
+        alert("No rewards available to restake");
+        return;
+    }
+
+    // =========================
+    // 🔹 START TX
+    // =========================
+    try {
+
+        window.txPending = true;
+
+        btn.disabled = true;
+        btn.innerText = "Processing...";
+
+        const tx = await contract.restake();
+
+        console.log("Restake TX:", tx.hash);
+
+        await tx.wait();
+
+        alert("Restake successful 🚀 (+5% bonus added)");
+
+        refreshData();
+
+    } catch (error) {
+
+        console.error("Restake error:", error);
+
+        // ✅ USER FRIENDLY ERROR
+        if(error.code === 4001){
+            alert("Transaction Rejected by User");
+        }else{
+            alert("Restake failed - Check gas / rewards");
+        }
+
+    } finally {
+
+        window.txPending = false;
+
+        btn.disabled = false;
+        btn.innerText = originalText;
+    }
+}
     
 window.copyRef = function() {     
 const c = document.getElementById("myRefLink");     
