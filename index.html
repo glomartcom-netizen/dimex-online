@@ -582,49 +582,119 @@ console.log("Dashboard sync error");
         
 },10000);        
         
-    async function refreshData() {    
-        if(!contract || !userAddress) return;    
-        const f = ethers.utils.formatEther;    
-        try {    
-            const stats = await contract.getFullDashboardStats(userAddress);    
-            const u = await contract.users(userAddress);     
-    
-document.getElementById('dailyReward').innerText = f(stats[7]);     
-document.getElementById('directIncome').innerText = f(stats[2]);    
-document.getElementById('levelIncome').innerText = f(stats[3]);    
-document.getElementById('totalEarned').innerText = f(stats[1]);    
-document.getElementById('claimableAmt').innerText = parseFloat(f(stats[7])).toFixed(2);    
-document.getElementById('directVolume').innerText = parseFloat(f(stats[4])).toFixed(0) + " DMX";    
-document.getElementById('teamVolume').innerText = parseFloat(f(stats[5])).toFixed(0) + " DMX";    
-document.getElementById("myTotalStake").innerText = f(stats[0]);    
-                
-/* claim button control + glow */    
-const claimable = parseFloat(f(stats[7]));    
-const claimBtn = document.getElementById('claimBtn');    
-    
-claimBtn.disabled = claimable < 100;    
-    
-if(claimable >= 100){    
-claimBtn.classList.add("claim-ready");    
-}else{    
-claimBtn.classList.remove("claim-ready");    
-}    
-    
-const earned = parseFloat(f(stats[1])), cap = parseFloat(f(stats[8]));    
-const prog = cap > 0 ? Math.min((earned / cap) * 100, 100) : 0;    
-document.getElementById('capDisplay').innerText = `${earned.toFixed(0)} / ${cap.toFixed(0)} DMX`;    
-document.getElementById('capBar').style.width = prog + "%";    
-document.getElementById('capPercent').innerText = prog.toFixed(1) + "%";    
-                
-            const banner = document.getElementById('statusBanner');    
-            if(u[9]) {    
-                banner.innerText = "🚨 INCOME CAP REACHED - PLEASE RESTAKE 🚨";    
-                banner.className = "block bg-red-600/20 text-red-500 p-3 rounded-xl text-center font-black animate-pulse mb-4";    
-            } else { banner.className = "hidden"; }    
-    
-            updateTimer(Number(stats[6]));    
-        } catch(e) { console.warn("Syncing..."); }    
-    }    
+    async function refreshData() {  
+
+    if(!contract || !userAddress) return;  
+
+    const f = ethers.utils.formatEther;  
+
+    try {  
+
+        // ✅ SWAP MODE CHECK (SAFE)
+        try{
+            const isPancake = await contract.pancakeSwapEnabled();
+
+            document.getElementById("swapBox").style.display =
+                isPancake ? "none" : "block";
+
+        }catch(e){
+            console.log("Swap mode check failed");
+        }
+
+        // ✅ GET DATA
+        const stats = await contract.getFullDashboardStats(userAddress);  
+        const u = await contract.users(userAddress);   
+
+        // =========================
+        // 🔹 MAIN VALUES
+        // =========================
+
+        document.getElementById("myTotalStake").innerText = f(stats[0]);
+
+        document.getElementById("directIncome").innerText = f(stats[2]);
+        document.getElementById("levelIncome").innerText = f(stats[3]);
+        document.getElementById("totalEarned").innerText = f(stats[1]);
+
+        document.getElementById("directVolume").innerText =
+            Number(f(stats[4] || 0)).toFixed(0) + " DMX";
+
+        document.getElementById("teamVolume").innerText =
+            Number(f(stats[5] || 0)).toFixed(0) + " DMX";
+
+
+        // =========================
+        // 🔹 CLAIMABLE + DAILY (FINAL)
+        // =========================
+
+        const claimable = parseFloat(f(stats[7] || 0));
+
+        document.getElementById("claimableAmt").innerText =
+            claimable.toFixed(2);
+
+        // ✅ DAILY = CONTRACT VALUE (NO FAKE CALCULATION)
+        document.getElementById("dailyReward").innerText =
+            claimable.toFixed(2);
+
+
+        // =========================
+        // 🔹 CLAIM BUTTON CONTROL
+        // =========================
+
+        const claimBtn = document.getElementById("claimBtn");
+
+        claimBtn.disabled = claimable < 100;
+
+        if (claimable >= 100) {
+            claimBtn.classList.add("claim-ready");
+        } else {
+            claimBtn.classList.remove("claim-ready");
+        }
+
+
+        // =========================
+        // 🔹 CAP PROGRESS
+        // =========================
+
+        const earned = parseFloat(f(stats[1] || 0));
+        const cap = parseFloat(f(stats[8] || 0));
+
+        const prog = cap > 0
+            ? Math.min((earned / cap) * 100, 100)
+            : 0;
+
+        document.getElementById('capDisplay').innerText =
+            `${earned.toFixed(0)} / ${cap.toFixed(0)} DMX`;
+
+        document.getElementById('capBar').style.width = prog + "%";
+
+        document.getElementById('capPercent').innerText =
+            prog.toFixed(1) + "%";
+
+
+        // =========================
+        // 🔹 CAP WARNING
+        // =========================
+
+        const banner = document.getElementById('statusBanner');
+
+        if(u[9]) {  
+            banner.innerText = "🚨 INCOME CAP REACHED - PLEASE RESTAKE 🚨";  
+            banner.className = "block bg-red-600/20 text-red-500 p-3 rounded-xl text-center font-black animate-pulse mb-4";  
+        } else {  
+            banner.className = "hidden";  
+        }
+
+
+        // =========================
+        // 🔹 TIMER
+        // =========================
+
+        updateTimer(Number(stats[6]));  
+
+    } catch(e) {  
+        console.warn("Syncing...");  
+    }  
+} 
     
     function updateTimer(expiry) {    
         const diff = expiry - Math.floor(Date.now() / 1000);    
