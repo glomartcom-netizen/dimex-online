@@ -797,31 +797,48 @@ function toggleMaintenance(status){
     });
 }
     
-async function updatePrice(){  
-  
-if(!contract) return;  
-  
-try{  
-  
-const price = await contract.getDMXFromUSDT(  
-ethers.utils.parseUnits("1",18)  
-);  
-  
-const formatted = ethers.utils.formatEther(price);  
-  
-document.getElementById("livePriceUser").innerText =  
-parseFloat(formatted).toFixed(4) + " DMX";  
-  
-const mode = await contract.isManualPrice();  
-  
-document.getElementById("priceModeUser").innerText =  
-mode ? "Manual" : "LP Based";  
-  
-}catch(e){  
-console.log("Price sync...");  
-}  
-  
-}  
+async function updatePrice(){
+
+    // ✅ SAFETY CHECK
+    if(!contract || !provider) return;
+
+    try{
+
+        const price = await contract.getDMXFromUSDT(
+            ethers.utils.parseUnits("1",18)
+        );
+
+        const formatted = ethers.utils.formatEther(price);
+
+        const priceEl = document.getElementById("livePriceUser");
+        const modeEl = document.getElementById("priceModeUser");
+
+        if(!priceEl || !modeEl) return;
+
+        // ✅ SAFE DISPLAY
+        if(!formatted || Number(formatted) === 0){
+            priceEl.innerText = "--";
+        }else{
+            priceEl.innerText =
+                parseFloat(formatted).toFixed(4) + " DMX";
+        }
+
+        // ✅ PRICE MODE
+        const mode = await contract.isManualPrice();
+
+        modeEl.innerText = mode ? "Manual" : "LP Based";
+
+    }catch(e){
+
+        console.log("Price sync error:", e);
+
+        // optional fallback
+        const priceEl = document.getElementById("livePriceUser");
+        if(priceEl) priceEl.innerText = "--";
+
+    }
+
+}
     
     async function updateRewardPool(){    
     
