@@ -1214,71 +1214,103 @@ cont.innerHTML = "Error loading data";
     }
 }
   
-async function buyDMX(){  
-  
-try{  
-  
-if(!contract){  
-alert("Connect wallet first");  
-return;  
-}  
-  
-const amt = document.getElementById("buyUSDT").value;  
-  
-if(!amt || amt <= 0){  
-alert("Enter valid USDT amount");  
-return;  
-}  
-  
-const usdtAddr = await contract.usdt();  
-  
-const usdt = new ethers.Contract(  
-usdtAddr,  
-[  
-"function approve(address,uint256)",  
-"function allowance(address,address) view returns(uint256)"  
-],  
-signer  
-);  
-  
-const amountWei = ethers.utils.parseUnits(amt,18);  
-  
-/* CHECK ALLOWANCE FIRST */  
-  
-const allowance = await usdt.allowance(  
-userAddress,  
-STAKE_ADDR  
-);  
-  
-/* APPROVE ONLY IF NEEDED */  
-  
-if(allowance.lt(amountWei)){  
-  
-const approveTx = await usdt.approve(  
-STAKE_ADDR,  
-ethers.constants.MaxUint256  
-);  
-  
-await approveTx.wait();  
-  
-}  
-  
-/* BUY DMX */  
-  
-const tx = await contract.buyDMX(amountWei);  
-  
-await tx.wait();  
-  
-alert("DMX Purchased Successfully");  
-  
-}catch(e){  
-  
-console.error(e);  
-alert("Buy failed");  
-  
-}  
-  
-}  
+async function buyDMX(){
+
+    // =========================
+    // 🔹 BASIC SAFETY
+    // =========================
+    if (window.txPending) return;
+
+    if(!contract || !userAddress){
+        alert("Connect wallet first");
+        return;
+    }
+
+    // ✅ GAS CHECK
+    const balance = await provider.getBalance(userAddress);
+    if(balance.lt(ethers.utils.parseEther("0.003"))){
+        alert("Not enough BNB for gas fees");
+        return;
+    }
+
+    const amtInput = document.getElementById("buyUSDT").value;
+
+    // =========================
+    // 🔹 INPUT VALIDATION
+    // =========================
+    if(!amtInput || isNaN(amtInput)){
+        return alert("Enter valid USDT amount");
+    }
+
+    const amt = parseFloat(amtInput);
+
+    if(amt <= 0){
+        return alert("Amount must be greater than 0");
+    }
+
+    // =========================
+    // 🔹 START TX
+    // =========================
+    window.txPending = true;
+
+    try{
+
+        const usdtAddr = await contract.usdt();
+
+        const usdt = new ethers.Contract(
+            usdtAddr,
+            [
+                "function approve(address,uint256)",
+                "function allowance(address,address) view returns(uint256)"
+            ],
+            signer
+        );
+
+        const amountWei = ethers.utils.parseUnits(amt.toString(),18);
+
+        // ✅ CHECK ALLOWANCE
+        const allowance = await usdt.allowance(
+            userAddress,
+            STAKE_ADDR
+        );
+
+        if(allowance.lt(amountWei)){
+
+            const approveTx = await usdt.approve(
+                STAKE_ADDR,
+                ethers.constants.MaxUint256
+            );
+
+            await approveTx.wait();
+        }
+
+        // ✅ BUY
+        const tx = await contract.buyDMX(amountWei);
+
+        await tx.wait();
+
+        alert("DMX Purchased Successfully 🚀");
+
+        // clear input
+        document.getElementById("buyUSDT").value = "";
+
+    }catch(e){
+
+        console.error("Buy error:", e);
+
+        // ✅ USER FRIENDLY ERROR
+        if(e.code === 4001){
+            alert("Transaction Rejected by User");
+        }else{
+            alert("Buy failed - Check balance / gas");
+        }
+
+    }finally{
+
+        window.txPending = false;
+    }
+
+}
       
     async function sellDMX(){  
   
