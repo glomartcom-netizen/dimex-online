@@ -1189,86 +1189,91 @@ async function confirmStake(){
         return;
     }
 
-try{
-
-    window.txPending = true;
-
-    const amountWei = ethers.utils.parseEther(amount);
-
-    // ✅ GAS CHECK
-    const balance = await provider.getBalance(userAddress);
-    if(balance.lt(ethers.utils.parseEther("0.003"))){
-        alert("Not enough BNB for gas fees");
-        window.txPending = false;
+    // ✅ GAS CHECK (FIXED POSITION)
+    if(!provider || !userAddress){
+        alert("Connect Wallet");
         return;
     }
 
-    let ok = false;
+    const balance = await provider.getBalance(userAddress);
+    if(balance.lt(ethers.utils.parseEther("0.003"))){
+        alert("Not enough BNB for gas fees");
+        return;
+    }
 
-    if(selectedType === "DMX"){
+    try{
 
-        const token = new ethers.Contract(DMX_ADDR, TOKEN_ABI, signer);
+        window.txPending = true;
 
-        const allowance = await token.allowance(userAddress, STAKE_ADDR);
+        const amountWei = ethers.utils.parseEther(amount);
 
-        if(allowance.lt(amountWei)){
-            const approveTx = await token.approve(
-                STAKE_ADDR,
-                ethers.constants.MaxUint256
-            );
-            await approveTx.wait();
+        let ok = false;
+
+        if(selectedType === "DMX"){
+
+            const token = new ethers.Contract(DMX_ADDR, TOKEN_ABI, signer);
+
+            const allowance = await token.allowance(userAddress, STAKE_ADDR);
+
+            if(allowance.lt(amountWei)){
+                const approveTx = await token.approve(
+                    STAKE_ADDR,
+                    ethers.constants.MaxUint256
+                );
+                await approveTx.wait();
+            }
+
+            ok = await txWrap(contract.stakeDMX(
+                amountWei,
+                selectedPlan,
+                userAddress
+            ));
+
+        }else{
+
+            const requiredUSDT = await contract.getUSDTFromDMX(amountWei);
+
+            const usdt = new ethers.Contract(USDT_ADDR, TOKEN_ABI, signer);
+
+            const allowance = await usdt.allowance(userAddress, STAKE_ADDR);
+
+            if(allowance.lt(requiredUSDT)){
+                const approveTx = await usdt.approve(
+                    STAKE_ADDR,
+                    ethers.constants.MaxUint256
+                );
+                await approveTx.wait();
+            }
+
+            ok = await txWrap(contract.stakeUSDT(
+                amountWei,
+                selectedPlan,
+                userAddress
+            ));
+
         }
 
-        ok = await txWrap(contract.stakeDMX(
-            amountWei,
-            selectedPlan,
-            userAddress
-        ));
-
-    }else{
-
-        const requiredUSDT = await contract.getUSDTFromDMX(amountWei);
-
-        const usdt = new ethers.Contract(USDT_ADDR, TOKEN_ABI, signer);
-
-        const allowance = await usdt.allowance(userAddress, STAKE_ADDR);
-
-        if(allowance.lt(requiredUSDT)){
-            const approveTx = await usdt.approve(
-                STAKE_ADDR,
-                ethers.constants.MaxUint256
-            );
-            await approveTx.wait();
+        // ✅ ONLY SUCCESS CLOSE
+        if(ok){
+            alert("Stake Successful 🚀");
+            closeStakeBox();
         }
 
-        ok = await txWrap(contract.stakeUSDT(
-            amountWei,
-            selectedPlan,
-            userAddress
-        ));
+    }catch(e){
 
+        console.error(e);
+
+        if(e.code === 4001){
+            alert("Transaction Rejected by User");
+        }else if(e.message && e.message.includes("insufficient funds")){
+            alert("Not enough balance");
+        }else{
+            alert("Transaction Failed - Check gas / balance");
+        }
+
+    }finally{
+        window.txPending = false;
     }
-
-    // ✅ ONLY SUCCESS CLOSE
-    if(ok){
-        alert("Stake Successful 🚀");
-        closeStakeBox();
-    }
-
-}catch(e){
-
-    console.error(e);
-
-    if(e.code === 4001){
-        alert("Transaction Rejected by User");
-    }else if(e.message && e.message.includes("insufficient funds")){
-        alert("Not enough balance");
-    }else{
-        alert("Transaction Failed - Check gas / balance");
-    }
-
-}finally{
-    window.txPending = false;
 }
       
       
