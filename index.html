@@ -173,133 +173,11 @@ Connect Wallet
 📢 Announcement      
 </p>  <p id="announcementText" class="text-sm text-white">      
 🔥 DimeX Staking Platform Live      
-</p>  <img id="announcementBanner" class="mx-auto mt-3 rounded-xl hidden">  </div>  <main class="max-w-4xl mx-auto p-4 space-y-6">  <div id="statusBanner" class="hidden p-3 rounded-xl text-center font-bold text-sm uppercase"></div>  <!-- REFERRAL -->  <div id="refBox" class="hidden glass-card p-5 border border-amber-500/20">  <p class="text-sm text-gray-400 font-bold uppercase mb-2 flex items-center gap-2">  <i class="fa-solid fa-link text-amber-400"></i>    
-My Referral Link    
+</p>  <img id="announcementBanner" class="mx-auto mt-3 rounded-xl hidden">  </div>  <main class="max-w-4xl mx-auto p-4 space-y-6">  <div id="statusBanner" class="hidden p-3 rounded-xl text-center font-bold text-sm uppercase">
     
-</p>  <div class="flex gap-2">      
-    <input type="text" id="myRefLink" readonly class="input-dark text-sm bg-black/40">      
-        
-    <input type="hidden" id="refAddress" value="0x0000000000000000000000000000000000000000">    
+</div>
     
-    <button onclick="copyRef()" class="bg-amber-500 text-black px-5 rounded-xl text-sm font-bold uppercase">Copy</button>    
-</div>    
-    
-<!-- DMX SWAP -->    
-    
-<div id="swapBox" class="glass-card p-5 border border-cyan-500/20">    
-    
-<p class="text-sm text-gray-400 font-bold uppercase mb-4 flex items-center gap-2">    
-    
-💱 Swap DMX    
-    
-</p>    
-    
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">    
-    
-<!-- BUY DMX -->    
-    
-<div class="space-y-2">    
-    
-<p class="text-xs text-green-400 font-bold uppercase">    
-    
-Buy DMX (USDT → DMX)    
-    
-</p>    
-    
-<input id="buyUSDT"    
-type="number"    
-placeholder="Enter USDT amount"    
-class="input-dark bg-black/40 w-full">  
-  
-<p class="text-[11px] text-gray-400">  
-USDT (BEP20)  
-</p>  
-  
-<p id="buyPreview" class="text-xs text-cyan-400 font-bold"></p>    
-    
-<button onclick="buyDMX()"    
-class="bg-green-600 w-full py-2 rounded-xl font-bold">    
-    
-BUY DMX    
-    
-</button>    
-    
-</div>    
-    
-    
-<!-- SELL DMX -->    
-    
-<div class="space-y-2">    
-    
-<p class="text-xs text-red-400 font-bold uppercase">    
-    
-Sell DMX (DMX → USDT)    
-    
-</p>    
-    
-<input id="sellDMXAmount"    
-type="number"    
-placeholder="Enter DMX amount"    
-class="input-dark bg-black/40 w-full">    
-    
-<button onclick="sellDMX()"    
-class="bg-red-600 w-full py-2 rounded-xl font-bold">    
-    
-SELL DMX    
-    
-</button>    
-    
-</div>    
-    
-</div>    
-    
-</div>        
-    
-</div>  <!-- TOP STATS -->  <div class="grid grid-cols-2 gap-4 text-center">  <!-- Total Staked -->  <div class="glass-card p-5 border border-amber-500/20">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
-<i class="fa-solid fa-layer-group text-amber-400"></i>      
-Total Staked      
-</p>  <p id="myTotalStake" class="text-xl font-black text-amber-500">      
-0.00      
-</p>  </div>  <!-- Reward Pool -->  <div class="glass-card p-5 border border-emerald-500/20">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
-<i class="fa-solid fa-coins text-emerald-400"></i>      
-Reward Pool      
-</p>  <p id="rewardPool" class="text-xl font-black text-emerald-400">      
-Loading...      
-</p>  </div>  </div>  <!-- EARNINGS -->  <div class="grid grid-cols-2 gap-4 text-center">  <!-- Daily Rewards -->  <div class="glass-card p-5 border-b-2 border-amber-500/40">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
-<i class="fa-solid fa-coins text-amber-400"></i>      
-Daily Rewards      
-</p>  <p id="dailyReward" class="text-lg font-black text-amber-500">      
-0.00      
-</p>  </div>  <!-- Direct Income -->  <div class="glass-card p-5 border-b-2 border-white/10">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
-<i class="fa-solid fa-user-plus text-amber-400"></i>      
-Direct Income      
-</p>  <p id="directIncome" class="text-lg font-black">      
-0.00      
-</p>  </div>  <!-- Level Income -->  <div class="glass-card p-5 border-b-2 border-white/10">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
-<i class="fa-solid fa-sitemap text-amber-400"></i>      
-Level Income      
-</p>  <p id="levelIncome" class="text-lg font-black">      
-0.00      
-</p>  </div>  <!-- Total Payout -->  <div class="glass-card p-5 border-b-2 border-emerald-500/40">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
-<i class="fa-solid fa-wallet text-amber-400"></i>      
-Total Payout      
-</p>  <p id="totalEarned" class="text-lg font-black text-emerald-400">      
-0.00      
-</p>  </div>  </div>  <!-- BUSINESS -->  <div class="grid grid-cols-2 gap-4 text-center">  <!-- Direct Volume -->  <div class="glass-card p-4 border-l-4 border-blue-500/50">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
-<i class="fa-solid fa-arrow-trend-up text-blue-400"></i>      
-Direct Volume      
-</p>  <p id="directVolume" class="text-lg font-bold">      
-0.00 DMX      
-</p>  </div>  <!-- Team Volume -->  <div class="glass-card p-4 border-l-4 border-purple-500/50">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
-<i class="fa-solid fa-people-group text-purple-400"></i>      
-Team Volume      
-</p>  <p id="teamVolume" class="text-lg font-bold">      
-0.00 DMX      
-</p>      
-</div>       
-</div>   
-      
-<!-- STAKING -->  
+    <!-- STAKING -->  
 <div class="glass-card p-5 border border-amber-500/20">  
   
 <h3 class="text-sm text-amber-400 font-black uppercase mb-4 flex items-center gap-2">  
@@ -351,8 +229,8 @@ shadow-lg hover:shadow-pink-500/40 transition transform hover:scale-[1.03]">
   
 </button>  
   
-</div>  
-  
+</div> 
+
 <!-- STAKE MODAL -->  
 <div id="stakeModal"   
 class="fixed inset-0 bg-black/70 hidden z-50 flex items-center justify-center">  
@@ -388,19 +266,51 @@ Close
 </button>  
   
 </div>  
-</div>  
-        
-    <!-- PROGRESS -->    
+</div>      
     
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">  <div class="glass-card p-6">  <div class="flex justify-between items-end mb-3">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center gap-2">  <i class="fa-solid fa-chart-line text-amber-400"></i>    
-4X Income Progress    
-    
-</p>  <p id="capDisplay" class="text-sm font-black">0 / 0 DMX</p>  </div>  <div class="w-full bg-white/5 h-3 rounded-full overflow-hidden">  <div id="capBar" class="h-full bg-amber-500 transition-all duration-700" style="width:0%"></div>  </div>  <p id="capPercent" class="text-sm text-right mt-2 font-bold text-gray-400">0%</p>  </div>  <div class="glass-card p-6 flex justify-between items-center border-l-4 border-blue-500">  <div>  <p class="text-sm text-gray-400 font-bold uppercase flex items-center gap-2">  <i class="fa-solid fa-clock text-amber-400"></i>    
-Level Timer    
-    
-</p>  <p id="levelTimer" class="text-xl font-black italic text-blue-400">00d 00h 00m</p>  </div>  <div id="levelBadge" class="bg-blue-500/10 text-blue-400 text-sm font-black px-3 py-1 rounded-full">  Syncing    
-    
-</div>  </div>  </div>      
+</div>  <!-- TOP STATS -->  <div class="grid grid-cols-2 gap-4 text-center">  <!-- Total Staked -->  <div class="glass-card p-5 border border-amber-500/20">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-layer-group text-amber-400"></i>      
+Total Staked      
+</p>  <p id="myTotalStake" class="text-xl font-black text-amber-500">      
+0.00      
+</p>  </div>  <!-- Reward Pool -->  <div class="glass-card p-5 border border-emerald-500/20">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-coins text-emerald-400"></i>      
+Reward Pool      
+</p>  <p id="rewardPool" class="text-xl font-black text-emerald-400">      
+Loading...      
+</p>  </div>  </div>  <!-- EARNINGS -->  <div class="grid grid-cols-2 gap-4 text-center">  <!-- Daily Rewards -->  <div class="glass-card p-5 border-b-2 border-amber-500/40">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-coins text-amber-400"></i>      
+Daily Rewards      
+</p>  <p id="dailyReward" class="text-lg font-black text-amber-500">      
+0.00      
+</p>  </div>  <!-- Direct Income -->  <div class="glass-card p-5 border-b-2 border-white/10">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-user-plus text-amber-400"></i>      
+Direct Income      
+</p>  <p id="directIncome" class="text-lg font-black">      
+0.00      
+</p>  </div>  <!-- Level Income -->  <div class="glass-card p-5 border-b-2 border-white/10">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-sitemap text-amber-400"></i>      
+Level Income      
+</p>  <p id="levelIncome" class="text-lg font-black">      
+0.00      
+</p>  </div>  <!-- Total Payout -->  <div class="glass-card p-5 border-b-2 border-emerald-500/40">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-wallet text-amber-400"></i>      
+Total Payout      
+</p>  <p id="totalEarned" class="text-lg font-black text-emerald-400">      
+0.00      
+</p>  </div>  </div>  <!-- BUSINESS -->  <div class="grid grid-cols-2 gap-4 text-center">  <!-- Direct Volume -->  <div class="glass-card p-4 border-l-4 border-blue-500/50">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-arrow-trend-up text-blue-400"></i>      
+Direct Volume      
+</p>  <p id="directVolume" class="text-lg font-bold">      
+0.00 DMX      
+</p>  </div>  <!-- Team Volume -->  <div class="glass-card p-4 border-l-4 border-purple-500/50">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-people-group text-purple-400"></i>      
+Team Volume      
+</p>  <p id="teamVolume" class="text-lg font-bold">      
+0.00 DMX      
+</p>      
+</div>       
+</div>    
         
 <!-- CLAIM -->  
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">  
@@ -481,7 +391,106 @@ transition transform hover:scale-[1.02]">
   
 Restake + 5% Bonus    
   
-</button>  </div>  </div>  <div class="glass-card overflow-hidden border border-white/5">  <div class="grid grid-cols-3 bg-white/5">  <div id="tabStakes" onclick="showTab('stakes')" class="tab-btn active text-sm flex items-center justify-center gap-2">      
+</button>  
+</div>  
+</div> 
+
+<!-- PROGRESS -->    
+    
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">  <div class="glass-card p-6">  <div class="flex justify-between items-end mb-3">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center gap-2">  <i class="fa-solid fa-chart-line text-amber-400"></i>    
+4X Income Progress    
+    
+</p>  <p id="capDisplay" class="text-sm font-black">0 / 0 DMX</p>  </div>  <div class="w-full bg-white/5 h-3 rounded-full overflow-hidden">  <div id="capBar" class="h-full bg-amber-500 transition-all duration-700" style="width:0%"></div>  </div>  <p id="capPercent" class="text-sm text-right mt-2 font-bold text-gray-400">0%</p>  </div>  <div class="glass-card p-6 flex justify-between items-center border-l-4 border-blue-500">  <div>  <p class="text-sm text-gray-400 font-bold uppercase flex items-center gap-2">  <i class="fa-solid fa-clock text-amber-400"></i>    
+Level Timer    
+    
+</p>  <p id="levelTimer" class="text-xl font-black italic text-blue-400">00d 00h 00m</p>  </div>  <div id="levelBadge" class="bg-blue-500/10 text-blue-400 text-sm font-black px-3 py-1 rounded-full">  Syncing    
+    
+</div>  </div>  </div>          
+
+<!-- REFERRAL -->  <div id="refBox" class="hidden glass-card p-5 border border-amber-500/20">  <p class="text-sm text-gray-400 font-bold uppercase mb-2 flex items-center gap-2">  <i class="fa-solid fa-link text-amber-400"></i>    
+    
+My Referral Link    
+    
+</p>  <div class="flex gap-2">      
+    <input type="text" id="myRefLink" readonly class="input-dark text-sm bg-black/40">      
+        
+    <input type="hidden" id="refAddress" value="0x0000000000000000000000000000000000000000">    
+    
+    <button onclick="copyRef()" class="bg-amber-500 text-black px-5 rounded-xl text-sm font-bold uppercase">Copy</button>    
+</div>    
+    
+<!-- DMX SWAP -->    
+    
+<div id="swapBox" class="glass-card p-5 border border-cyan-500/20">    
+    
+<p class="text-sm text-gray-400 font-bold uppercase mb-4 flex items-center gap-2">    
+    
+💱 Swap DMX    
+    
+</p>    
+    
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">    
+    
+<!-- BUY DMX -->    
+    
+<div class="space-y-2">    
+    
+<p class="text-xs text-green-400 font-bold uppercase">    
+    
+Buy DMX (USDT → DMX)    
+    
+</p>    
+    
+<input id="buyUSDT"    
+type="number"    
+placeholder="Enter USDT amount"    
+class="input-dark bg-black/40 w-full">  
+  
+<p class="text-[11px] text-gray-400">  
+USDT (BEP20)  
+</p>  
+  
+<p id="buyPreview" class="text-xs text-cyan-400 font-bold"></p>    
+    
+<button onclick="buyDMX()"    
+class="bg-green-600 w-full py-2 rounded-xl font-bold">    
+    
+BUY DMX    
+    
+</button>    
+    
+</div>    
+    
+    
+<!-- SELL DMX -->    
+    
+<div class="space-y-2">    
+    
+<p class="text-xs text-red-400 font-bold uppercase">    
+    
+Sell DMX (DMX → USDT)    
+    
+</p>    
+    
+<input id="sellDMXAmount"    
+type="number"    
+placeholder="Enter DMX amount"    
+class="input-dark bg-black/40 w-full">    
+    
+<button onclick="sellDMX()"    
+class="bg-red-600 w-full py-2 rounded-xl font-bold">    
+    
+SELL DMX    
+    
+</button>    
+    
+</div>    
+    
+</div>    
+    
+</div>          
+    
+<div class="glass-card overflow-hidden border border-white/5">  <div class="grid grid-cols-3 bg-white/5">  <div id="tabStakes" onclick="showTab('stakes')" class="tab-btn active text-sm flex items-center justify-center gap-2">      
 <i class="fa-solid fa-clock-rotate-left text-amber-400"></i>      
 History      
 </div>  <div id="tabLevel" onclick="showTab('level')" class="tab-btn text-sm flex items-center justify-center gap-2">      
