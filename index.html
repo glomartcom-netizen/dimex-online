@@ -420,88 +420,87 @@ My Referral Link
 </div>
 </div>
 
-<div class="glass-card overflow-hidden border border-white/5 mt-4 md:mt-6">  <div class="grid grid-cols-3 bg-white/5">  <div id="tabStakes" onclick="showTab('stakes')" class="tab-btn active text-sm flex items-center justify-center gap-2">      
-<i class="fa-solid fa-clock-rotate-left text-amber-400"></i>      
-History      
-</div>  <div id="tabLevel" onclick="showTab('level')" class="tab-btn text-sm flex items-center justify-center gap-2">      
-<i class="fa-solid fa-sitemap text-amber-400"></i>      
-Levels      
-</div>  <div id="tabDownline" onclick="showTab('downline')" class="tab-btn text-sm flex items-center justify-center gap-2">      
-<i class="fa-solid fa-users text-amber-400"></i>      
-Downline      
-</div>  
-</div>      
+<!-- TABS -->
+<div class="glass-card overflow-hidden border border-white/5">
+
+  <div class="grid grid-cols-3 bg-white/5">
+    
+    <div id="tabStakes" onclick="showTab('stakes')" class="tab-btn active">
+      History
+    </div>
+
+    <div id="tabLevel" onclick="showTab('level')" class="tab-btn">
+      Levels
+    </div>
+
+    <div id="tabDownline" onclick="showTab('downline')" class="tab-btn">
+      Downline
+    </div>
+
+  </div>
+
+  <!-- ✅ IMPORTANT -->
+  <div id="tabContent" class="p-4 min-h-[160px]"></div>
+
+</div> <!-- ✅ CLOSE HERE -->
     
 <!-- DMX SWAP -->    
     
-<div id="swapBox" class="glass-card p-5 border border-cyan-500/20">    
-    
-<p class="text-sm text-gray-400 font-bold uppercase mb-4 flex items-center gap-2">    
-    
-💱 Swap DMX    
-    
-</p>    
-    
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">    
-    
-<!-- BUY DMX -->    
-    
-<div class="space-y-2">    
-    
-<p class="text-xs text-green-400 font-bold uppercase">    
-    
-Buy DMX (USDT → DMX)    
-    
-</p>    
-    
-<input id="buyUSDT"    
-type="number"    
-placeholder="Enter USDT amount"    
-class="input-dark bg-black/40 w-full">  
-  
-<p class="text-[11px] text-gray-400">  
-USDT (BEP20)  
-</p>  
-  
-<p id="buyPreview" class="text-xs text-cyan-400 font-bold"></p>    
-    
-<button onclick="buyDMX()"    
-class="bg-green-600 w-full py-2 rounded-xl font-bold">    
-    
-BUY DMX    
-    
-</button>    
-    
+<div id="swapBox" class="glass-card p-5 border border-cyan-500/20 mt-6">
+
+<p class="text-sm text-gray-400 font-bold uppercase mb-4 flex items-center gap-2">
+💱 Swap DMX
+</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+<!-- BUY DMX -->
+<div class="space-y-3 w-full">
+
+<p class="text-xs text-green-400 font-bold uppercase">
+Buy DMX (USDT → DMX)
+</p>
+
+<input id="buyUSDT"
+type="number"
+placeholder="Enter USDT amount"
+class="input-dark w-full">
+
+<p class="text-[11px] text-gray-400">
+USDT (BEP20)
+</p>
+
+<p id="buyPreview" class="text-xs text-cyan-400 font-bold"></p>
+
+<button onclick="buyDMX()"
+class="bg-green-600 w-full py-2 rounded-xl font-bold">
+BUY DMX
+</button>
+
+</div>
+
+<!-- SELL DMX -->
+<div class="space-y-3 w-full">
+
+<p class="text-xs text-red-400 font-bold uppercase">
+Sell DMX (DMX → USDT)
+</p>
+
+<input id="sellDMXAmount"
+type="number"
+placeholder="Enter DMX amount"
+class="input-dark w-full">
+
+<button onclick="sellDMX()"
+class="bg-red-600 w-full py-2 rounded-xl font-bold">
+SELL DMX
+</button>
+
+</div>
+
+</div>
+
 </div>    
-    
-    
-<!-- SELL DMX -->    
-    
-<div class="space-y-2">    
-    
-<p class="text-xs text-red-400 font-bold uppercase">    
-    
-Sell DMX (DMX → USDT)    
-    
-</p>    
-    
-<input id="sellDMXAmount"    
-type="number"    
-placeholder="Enter DMX amount"    
-class="input-dark bg-black/40 w-full">    
-    
-<button onclick="sellDMX()"    
-class="bg-red-600 w-full py-2 rounded-xl font-bold">    
-    
-SELL DMX    
-    
-</button>    
-    
-</div>    
-    
-</div>    
-    
-</div>          
     
 
 <div id="tabContent" class="p-4 min-h-[160px] space-y-3 text-sm"></div>  </div>  <div class="glass-card p-6 border border-amber-500/20 mt-6 md:mt-8">  <h3 class="text-lg font-black text-amber-400 mb-4 flex items-center gap-2">  <i class="fa-solid fa-network-wired text-amber-400"></i>    
