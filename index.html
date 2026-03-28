@@ -1993,25 +1993,47 @@ window.restake = async function() {
     }  
 }  
       
-window.copyRef = function() {       
-const c = document.getElementById("myRefLink");       
-c.select();       
-navigator.clipboard.writeText(c.value);       
-alert("Copied!");       
-}      
-      
-/* Wallet button click */      
-window.addEventListener("load", () => {      
-      
-const btn = document.getElementById("walletBtn");      
-      
-if(btn){      
-btn.onclick = () => {      
-window.appKitModal.open();      
-};      
-}      
-      
-});    
+// ==============================
+// 🔹 COPY REFERRAL (FINAL SAFE)
+// ==============================
+window.copyRef = async function(){
+
+    const input = document.getElementById("myRefLink");
+
+    if(!input){
+        alert("Referral link not found");
+        return;
+    }
+
+    const value = input.value;
+
+    try{
+        // ✅ modern copy
+        await navigator.clipboard.writeText(value);
+        alert("Copied! ✅");
+    }catch(e){
+
+        // 🔁 fallback (mobile safe)
+        input.select();
+        document.execCommand("copy");
+
+        alert("Copied! ✅");
+    }
+};
+
+
+// ==============================
+// 🔹 WALLET BUTTON (CLEAN)
+// ==============================
+window.addEventListener("load", () => {
+
+    const btn = document.getElementById("walletBtn");
+
+    if(btn && window.appKitModal){
+        btn.onclick = () => window.appKitModal.open();
+    }
+
+});
     
 // ==============================
 // 🔹 BUY DMX LIVE PREVIEW (FINAL SAFE)
