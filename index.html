@@ -405,19 +405,30 @@ Level Timer
     
 </p>  <p id="levelTimer" class="text-xl font-black italic text-blue-400">00d 00h 00m</p>  </div>  <div id="levelBadge" class="bg-blue-500/10 text-blue-400 text-sm font-black px-3 py-1 rounded-full">  Syncing    
     
-</div>  </div>  </div>          
+</div>  
+</div>  
+</div>          
 
-<!-- REFERRAL -->  <div id="refBox" class="hidden glass-card p-5 border border-amber-500/20 mt-6">  <p class="text-sm text-gray-400 font-bold uppercase mb-2 flex items-center gap-2">  <i class="fa-solid fa-link text-amber-400"></i>    
-    
+<!-- REFERRAL -->
+<div id="refBox" class="hidden glass-card p-5 border border-amber-500/20">
+
+<p class="text-sm text-gray-400 font-bold uppercase mb-2 flex items-center gap-2">
+<i class="fa-solid fa-link text-amber-400"></i>    
 My Referral Link    
-    
-</p>  <div class="flex gap-2">      
-    <input type="text" id="myRefLink" readonly class="input-dark text-sm bg-black/40">      
-        
-    <input type="hidden" id="refAddress" value="0x0000000000000000000000000000000000000000">    
-    
-    <button onclick="copyRef()" class="bg-amber-500 text-black px-5 rounded-xl text-sm font-bold uppercase">Copy</button>    
+</p>
+
+<div class="flex gap-2">
+
+<input type="text" id="myRefLink" readonly class="input-dark text-sm bg-black/40">
+
+<input type="hidden" id="refAddress" value="0x0000000000000000000000000000000000000000">
+
+<button onclick="copyRef()" class="bg-amber-500 text-black px-5 rounded-xl text-sm font-bold uppercase">
+Copy
+</button>
+
 </div>
+
 </div>
 
 <!-- TABS -->
@@ -503,48 +514,58 @@ SELL DMX
 </div>    
     
 
-<div id="tabContent" class="p-4 min-h-[160px] space-y-3 text-sm"></div>  </div>  <div class="glass-card p-6 border border-amber-500/20 mt-6 md:mt-8">  <h3 class="text-lg font-black text-amber-400 mb-4 flex items-center gap-2">  <i class="fa-solid fa-network-wired text-amber-400"></i>    
+<div id="tabContent" class="p-4 min-h-[160px] space-y-3 text-sm"></div>  
+</div>  
+
+<!-- ECOSYSTEM -->
+<div class="glass-card p-6 border border-amber-500/20">
+
+<h3 class="text-lg font-black text-amber-400 mb-4 flex items-center gap-2">
+<i class="fa-solid fa-network-wired text-amber-400"></i>    
 Ecosystem    
-    
-</h3>  <div style="margin-bottom:15px;font-size:15px;color:#ccc;">  Live DMX Price:    
+</h3>  
+
+<div style="margin-bottom:15px;font-size:15px;color:#ccc;">
+Live DMX Price:    
 <span id="livePriceUser" style="color:#fbbf24;font-weight:bold;">--</span>    
 <br>    
-    
 Mode:    
 <span id="priceModeUser" style="color:#fbbf24;font-weight:bold;">--</span>    
-    
-</div>  <div class="flex justify-between items-center mb-3 p-3 rounded-lg bg-black/30 border border-amber-500/20">  <span class="text-sm text-gray-300">      
-DMX Token      
-</span>  <button onclick="viewAddress(DMX_ADDR)"      
-class="bg-amber-500 text-black px-4 py-1 rounded-lg font-bold text-sm">    
-    
-View    
-    
-</button>  </div>  <div class="flex justify-between items-center mb-3 p-3 rounded-lg bg-black/30 border border-amber-500/20">  <span class="text-sm text-gray-300">      
-Staking Contract      
-</span>  <button onclick="viewAddress(STAKE_ADDR)"      
-class="bg-amber-500 text-black px-4 py-1 rounded-lg font-bold text-sm">    
-    
-View    
-    
-</button>  </div>  <div class="flex justify-between items-center mb-3 p-3 rounded-lg bg-black/30 border border-amber-500/20">  <span class="text-sm text-gray-300">      
-LP Pair      
-</span>  <button onclick="viewAddress(LP)"      
-class="bg-amber-500 text-black px-4 py-1 rounded-lg font-bold text-sm">    
-    
-View    
-    
-</button>  </div>  <div class="flex justify-between items-center p-3 rounded-lg bg-black/30 border border-amber-500/20">  <span class="text-sm text-gray-300">      
-Router      
-</span>  <button onclick="viewAddress(ROUTER)"      
-class="bg-amber-500 text-black px-4 py-1 rounded-lg font-bold text-sm">    
-    
-View    
-    
-</button>    
-        
-</div>      
-</div>         
+</div>  
+
+<div class="flex justify-between items-center mb-3 p-3 rounded-lg bg-black/30 border border-amber-500/20">
+<span class="text-sm text-gray-300">DMX Token</span>  
+<button onclick="viewAddress(DMX_ADDR)"  
+class="bg-amber-500 text-black px-4 py-1 rounded-lg font-bold text-sm">
+View
+</button>  
+</div>  
+
+<div class="flex justify-between items-center mb-3 p-3 rounded-lg bg-black/30 border border-amber-500/20">
+<span class="text-sm text-gray-300">Staking Contract</span>  
+<button onclick="viewAddress(STAKE_ADDR)"  
+class="bg-amber-500 text-black px-4 py-1 rounded-lg font-bold text-sm">
+View
+</button>  
+</div>  
+
+<div class="flex justify-between items-center mb-3 p-3 rounded-lg bg-black/30 border border-amber-500/20">
+<span class="text-sm text-gray-300">LP Pair</span>  
+<button onclick="viewAddress(LP)"  
+class="bg-amber-500 text-black px-4 py-1 rounded-lg font-bold text-sm">
+View
+</button>  
+</div>  
+
+<div class="flex justify-between items-center p-3 rounded-lg bg-black/30 border border-amber-500/20">
+<span class="text-sm text-gray-300">Router</span>  
+<button onclick="viewAddress(ROUTER)"  
+class="bg-amber-500 text-black px-4 py-1 rounded-lg font-bold text-sm">
+View
+</button>  
+</div>  
+
+</div>
 </main>      
         
     <script type="module">      
