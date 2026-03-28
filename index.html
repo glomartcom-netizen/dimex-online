@@ -2013,38 +2013,59 @@ window.appKitModal.open();
       
 });    
     
-document.getElementById("buyUSDT").addEventListener("input", async function(){    
-    
-if(!contract){    
-document.getElementById("buyPreview").innerText = "Connect wallet...";    
-return;    
-}    
-    
-const val = this.value;    
-    
-if(!val || val <= 0){    
-document.getElementById("buyPreview").innerText = "";    
-return;    
-}    
-    
-try{    
-    
-const usdtWei = ethers.utils.parseUnits(val,18);    
-    
-const dmxAmount = await contract.getDMXFromUSDT(usdtWei);    
-    
-const formatted = ethers.utils.formatEther(dmxAmount);    
-    
-document.getElementById("buyPreview").innerText =    
-"≈ " + parseFloat(formatted).toFixed(4) + " DMX";    
-    
-}catch(e){    
-    
-document.getElementById("buyPreview").innerText = "Calculating...";    
-    
-}    
-    
-});    
+// ==============================
+// 🔹 BUY DMX LIVE PREVIEW (FINAL SAFE)
+// ==============================
+
+let buyTimer;
+
+document.getElementById("buyUSDT").addEventListener("input", function(){
+
+    clearTimeout(buyTimer);
+
+    buyTimer = setTimeout(async () => {
+
+        const preview = document.getElementById("buyPreview");
+
+        // ❌ contract இல்லனா
+        if(!contract){
+            preview.innerText = "Connect wallet to preview";
+            return;
+        }
+
+        const val = this.value;
+
+        // ❌ invalid input safe
+        if(!val || isNaN(val) || Number(val) <= 0){
+            preview.innerText = "";
+            return;
+        }
+
+        try{
+
+            // ✅ convert to wei
+            const usdtWei = ethers.utils.parseUnits(val,18);
+
+            // ✅ contract call
+            const dmxAmount = await contract.getDMXFromUSDT(usdtWei);
+
+            // ✅ format
+            const formatted = ethers.utils.formatEther(dmxAmount);
+
+            // ✅ UI display
+            preview.innerText =
+                "≈ " + parseFloat(formatted).toFixed(4) + " DMX";
+
+        }catch(e){
+
+            console.log("Preview error:", e);
+
+            preview.innerText = "Calculating...";
+        }
+
+    }, 400); // 🔥 smooth delay
+
+});
     
 function viewClaimHistory(){    
     if(!userAddress) return alert("Connect Wallet");    
