@@ -880,45 +880,159 @@ console.log("Dashboard sync error");
     }    
 }   
   
-async function openClaimBox(){  
-  
-    if(!contract || !signer){  
-        alert("Connect Wallet");  
-        return;  
-    }  
-  
-    const modal = document.getElementById("claimModal");  
-    modal.classList.remove("hidden");  
-    modal.classList.add("flex");  
-  
-    const addr = await signer.getAddress();  
-    const data = await contract.getFullDashboardStats(addr);  
-  
-    const dmx = Number(ethers.utils.formatEther(data[7]));  
-    document.getElementById("modalDMX").innerText = dmx.toFixed(2) + " DMX";  
-  
-    const usdt = await contract.getUSDTFromDMX(data[7]);  
-    document.getElementById("modalUSDT").innerText =  
-        "≈ " + Number(ethers.utils.formatEther(usdt)).toFixed(2) + " USDT";  
-  
-    const mode = await contract.autoSwapEnabled();  
-    document.getElementById("modalMode").innerText =  
-        mode ? "Pancake Mode" : "Contract Mode";  
-}  
-  
-function closeClaimBox(){  
-    const modal = document.getElementById("claimModal");  
-    modal.classList.add("hidden");  
-    modal.classList.remove("flex");  
-}  
-  
-async function claimDMX(){  
-    await txWrap(contract.claim());  
-}  
-  
-async function claimUSDT(){  
-    await txWrap(contract.claimUSDT());  
-}  
+// ==============================
+// 🔹 OPEN CLAIM BOX (SAFE)
+// ==============================
+async function openClaimBox(){
+
+    if(!contract || !signer){
+        alert("Connect Wallet");
+        return;
+    }
+
+    const modal = document.getElementById("claimModal");
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+
+    try{
+
+        const addr = await signer.getAddress();
+        const data = await contract.getFullDashboardStats(addr);
+
+        const dmx = Number(ethers.utils.formatEther(data[7] || 0));
+
+        document.getElementById("modalDMX").innerText =
+            dmx.toFixed(2) + " DMX";
+
+        const usdt = await contract.getUSDTFromDMX(data[7] || 0);
+
+        document.getElementById("modalUSDT").innerText =
+            "≈ " + Number(ethers.utils.formatEther(usdt)).toFixed(2) + " USDT";
+
+        // ✅ SAFE MODE CHECK
+        let modeText = "Contract Mode";
+
+        try{
+            const mode = await contract.autoSwapEnabled();
+            modeText = mode ? "Pancake Mode" : "Contract Mode";
+        }catch(e){
+            console.log("Mode check skipped");
+        }
+
+        document.getElementById("modalMode").innerText = modeText;
+
+    }catch(e){
+        console.log("Claim modal load error", e);
+    }
+}
+
+
+// ==============================
+// 🔹 CLOSE CLAIM BOX
+// ==============================
+function closeClaimBox(){
+    const modal = document.getElementById("claimModal");
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+}
+
+
+// ==============================
+// 🔹 CLAIM DMX (FULL SAFE)
+// ==============================
+async function claimDMX(){
+
+    if(window.txPending) return;
+
+    if(!contract || !signer){
+        alert("Connect Wallet");
+        return;
+    }
+
+    // ✅ GAS CHECK
+    const balance = await provider.getBalance(userAddress);
+    if(balance.lt(ethers.utils.parseEther("0.003"))){
+        alert("Not enough BNB for gas fees");
+        return;
+    }
+
+    try{
+
+        window.txPending = true;
+
+        const tx = await contract.claim();
+        await tx.wait();
+
+        alert("DMX Claimed Successfully 💰");
+
+        refreshData();
+        closeClaimBox();
+
+    }catch(e){
+
+        console.log(e);
+
+        if(e.code === 4001){
+            alert("Transaction Rejected by User");
+        }else if(e.message && e.message.includes("insufficient funds")){
+            alert("Not enough balance / gas");
+        }else{
+            alert("Claim failed - Try again");
+        }
+
+    }finally{
+        window.txPending = false;
+    }
+}
+
+
+// ==============================
+// 🔹 CLAIM USDT (FULL SAFE)
+// ==============================
+async function claimUSDT(){
+
+    if(window.txPending) return;
+
+    if(!contract || !signer){
+        alert("Connect Wallet");
+        return;
+    }
+
+    // ✅ GAS CHECK
+    const balance = await provider.getBalance(userAddress);
+    if(balance.lt(ethers.utils.parseEther("0.003"))){
+        alert("Not enough BNB for gas fees");
+        return;
+    }
+
+    try{
+
+        window.txPending = true;
+
+        const tx = await contract.claimUSDT();
+        await tx.wait();
+
+        alert("USDT Claimed Successfully 💰");
+
+        refreshData();
+        closeClaimBox();
+
+    }catch(e){
+
+        console.log(e);
+
+        if(e.code === 4001){
+            alert("Transaction Rejected by User");
+        }else if(e.message && e.message.includes("insufficient funds")){
+            alert("Not enough balance / gas");
+        }else{
+            alert("Claim failed - Try again");
+        }
+
+    }finally{
+        window.txPending = false;
+    }
+}
       
   
 let selectedPlan = 0;
