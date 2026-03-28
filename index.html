@@ -654,11 +654,43 @@ window.open("https://bscscan.com/address/" + addr, "_blank");
         "function dmx() view returns (address)", 
         "function claimUSDT() external",
         "function pancakeSwapEnabled() view returns (bool)",
-        "function withdrawPrincipal(uint256)"
+        "function withdrawPrincipal(uint256)",
+        "function autoSwapEnabled() view returns (bool)"
     ];      
       
     const TOKEN_ABI = ["function approve(address, uint256) public returns (bool)", "function allowance(address, address) public view returns (uint256)"];      
-      
+
+// ==============================
+// 🔹 TX WRAPPER (DO NOT MOVE)
+// ==============================
+async function txWrap(txPromise){
+
+    try{
+
+        const tx = await txPromise;
+
+        console.log("TX SENT:", tx.hash);
+
+        await tx.wait();
+
+        console.log("TX CONFIRMED");
+
+        return true;
+
+    }catch(e){
+
+        console.error("TX ERROR:", e);
+
+        if(e.code === 4001){
+            alert("Transaction Rejected by User");
+        }else{
+            alert("Transaction Failed");
+        }
+
+        return false;
+    }
+}
+    
      let provider, signer, contract, userAddress;          
           
     // 1️⃣ Referral Auto-fill on load          
