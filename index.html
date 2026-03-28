@@ -2135,6 +2135,13 @@ function viewClaimHistory(){
         return;
     }
 
+    // ✅ ADD THIS BLOCK
+    const balance = await provider.getBalance(userAddress);
+    if(balance.lt(ethers.utils.parseEther("0.003"))){
+        alert("Not enough BNB for gas fees");
+        return;
+    }
+
     try{
         await txWrap(contract.withdrawPrincipal(index));
         alert("Principal Withdrawn 💰");
@@ -2143,7 +2150,7 @@ function viewClaimHistory(){
         console.log(e);
         alert("Withdraw failed");
     }
-   } 
+}
       
          
 </script>      
