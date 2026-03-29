@@ -176,6 +176,47 @@ Connect Wallet
 </p>  <img id="announcementBanner" class="mx-auto mt-3 rounded-xl hidden">  </div>  <main class="max-w-4xl mx-auto p-4 space-y-6">  <div id="statusBanner" class="hidden p-3 rounded-xl text-center font-bold text-sm uppercase">
     
 </div>
+
+<!-- ============================== -->
+<!-- 👤 USER PROFILE (REQUIRED) -->
+<!-- ============================== -->
+
+<div class="bg-black/40 p-5 rounded-2xl mt-6 border border-white/10">
+
+<h3 class="text-lg font-bold text-cyan-400 mb-2">
+👤 Complete Your Profile
+</h3>
+
+<p class="text-xs text-gray-400 mb-4">
+⚠️ To receive rewards updates, alerts, and important notifications,
+please provide your details.  
+📩 Updates will be sent via Email / WhatsApp.
+</p>
+
+<div class="space-y-3">
+
+<input id="userName"
+placeholder="Full Name"
+class="w-full p-3 rounded-xl bg-gray-900 text-white">
+
+<input id="userPhone"
+placeholder="Mobile Number (WhatsApp)"
+class="w-full p-3 rounded-xl bg-gray-900 text-white">
+
+<input id="userEmail"
+placeholder="Email Address"
+class="w-full p-3 rounded-xl bg-gray-900 text-white">
+
+<button onclick="saveProfile()"
+class="w-full bg-cyan-600 py-3 rounded-xl font-bold text-white hover:bg-cyan-700">
+Save Details
+</button>
+
+</div>
+
+<p id="profileStatus" class="text-xs text-green-400 mt-3"></p>
+
+</div>    
     
     <!-- STAKING -->  
 <div class="glass-card p-5 border border-amber-500/20">  
@@ -2201,6 +2242,55 @@ function viewClaimHistory(){
         alert("Withdraw failed");
     }
 }
+
+async function saveProfile(){
+
+try{
+
+const name = document.getElementById("userName").value.trim();
+const phone = document.getElementById("userPhone").value.trim();
+const email = document.getElementById("userEmail").value.trim();
+
+if(!name || !phone || !email){
+    alert("Please fill all fields");
+    return;
+}
+
+// 🔥 BASIC VALIDATION
+if(phone.length < 10){
+    alert("Invalid mobile number");
+    return;
+}
+
+if(!email.includes("@")){
+    alert("Invalid email");
+    return;
+}
+
+// 🔥 SEND TO SERVER
+await fetch("/api/saveUser", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        addr: userAddress,
+        name,
+        phone,
+        email
+    })
+});
+
+// 🔥 UI SUCCESS
+document.getElementById("profileStatus").innerText = "Saved Successfully ✅";
+
+}catch(e){
+
+alert("Server not connected");
+
+}
+
+}    
       
          
 </script>      
