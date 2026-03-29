@@ -847,7 +847,7 @@ async function txWrap(txPromise){
 
     } else {
 
-        const defaultRef = "0xYourMainWalletAddress";  
+        const defaultRef = "0x53ba2d865be750d0e2d4d01bcb0a46ec1684c46b";  
         document.getElementById("refAddress").value = defaultRef;
 
         console.log("Default referral used:", defaultRef);
@@ -975,6 +975,7 @@ console.log("Dashboard sync error");
         // =========================  
   
         const claimBtn = document.getElementById("claimBtn");
+if(!claimBtn) return;
 
 if(claimable < 100){
 
@@ -1021,7 +1022,8 @@ if(claimable < 100){
         // 🔹 CAP WARNING  
         // =========================  
   
-        const banner = document.getElementById('statusBanner');  
+        const banner = document.getElementById('statusBanner');
+if(!banner) return; 
   
         if(u[9]) {    
             banner.innerText = "🚨 INCOME CAP REACHED - PLEASE RESTAKE 🚨";    
