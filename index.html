@@ -1502,45 +1502,46 @@ function toggleMaintenance(status){
     });  
 }  
       
-async function updatePrice(){  
-  
-    if(!contract || !provider) return;  
-  
-    try{  
-  
-        const price = await contract.getDMXFromUSDT(  
-            ethers.utils.parseUnits("1",18)  
-        );  
-  
-        const formatted = ethers.utils.formatEther(price);  
-  
-        const priceEl = document.getElementById("livePriceUser");  
-        const modeEl = document.getElementById("priceModeUser");  
-  
-        if(!priceEl || !modeEl) return;  
-  
-        if(!formatted || Number(formatted) === 0){  
-            priceEl.innerText = "--";  
-        }else{  
-            priceEl.innerText =  
-                parseFloat(formatted).toFixed(4) + " DMX";  
-        }  
-  
-        const mode = await contract.isManualPrice();  
-  
-        modeEl.innerText = mode ? "Manual" : "LP Based";  
-  
-        // ✅ FIX HERE  
-        if(!mode){  
-            modeEl.style.color = "#10b981";  
-        }else{  
-            modeEl.style.color = "#f59e0b";  
-        }  
-  
-    }catch(e){  
-        console.log("Price sync error:", e);  
-    }  
-}  
+async function updatePrice(){    
+    
+    if(!contract || !provider) return;    
+    
+    try{    
+    
+        // ✅ GET 1 DMX PRICE IN USDT (CORRECT)
+        const usdtPrice = await contract.getUSDTFromDMX(
+            ethers.utils.parseEther("1")
+        );    
+    
+        const formatted = ethers.utils.formatEther(usdtPrice);    
+    
+        const priceEl = document.getElementById("livePriceUser");    
+        const modeEl = document.getElementById("priceModeUser");    
+    
+        if(!priceEl || !modeEl) return;    
+    
+        if(!formatted || Number(formatted) === 0){    
+            priceEl.innerText = "--";    
+        }else{    
+            // ✅ FINAL DISPLAY (PRO LOOK)
+            priceEl.innerText =    
+                "1 DMX ≈ " + parseFloat(formatted).toFixed(4) + " USDT";    
+        }    
+    
+        const mode = await contract.isManualPrice();    
+    
+        modeEl.innerText = mode ? "Manual" : "LP Based";    
+    
+        if(!mode){    
+            modeEl.style.color = "#10b981";    
+        }else{    
+            modeEl.style.color = "#f59e0b";    
+        }    
+    
+    }catch(e){    
+        console.log("Price sync error:", e);    
+    }    
+}
       
     async function updateRewardPool(){    
   
