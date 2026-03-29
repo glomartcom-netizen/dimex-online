@@ -1872,7 +1872,10 @@ async function buyDMX(){
         return;  
     }  
   
-    const amtInput = document.getElementById("buyUSDT").value;  
+    const inputEl = document.getElementById("buyUSDT");
+if(!inputEl) return;
+
+const amtInput = inputEl.value;  
   
     // =========================  
     // 🔹 INPUT VALIDATION  
@@ -1970,7 +1973,10 @@ async function buyDMX(){
         return;  
     }  
   
-    const amtInput = document.getElementById("sellDMXAmount").value;  
+    const inputEl = document.getElementById("sellDMXAmount");
+if(!inputEl) return;
+
+const amtInput = inputEl.value;  
   
     // =========================  
     // 🔹 INPUT VALIDATION  
