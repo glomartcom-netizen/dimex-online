@@ -1459,26 +1459,6 @@ async function confirmStake(){
     badge.className = "bg-emerald-500/10 text-emerald-400 text-[8px] font-black px-3 py-1 rounded-full border border-emerald-500/20";  
 }  
       
-// ==============================  
-// 🔹 ANNOUNCEMENT BANNER  
-// ==============================  
-function setBanner(url){  
-  
-    const banner = document.getElementById("announcementBanner");  
-  
-    // ✅ SAFETY CHECK  
-    if(!banner) return;  
-  
-    // ✅ IF URL EMPTY → HIDE  
-    if(!url || url.trim() === ""){  
-        banner.classList.add("hidden");  
-        return;  
-    }  
-  
-    banner.src = url;  
-    banner.classList.remove("hidden");  
-}  
-  
   
 // ==============================  
 // 🔹 MAINTENANCE MODE CONTROL  
