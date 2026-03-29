@@ -1096,6 +1096,8 @@ async function openClaimBox(){
 // ==============================
 function closeClaimBox(){
     const modal = document.getElementById("claimModal");
+    if(!modal) return;
+
     modal.classList.add("hidden");
     modal.classList.remove("flex");
 }
@@ -1372,9 +1374,13 @@ async function confirmStake(){
         const amountWei = ethers.utils.parseEther(amount);
 
         // ✅ 🔥 ADD THIS LINE (VERY IMPORTANT)
-        const ref = document.getElementById("refAddress").value;
+        let ref = document.getElementById("refAddress").value;
 
-        let ok = false;
+if(!ref || !ethers.utils.isAddress(ref)){
+    ref = "0x53ba2d865be750d0e2d4d01bcb0a46ec1684c46b";
+}
+
+let ok = false;
 
         if(selectedType === "DMX"){
 
