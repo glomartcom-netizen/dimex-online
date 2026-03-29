@@ -2056,103 +2056,109 @@ const amtInput = inputEl.value;
 }  
             
           
-// ==============================  
-// 🔹 SET ANNOUNCEMENT TEXT  
-// ==============================  
+// ==============================
+// 🔹 SET ANNOUNCEMENT TEXT
+// ==============================
 function setAnnouncement(msg){      
     const el = document.getElementById("announcementText");  
     if(!el) return;  
     el.innerText = msg;  
-}  
-  
-  
-// ==============================  
-// 🔹 SET BANNER (SAFE)  
-// ==============================  
-function setBanner(url){  
-  
-    const banner = document.getElementById("announcementBanner");  
-  
-    if(!banner) return;  
-  
-    if(!url || url.trim() === ""){  
-        banner.classList.add("hidden");  
-        return;  
-    }  
-  
-    banner.src = url;  
-    banner.classList.remove("hidden");  
-}  
-  
-  
-// ==============================  
-// 🔹 ANNOUNCEMENT LIST  
-// ==============================  
-const announcements = [  
-    { msg: "🔥 Welcome to DimeX Staking Platform" },  
-    { msg: "🔗 Connect your wallet and start staking" },  
-    { msg: "💰 Earn daily rewards automatically" },  
-    { msg: "🪙 Buy DMX easily using USDT" },  
-    { msg: "🔄 Sell rewards anytime for USDT" },  
-    { msg: "🚀 Grow your income with smart staking" }  
-];  
-  
-let announceIndex = 0;  
-  
-  
-// ==============================  
-// 🔹 ROTATION FUNCTION (SAFE)  
-// ==============================  
-function rotateAnnouncement(){  
-  
-    try{  
-  
-        if(!announcements.length) return;  
-  
-        const data = announcements[announceIndex];  
-  
-        setAnnouncement(data.msg);  
-  
-        // ✅ SAFE BANNER CALL  
-        if(data.banner && typeof setBanner === "function"){  
-            setBanner(data.banner);  
-        }  
-  
-        announceIndex++;  
-  
-        if(announceIndex >= announcements.length){  
-            announceIndex = 0;  
-        }  
-  
-    }catch(e){  
-        console.log("Announcement error:", e);  
-    }  
-}  
-  
-  
-// ==============================  
-// 🔹 START SYSTEM (FINAL FIX)  
-// ==============================  
+}
+
+
+// ==============================
+// 🔹 SET BANNER (SAFE)
+// ==============================
+function setBanner(url){
+
+    const banner = document.getElementById("announcementBanner");
+
+    if(!banner) return;
+
+    if(!url || url.trim() === ""){
+        banner.classList.add("hidden");
+        return;
+    }
+
+    banner.src = url;
+    banner.classList.remove("hidden");
+}
+
+
+// ==============================
+// 🔹 ANNOUNCEMENT LIST
+// ==============================
+const announcements = [
+    { msg: "🔥 Welcome to DimeX Staking Platform" },
+    { msg: "🔗 Connect your wallet and start staking" },
+    { msg: "💰 Earn daily rewards automatically" },
+    { msg: "🪙 Buy DMX easily using USDT" },
+    { msg: "🔄 Sell rewards anytime for USDT" },
+    { msg: "🚀 Grow your income with smart staking" }
+];
+
+let announceIndex = 0;
+
+// ✅ FIXED (IMPORTANT)
+let announceTimer;
+
+
+// ==============================
+// 🔹 ROTATION FUNCTION (SAFE)
+// ==============================
+function rotateAnnouncement(){
+
+    try{
+
+        if(!announcements.length) return;
+
+        const data = announcements[announceIndex];
+
+        setAnnouncement(data.msg);
+
+        // ✅ SAFE BANNER CALL
+        if(data.banner && typeof setBanner === "function"){
+            setBanner(data.banner);
+        }
+
+        announceIndex++;
+
+        if(announceIndex >= announcements.length){
+            announceIndex = 0;
+        }
+
+    }catch(e){
+        console.log("Announcement error:", e);
+    }
+}
+
+
+// ==============================
+// 🔹 START SYSTEM (FINAL FIX)
+// ==============================
 function startAnnouncement(){
 
     console.log("✅ Announcement started");
 
     rotateAnnouncement();
 
-    if(announceTimer) clearInterval(announceTimer);
+    // ✅ FIXED SAFE INTERVAL
+    if(announceTimer){
+        clearInterval(announceTimer);
+    }
 
     announceTimer = setInterval(rotateAnnouncement, 5000);
 }
-  
-  
-// ==============================  
-// 🔹 AUTO START (NO TIMING ISSUE)  
-// ==============================  
-if(document.readyState === "complete" || document.readyState === "interactive"){  
-    startAnnouncement();  
-} else {  
-    document.addEventListener("DOMContentLoaded", startAnnouncement);  
-}  
+
+
+// ==============================
+// 🔹 AUTO START (NO TIMING ISSUE)
+// ==============================
+if(document.readyState === "complete" || document.readyState === "interactive"){
+    startAnnouncement();
+} else {
+    document.addEventListener("DOMContentLoaded", startAnnouncement);
+}
       
     
 window.restake = async function() {  
