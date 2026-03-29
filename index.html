@@ -1452,7 +1452,9 @@ let ok = false;
     function updateTimer(expiry) {    
   
     const el = document.getElementById('levelTimer');  
-    const badge = document.getElementById('levelBadge');  
+const badge = document.getElementById('levelBadge');
+
+if(!el || !badge) return; 
   
     // ✅ SAFETY CHECK  
     if(!expiry || expiry <= 0){  
