@@ -2286,53 +2286,47 @@ window.addEventListener("load", () => {
 
 let buyTimer;
 
-document.getElementById("buyUSDT").addEventListener("input", function(){
+const buyInput = document.getElementById("buyUSDT");
 
-    clearTimeout(buyTimer);
+if(buyInput){
+    buyInput.addEventListener("input", function(){
 
-    buyTimer = setTimeout(async () => {
+        clearTimeout(buyTimer);
 
-        const preview = document.getElementById("buyPreview");
+        buyTimer = setTimeout(async () => {
 
-        // ❌ contract இல்லனா
-        if(!contract){
-            preview.innerText = "Connect wallet to preview";
-            return;
-        }
+            const preview = document.getElementById("buyPreview");
+            if(!preview) return;
 
-        const val = this.value;
+            if(!contract){
+                preview.innerText = "Connect wallet to preview";
+                return;
+            }
 
-        // ❌ invalid input safe
-        if(!val || isNaN(val) || Number(val) <= 0){
-            preview.innerText = "";
-            return;
-        }
+            const val = this.value;
 
-        try{
+            if(!val || isNaN(val) || Number(val) <= 0){
+                preview.innerText = "";
+                return;
+            }
 
-            // ✅ convert to wei
-            const usdtWei = ethers.utils.parseUnits(val,18);
+            try{
+                const usdtWei = ethers.utils.parseUnits(val,18);
+                const dmxAmount = await contract.getDMXFromUSDT(usdtWei);
+                const formatted = ethers.utils.formatEther(dmxAmount);
 
-            // ✅ contract call
-            const dmxAmount = await contract.getDMXFromUSDT(usdtWei);
+                preview.innerText =
+                    "≈ " + parseFloat(formatted).toFixed(4) + " DMX";
 
-            // ✅ format
-            const formatted = ethers.utils.formatEther(dmxAmount);
+            }catch(e){
+                console.log("Preview error:", e);
+                preview.innerText = "Calculating...";
+            }
 
-            // ✅ UI display
-            preview.innerText =
-                "≈ " + parseFloat(formatted).toFixed(4) + " DMX";
+        }, 400);
 
-        }catch(e){
-
-            console.log("Preview error:", e);
-
-            preview.innerText = "Calculating...";
-        }
-
-    }, 400); // 🔥 smooth delay
-
-});
+    });
+}
     
 function viewClaimHistory(){    
     if(!userAddress) return alert("Connect Wallet");    
