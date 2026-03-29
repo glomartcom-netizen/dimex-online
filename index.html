@@ -966,15 +966,23 @@ console.log("Dashboard sync error");
         // 🔹 CLAIM BUTTON CONTROL  
         // =========================  
   
-        const claimBtn = document.getElementById("claimBtn");  
-  
-        claimBtn.disabled = claimable < 100;  
-  
-        if (claimable >= 100) {  
-            claimBtn.classList.add("claim-ready");  
-        } else {  
-            claimBtn.classList.remove("claim-ready");  
-        }  
+        const claimBtn = document.getElementById("claimBtn");
+
+if(claimable < 100){
+
+    claimBtn.disabled = true;
+    claimBtn.innerText = "Min 100 Required";
+
+    claimBtn.classList.remove("claim-ready");
+
+}else{
+
+    claimBtn.disabled = false;
+    claimBtn.innerText = "Claim Now (Min 100)";
+
+    claimBtn.classList.add("claim-ready");
+
+}
   
   
         // =========================  
