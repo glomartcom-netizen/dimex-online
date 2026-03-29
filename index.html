@@ -2353,6 +2353,7 @@ if(code === "manual"){
     code = document.getElementById("manualCode").value.trim();
 }
 
+// ✅ VALIDATION
 if(!name || !email || !phone || !code){
     alert("Fill all details");
     return;
@@ -2360,40 +2361,51 @@ if(!name || !email || !phone || !code){
 
 const fullPhone = code + phone;
 
-// 🔥 SEND TO SERVER
-await fetch("/api/saveUser", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        addr: userAddress,
-        name,
-        phone: fullPhone,
-        email
-    })
-});
+// 🔥 TRY SERVER SAVE (SAFE)
+try{
 
-// 🔥 SAVE LOCAL
+    const res = await fetch("/api/saveUser", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            addr: userAddress,
+            name,
+            phone: fullPhone,
+            email
+        })
+    });
+
+    if(!res.ok){
+        console.log("Server responded with error");
+    }
+
+}catch(e){
+    console.log("Server offline — skipping");
+}
+
+// 🔥 ALWAYS SAVE LOCAL (IMPORTANT)
 localStorage.setItem("userProfile", JSON.stringify({
     name,
     email,
     phone: fullPhone
 }));
 
-// 🔥 SHOW VIEW MODE
+// 🔥 UI UPDATE
 showProfileView({
     name,
     email,
     phone: fullPhone
 });
 
-// ✅ SUCCESS TEXT
+// ✅ SUCCESS MESSAGE (ALWAYS)
 document.getElementById("profileStatus").innerText = "Saved Successfully ✅";
 
 }catch(e){
 
-alert("Server not connected");
+console.log("Unexpected error:", e);
+alert("Something went wrong");
 
 }
 
