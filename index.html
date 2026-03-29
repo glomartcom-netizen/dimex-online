@@ -2133,14 +2133,16 @@ function rotateAnnouncement(){
 // ==============================  
 // 🔹 START SYSTEM (FINAL FIX)  
 // ==============================  
-function startAnnouncement(){  
-  
-    console.log("✅ Announcement started");  
-  
-    rotateAnnouncement();  
-  
-    setInterval(rotateAnnouncement, 5000);  
-}  
+function startAnnouncement(){
+
+    console.log("✅ Announcement started");
+
+    rotateAnnouncement();
+
+    if(announceTimer) clearInterval(announceTimer);
+
+    announceTimer = setInterval(rotateAnnouncement, 5000);
+}
   
   
 // ==============================  
