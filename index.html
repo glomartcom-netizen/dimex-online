@@ -1614,7 +1614,8 @@ async function updatePrice(){
           
     async function showTab(type) {      
       
-const cont = document.getElementById('tabContent');      
+const cont = document.getElementById('tabContent');
+if(!cont) return;      
 const f = ethers.utils.formatEther;      
       
 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));      
