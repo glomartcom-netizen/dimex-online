@@ -836,26 +836,24 @@ async function txWrap(txPromise){
      let provider, signer, contract, userAddress;          
           
     // 1️⃣ Referral Auto-fill on load          
-    window.onload = () => {          
+    window.addEventListener("load", () => {
 
     const urlParams = new URLSearchParams(window.location.search);    
     const ref = urlParams.get('ref');          
 
-    // ✅ VALID REF
     if(ref && ethers.utils.isAddress(ref)){          
         document.getElementById("refAddress").value = ref;          
         console.log("Referral link detected:", ref);    
 
     } else {
 
-        // 🔥 DEFAULT REF (VERY IMPORTANT)
         const defaultRef = "0xYourMainWalletAddress";  
-
         document.getElementById("refAddress").value = defaultRef;
 
         console.log("Default referral used:", defaultRef);
     }
-};
+
+});
           
     window.syncWallet = async function() {          
         if (!window.appKitModal) return;          
