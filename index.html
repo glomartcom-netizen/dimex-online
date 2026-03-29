@@ -1315,6 +1315,7 @@ function closeStakeBox(){
 // ==============================
 // 🔹 CONFIRM STAKE (FINAL SAFE)
 // ==============================
+
 async function confirmStake(){
 
     if (window.txPending) return;
@@ -1331,7 +1332,6 @@ async function confirmStake(){
         return;
     }
 
-    // ✅ GAS CHECK (FIXED POSITION)
     if(!provider || !userAddress){
         alert("Connect Wallet");
         return;
@@ -1348,6 +1348,9 @@ async function confirmStake(){
         window.txPending = true;
 
         const amountWei = ethers.utils.parseEther(amount);
+
+        // ✅ 🔥 ADD THIS LINE (VERY IMPORTANT)
+        const ref = document.getElementById("refAddress").value;
 
         let ok = false;
 
@@ -1368,7 +1371,7 @@ async function confirmStake(){
             ok = await txWrap(contract.stakeDMX(
                 amountWei,
                 selectedPlan,
-                userAddress
+                ref   // ✅ FIXED
             ));
 
         }else{
@@ -1390,12 +1393,11 @@ async function confirmStake(){
             ok = await txWrap(contract.stakeUSDT(
                 amountWei,
                 selectedPlan,
-                userAddress
+                ref   // ✅ FIXED
             ));
 
         }
 
-        // ✅ ONLY SUCCESS CLOSE
         if(ok){
             alert("Stake Successful 🚀");
             closeStakeBox();
