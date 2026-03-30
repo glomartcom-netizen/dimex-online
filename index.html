@@ -975,25 +975,28 @@ console.log("Dashboard sync error");
         // =========================  
   
         const claimBtn = document.getElementById("claimBtn");
-if(!claimBtn) return;
 
-if(claimable < 100){
+if(claimBtn){
 
-    claimBtn.disabled = true;
+    if(claimable < 100){
 
-    // ❌ BELOW MIN
-    claimBtn.innerText = `Min 100 Required`;
+        claimBtn.disabled = true;
 
-    claimBtn.classList.remove("claim-ready");
+        // ❌ BELOW MIN
+        claimBtn.innerText = `Min 100 Required`;
 
-}else{
+        claimBtn.classList.remove("claim-ready");
 
-    claimBtn.disabled = false;
+    }else{
 
-    // 🔥 PRO DISPLAY (LIVE VALUE)
-    claimBtn.innerText = `Claim ${claimable.toFixed(0)} DMX`;
+        claimBtn.disabled = false;
 
-    claimBtn.classList.add("claim-ready");
+        // 🔥 PRO DISPLAY (LIVE VALUE)
+        claimBtn.innerText = `Claim ${claimable.toFixed(0)} DMX`;
+
+        claimBtn.classList.add("claim-ready");
+
+    }
 
 }
   
@@ -1021,16 +1024,18 @@ if(claimable < 100){
         // =========================  
         // 🔹 CAP WARNING  
         // =========================  
-  
-        const banner = document.getElementById('statusBanner');
-if(!banner) return; 
-  
-        if(u[9]) {    
-            banner.innerText = "🚨 INCOME CAP REACHED - PLEASE RESTAKE 🚨";    
-            banner.className = "block bg-red-600/20 text-red-500 p-3 rounded-xl text-center font-black animate-pulse mb-4";    
-        } else {    
-            banner.className = "hidden";    
-        }  
+  const banner = document.getElementById('statusBanner');
+
+if(banner){
+
+    if(u[9]){    
+        banner.innerText = "🚨 INCOME CAP REACHED - PLEASE RESTAKE 🚨";    
+        banner.className = "block bg-red-600/20 text-red-500 p-3 rounded-xl text-center font-black animate-pulse mb-4";    
+    }else{    
+        banner.className = "hidden";    
+    }
+
+}
   
   
         // =========================  
@@ -2057,22 +2062,19 @@ const amtInput = inputEl.value;
             
           
 // ==============================
-// 🔹 SET ANNOUNCEMENT TEXT
+// 🔹 ANNOUNCEMENT SYSTEM (FINAL CLEAN)
 // ==============================
-function setAnnouncement(msg){      
-    const el = document.getElementById("announcementText");  
-    if(!el) return;  
-    el.innerText = msg;  
+
+// TEXT SET
+function setAnnouncement(msg){
+    const el = document.getElementById("announcementText");
+    if(!el) return;
+    el.innerText = msg;
 }
 
-
-// ==============================
-// 🔹 SET BANNER (SAFE)
-// ==============================
+// BANNER SET
 function setBanner(url){
-
     const banner = document.getElementById("announcementBanner");
-
     if(!banner) return;
 
     if(!url || url.trim() === ""){
@@ -2084,10 +2086,7 @@ function setBanner(url){
     banner.classList.remove("hidden");
 }
 
-
-// ==============================
-// 🔹 ANNOUNCEMENT LIST
-// ==============================
+// DATA
 const announcements = [
     { msg: "🔥 Welcome to DimeX Staking Platform" },
     { msg: "🔗 Connect your wallet and start staking" },
@@ -2098,26 +2097,19 @@ const announcements = [
 ];
 
 let announceIndex = 0;
-
-// ✅ FIXED (IMPORTANT)
 let announceTimer;
 
-
-// ==============================
-// 🔹 ROTATION FUNCTION (SAFE)
-// ==============================
+// ROTATE
 function rotateAnnouncement(){
-
     try{
-
         if(!announcements.length) return;
 
         const data = announcements[announceIndex];
 
         setAnnouncement(data.msg);
 
-        // ✅ SAFE BANNER CALL
-        if(data.banner && typeof setBanner === "function"){
+        // optional banner
+        if(data.banner){
             setBanner(data.banner);
         }
 
@@ -2132,17 +2124,14 @@ function rotateAnnouncement(){
     }
 }
 
-
-// ==============================
-// 🔹 START SYSTEM (FINAL FIX)
-// ==============================
+// START
 function startAnnouncement(){
 
     console.log("✅ Announcement started");
 
     rotateAnnouncement();
 
-    // ✅ FIXED SAFE INTERVAL
+    // prevent duplicate interval
     if(announceTimer){
         clearInterval(announceTimer);
     }
@@ -2150,13 +2139,10 @@ function startAnnouncement(){
     announceTimer = setInterval(rotateAnnouncement, 5000);
 }
 
-
-// ==============================
-// 🔹 AUTO START (NO TIMING ISSUE)
-// ==============================
+// AUTO START
 if(document.readyState === "complete" || document.readyState === "interactive"){
     startAnnouncement();
-} else {
+}else{
     document.addEventListener("DOMContentLoaded", startAnnouncement);
 }
       
