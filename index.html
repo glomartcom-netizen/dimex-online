@@ -1,1 +1,3041 @@
+<!DOCTYPE html>      
+<html lang="ta">      
+<head>      
+<meta charset="UTF-8">      
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>DimeX | Pro Ultimate Dashboard</title>  <script src="https://cdn.tailwindcss.com"></script>  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>  <style>      
+    body { font-family: 'Poppins', sans-serif; background: #010409; color: #f0f6fc; }      
+    .glass-card { background: rgba(13, 17, 23, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(240, 191, 76, 0.1); border-radius: 20px; }      
+    .walletConnected{    
+    
+box-shadow:0 0 10px rgba(16,185,129,0.5);    
+}    
+.gold-glow { text-shadow: 0 0 12px rgba(245, 158, 11, 0.6); }    
+.btn-action { background: linear-gradient(135deg, #fbbf24, #d97706); color: black; font-weight: 800; transition: 0.3s; }    
+.input-dark { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 12px; color: white; outline: none; width: 100%; font-size: 13px; }    
+.tab-btn { flex: 1; padding: 12px; font-size: 11px; font-weight: 900; text-transform: uppercase; border-bottom: 2px solid transparent; opacity: 0.5; cursor: pointer; text-align: center; }    
+.tab-btn.active { border-bottom: 2px solid #f59e0b; opacity: 1; color: #f59e0b; }    
+    
+#announcementBanner{    
+    
+max-width:100%;    
+max-height:180px;    
+object-fit:cover;    
+}    
+    
+@keyframes claimGlow {    
+    
+0% { box-shadow: 0 0 0px rgba(251,191,36,0.6); }    
+50% { box-shadow: 0 0 20px rgba(251,191,36,0.9); }    
+100% { box-shadow: 0 0 0px rgba(251,191,36,0.6); }    
+}    
+    
+.claim-ready{    
+animation: claimGlow 1.5s infinite;    
+}   
+      
+/* PLAN BUTTON */  
+.plan-btn{  
+    transition: all 0.2s ease;  
+    border-radius: 12px;  
+}  
+  
+/* HOVER */  
+.plan-btn:hover{  
+    transform: scale(1.03);  
+}  
+  
+/* ACTIVE PLAN */  
+.plan-btn.active{  
+    background: linear-gradient(135deg,#f59e0b,#d97706);  
+    box-shadow: 0 0 8px rgba(251,191,36,0.4);  
+}  
+  
+/* TEXT */  
+.plan-btn div:first-child{  
+    color:#fbbf24;  
+    font-weight:700;  
+}  
+  
+.plan-btn div:last-child{  
+    color:#9ca3af;  
+}  
+  
+/* ACTIVE TEXT */  
+.plan-btn.active div{  
+    color:#000 !important;  
+}  
+  
+/* BUTTON HOVER CLEAN */  
+#btnStakeUSDT:hover{  
+    box-shadow: 0 0 8px rgba(16,185,129,0.4);  
+}  
+  
+#btnStakeDMX:hover{  
+    box-shadow: 0 0 8px rgba(249,115,22,0.4);  
+}  
+       
+/* ===== BRAND BUTTONS ===== */    
+    
+.btn-brand{    
+font-weight:800;    
+border-radius:14px;    
+transition:all 0.25s ease;    
+box-shadow:0 4px 12px rgba(0,0,0,0.3);    
+}    
+    
+.btn-brand:hover{    
+transform:translateY(-2px);    
+box-shadow:0 6px 20px rgba(0,0,0,0.45);    
+}    
+    
+/* USDT */    
+.btn-usdt{    
+background:linear-gradient(135deg,#16c784,#0ea76b);    
+color:white;    
+}    
+    
+/* DMX */    
+.btn-dmx{    
+background:linear-gradient(135deg,#fbbf24,#d97706);    
+color:black;    
+}    
+    
+/* CLAIM */    
+.btn-claim{    
+background:linear-gradient(135deg,#facc15,#f59e0b);    
+color:black;    
+}    
+    
+/* RESTAKE */    
+.btn-restake{    
+background:linear-gradient(135deg,#10b981,#059669);    
+color:white;    
+}   
+        
+/* Downline mobile fix */    
+#tabContent{    
+word-break: break-all;    
+overflow-wrap: anywhere;    
+}    
+    
+/* GLOBAL FIX */
+*{
+  box-sizing: border-box;
+}
 
+@media (max-width:640px){
+
+  /* TEXT SIZE */
+  #myTotalStake,
+  #rewardPool{
+    font-size:16px;
+  }
+
+  #dailyReward,
+  #directIncome,
+  #levelIncome,
+  #totalEarned{
+    font-size:16px;
+  }
+
+  #directVolume,
+  #teamVolume{
+    font-size:15px;
+  }
+
+  /* CARD */
+  .glass-card p:first-child{
+    font-size:11px;
+    white-space:nowrap;
+  }
+
+  .glass-card{
+    padding:12px;
+  }
+
+  /* TAB */
+  #tabContent{
+    font-size:11px;
+  }
+
+  .tab-btn{
+    font-size:9px;
+    padding:8px;
+  }
+
+  /* 🔥 PHONE INPUT FIX */
+  #countrySelect{
+    width:35% !important;
+  }
+
+  #phoneNumber{
+    width:65% !important;
+  }
+
+  #countrySelect,
+  #phoneNumber{
+    display:block;
+  }
+
+  /* 🔥 SIDE GAP FIX */
+  main{
+    padding-left:8px !important;
+    padding-right:8px !important;
+  }
+
+}
+</style>
+</head>
+
+<body class="pb-20">
+
+<header class="p-4 border-b border-white/5 flex justify-between items-center sticky top-0 bg-[#010409]/95 z-50">
+
+<!-- LEFT -->
+<div class="flex items-center gap-2">
+
+<!-- 🏠 HOME ICON -->
+<button onclick="goHome()" 
+style="width:42px;height:42px;
+display:flex;align-items:center;justify-content:center;
+border-radius:50%;
+background:#f59e0b;
+color:black;
+box-shadow:0 0 12px rgba(245,158,11,0.7);
+margin-right:10px;
+transition:0.3s;cursor:pointer;"
+
+onmouseover="this.style.transform='scale(1.1)';
+this.style.boxShadow='0 0 20px rgba(245,158,11,1)'"
+
+onmouseout="this.style.transform='scale(1)';
+this.style.boxShadow='0 0 12px rgba(245,158,11,0.7)'">
+
+<i class="fa-solid fa-house"></i>
+
+</button>
+
+<!-- LOGO -->
+<img src="https://i.ibb.co/HpqwGFqt/logo.png" class="w-12 h-12 rounded-lg">
+
+<!-- TEXT -->
+<span class="text-2xl font-black tracking-tighter text-amber-500 italic gold-glow">
+DimeX
+</span>
+
+</div>  
+<button id="walletBtn"      
+onclick="window.appKitModal.open()"      
+class="bg-amber-500 text-black px-4 py-2 rounded-xl font-bold text-sm transition">    
+Connect Wallet    
+</button>    
+    
+</header>  <div id="maintenanceBanner" class="hidden bg-red-600 text-white text-center font-bold p-3">      
+⚠ Platform Under Maintenance      
+</div>  <!-- ANNOUNCEMENT -->  <div id="announcementBox" class="glass-card p-4 border border-amber-500/20 text-center max-w-4xl mx-auto mt-4">  <p class="text-xs text-amber-400 font-bold uppercase mb-1">      
+📢 Announcement      
+</p>  <p id="announcementText" class="text-sm text-white">      
+🔥 DimeX Staking Platform Live      
+</p>  <img id="announcementBanner" class="mx-auto mt-3 rounded-xl hidden">  </div>  <main class="max-w-4xl mx-auto p-4 space-y-6">  <div id="statusBanner" class="hidden p-3 rounded-xl text-center font-bold text-sm uppercase">
+    
+</div>
+
+<!-- ============================== -->
+<!-- 👤 USER PROFILE (REQUIRED) -->
+<!-- ============================== -->
+
+<!-- 🔥 FORM -->
+<div id="profileForm" class="bg-black/40 p-5 rounded-2xl mt-6 border border-white/10">
+
+<h3 class="text-lg font-bold text-cyan-400 mb-2">
+👤 Complete Your Profile
+</h3>
+
+<p class="text-xs text-gray-400 mb-4">
+⚠️ To receive rewards updates, alerts, and important notifications,
+please provide your details.  
+📩 Updates will be sent via Email / WhatsApp.
+</p>
+
+<div class="space-y-3">
+
+<input id="userName"
+placeholder="Full Name"
+class="w-full p-3 rounded-xl bg-gray-900 text-white">
+
+<div style="display:flex;gap:10px;align-items:center;">
+
+<select id="countrySelect" onchange="selectCountry()"
+style="padding:10px;border-radius:8px;background:#111;color:#fff;border:1px solid #333;">
+
+<option value="">Select</option>
+    
+<option value="+65">🇸🇬 Singapore +65</option>
+<option value="+91">🇮🇳 India +91</option>
+<option value="+971">🇦🇪 UAE +971</option>
+<option value="+1">🇺🇸 USA +1</option>
+<option value="+44">🇬🇧 UK +44</option>
+<option value="+60">🇲🇾 Malaysia +60</option>
+
+<option disabled>────────</option>
+
+<option value="+61">🇦🇺 Australia +61</option>
+<option value="+81">🇯🇵 Japan +81</option>
+<option value="+49">🇩🇪 Germany +49</option>
+<option value="+33">🇫🇷 France +33</option>
+
+<option disabled>────────</option>
+
+<option value="manual">🌍 Other</option>
+
+</select>
+
+<input id="manualCode" placeholder="+XXX"
+style="width:80px;padding:10px;border-radius:8px;background:#111;color:#fff;border:1px solid #333;display:none;">
+
+<input id="phoneNumber" type="tel"
+placeholder="Phone Number"
+style="flex:1;padding:10px;border-radius:8px;background:#111;color:#fff;border:1px solid #333;">
+
+</div>
+
+<input id="userEmail"
+placeholder="Email Address"
+class="w-full p-3 rounded-xl bg-gray-900 text-white">
+
+<button onclick="saveProfile()"
+class="w-full bg-cyan-600 py-3 rounded-xl font-bold text-white hover:bg-cyan-700">
+Save Details
+</button>
+
+</div>
+
+<p id="profileStatus" class="text-xs text-green-400 mt-3"></p>
+
+</div>
+
+<!-- 🔥 PROFILE VIEW (NEW) -->
+<div id="profileView" style="display:none;" class="bg-black/40 p-5 rounded-2xl mt-6 border border-white/10">
+
+<h3 class="text-lg font-bold text-green-400 mb-2">
+✅ Profile Saved
+</h3>
+
+<p>Name: <span id="viewName"></span></p>
+<p>Email: <span id="viewEmail"></span></p>
+<p>Phone: <span id="viewPhone"></span></p>
+
+<button onclick="editProfile()"
+class="mt-3 bg-yellow-500 px-4 py-2 rounded-xl font-bold">
+Edit
+</button>
+
+</div>
+
+<!-- 🔥 BUTTON ROW -->
+<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;margin-top:10px;">
+
+<button onclick="openMail()" 
+style="flex:1;text-align:center;padding:8px 14px;border-radius:20px;background:transparent;color:#facc15;border:1px solid #facc15;font-size:13px;">
+📩 Contact
+</button>
+    
+<a href="https://t.me/your_channel_link" target="_blank"
+style="flex:1;text-align:center;padding:8px 14px;border-radius:20px;background:transparent;color:#38bdf8;border:1px solid #38bdf8;font-size:13px;text-decoration:none;">
+🚀 Telegram
+</a>
+
+<a href="https://twitter.com/your_profile" target="_blank"
+style="flex:1;text-align:center;padding:8px 14px;border-radius:20px;background:transparent;color:#1d9bf0;border:1px solid #1d9bf0;font-size:13px;text-decoration:none;">
+🐦 Twitter
+</a>
+
+<a href="https://facebook.com/your_page" target="_blank"
+style="flex:1;text-align:center;padding:8px 14px;border-radius:20px;background:transparent;color:#1877f2;border:1px solid #1877f2;font-size:13px;text-decoration:none;">
+👍 Facebook
+</a>
+
+</div>
+
+ <!-- REFERRAL -->
+<div id="refBox" class="hidden glass-card p-5 border border-amber-500/40 shadow-lg">
+
+<p class="text-sm text-gray-400 font-bold uppercase mb-2 flex items-center gap-2">
+<i class="fa-solid fa-link text-amber-400"></i>    
+My Referral Link    
+</p>
+
+<div class="flex gap-2">
+
+<input type="text" id="myRefLink" readonly class="input-dark text-sm bg-black/40">
+
+<input type="hidden" id="refAddress" value="0x0000000000000000000000000000000000000000">
+
+<button onclick="copyRef()" class="bg-amber-500 text-black px-5 rounded-xl text-sm font-bold uppercase">
+Copy
+</button>
+
+</div>
+
+<p class="text-xs text-gray-400 mt-3">
+⚠️ Note: Share your referral link only after staking. Otherwise, you will not receive any income.
+</p>
+
+</div>
+</div>
+    
+    
+<!-- ============================== -->
+<!-- 🔥 STAKING (FINAL CLEAN) -->
+<!-- ============================== -->
+<div class="glass-card p-5 border border-amber-500/20">  
+  
+<h3 class="text-sm text-amber-400 font-black uppercase mb-4 flex items-center gap-2">  
+<i class="fa-solid fa-layer-group"></i> Live Staking  
+</h3>  
+  
+<input type="number" id="stakeAmount"  
+placeholder="Enter Amount (Min 2500 DMX)"  
+class="input-dark w-full text-center mb-3">  
+  
+<p id="usdtEstimate" class="text-xs text-green-400 text-center mb-3"></p>  
+  
+<p class="text-[11px] text-gray-400 text-center">  
+USDT (<span class="text-emerald-400 font-bold">BEP20</span>)  
+</p>  
+  
+<!-- PLAN -->
+<div class="grid grid-cols-3 gap-2 mt-2">  
+  
+<button onclick="selectPlan(this,1)"   
+class="plan-btn p-3 rounded-xl bg-white/5 text-center">  
+<div>90 Days</div>  
+<div>0.20% Daily</div>  
+</button>  
+  
+<button onclick="selectPlan(this,2)"   
+class="plan-btn p-3 rounded-xl bg-white/5 text-center">  
+<div>180 Days</div>  
+<div>0.25% Daily</div>  
+</button>  
+  
+<button onclick="selectPlan(this,3)"   
+class="plan-btn p-3 rounded-xl bg-white/5 text-center">  
+<div>365 Days</div>  
+<div>0.30% Daily</div>  
+</button>  
+  
+</div>  
+  
+<button onclick="openStakeBox()"  
+class="w-full mt-4 py-3 rounded-xl text-white font-bold   
+bg-gradient-to-r from-pink-500 to-rose-500">  
+  
+🚀 Stake Now  
+  
+</button>  
+  
+</div>  
+
+<!-- ============================== -->
+<!-- 🔥 STAKE MODAL -->
+<!-- ============================== -->
+<div id="stakeModal" class="fixed inset-0 bg-black/70 hidden z-50 flex items-center justify-center">
+    
+<div class="bg-[#0b1220] p-6 rounded-2xl w-[90%] max-w-md border border-amber-500">
+
+<h2 class="text-lg font-black text-amber-400 text-center mb-4">
+CONFIRM STAKE
+</h2>
+
+<p id="stakeModalAmount" class="text-xl text-white text-center font-bold">0 DMX</p>
+<p id="stakeModalUSDT" class="text-sm text-green-400 text-center mt-1">≈ 0 USDT</p>
+<p id="stakeModalPlan" class="text-xs text-gray-400 text-center mt-1"></p>
+
+<!-- 🔥 SMALL HELP TEXT + ICON -->
+<div class="text-[11px] text-gray-400 text-center mt-3 leading-relaxed">
+
+    Open your wallet and approve the transaction. <br>
+    Once approved, it will be completed successfully. <br>
+    If there is any delay, use the link below in your wallet browser.
+
+    <br><br>
+
+    <span onclick="openWalletLink()" 
+          class="text-blue-400 text-lg cursor-pointer hover:text-blue-300">
+        🔗
+    </span>
+
+</div>
+
+<div class="grid grid-cols-2 gap-4 mt-6">
+
+<button onclick="handleStake('DMX', event)" 
+class="bg-orange-500 py-3 rounded-xl font-bold text-white">
+Stake DMX
+</button>
+
+<button onclick="handleStake('USDT', event)" 
+class="bg-green-600 py-3 rounded-xl font-bold text-white">
+Stake USDT
+</button>
+
+</div>
+
+<button onclick="closeStakeBox()" class="mt-6 w-full bg-gray-700 py-2 rounded-lg text-xs">
+Close
+</button>
+
+</div>
+</div>
+
+    
+</div>  <!-- TOP STATS -->  <div class="grid grid-cols-2 gap-4 text-center">  <!-- Total Staked -->  <div class="glass-card p-5 border border-amber-500/20">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-layer-group text-amber-400"></i>      
+Total Staked      
+</p>  <p id="myTotalStake" class="text-xl font-black text-amber-500">      
+0.00      
+</p>  </div>  <!-- Reward Pool -->  <div class="glass-card p-5 border border-emerald-500/20">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-coins text-emerald-400"></i>      
+Reward Pool      
+</p>  <p id="rewardPool" class="text-xl font-black text-emerald-400">      
+Loading...      
+</p>  </div>  </div>  <!-- EARNINGS -->  <div class="grid grid-cols-2 gap-4 text-center">  <!-- Daily Rewards -->  <div class="glass-card p-5 border-b-2 border-amber-500/40">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-coins text-amber-400"></i>      
+Daily Rewards      
+</p>  <p id="dailyReward" class="text-lg font-black text-amber-500">      
+0.00      
+</p>  </div>  <!-- Direct Income -->  <div class="glass-card p-5 border-b-2 border-white/10">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-user-plus text-amber-400"></i>      
+Direct Income      
+</p>  <p id="directIncome" class="text-lg font-black">      
+0.00      
+</p>  </div>  <!-- Level Income -->  <div class="glass-card p-5 border-b-2 border-white/10">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-sitemap text-amber-400"></i>      
+Level Income      
+</p>  <p id="levelIncome" class="text-lg font-black">      
+0.00      
+</p>  </div>  <!-- Total Payout -->  <div class="glass-card p-5 border-b-2 border-emerald-500/40">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-wallet text-amber-400"></i>      
+Total Payout      
+</p>  <p id="totalEarned" class="text-lg font-black text-emerald-400">      
+0.00      
+</p>  </div>  </div>  <!-- BUSINESS -->  <div class="grid grid-cols-2 gap-4 text-center">  <!-- Direct Volume -->  <div class="glass-card p-4 border-l-4 border-blue-500/50">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-arrow-trend-up text-blue-400"></i>      
+Direct Volume      
+</p>  <p id="directVolume" class="text-lg font-bold">      
+0.00 DMX      
+</p>  </div>  <!-- Team Volume -->  <div class="glass-card p-4 border-l-4 border-purple-500/50">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2">      
+<i class="fa-solid fa-people-group text-purple-400"></i>      
+Team Volume      
+</p>  <p id="teamVolume" class="text-lg font-bold">      
+0.00 DMX      
+</p>      
+</div>       
+</div>    
+        
+<!-- CLAIM -->  
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">  
+  
+<div class="glass-card p-6 text-center border border-amber-500/20">  
+  
+<p class="text-sm text-gray-400 font-bold uppercase flex items-center justify-center gap-2 mb-1">  
+<i class="fa-solid fa-hand-holding-dollar text-amber-400"></i>  
+Claimable  
+</p>  
+  
+<!-- 🔹 DMX -->
+<p id="claimableAmt" class="text-2xl font-black gold-glow">0.00</p>  
+
+<!-- 🔹 USDT (NEW ADD) -->
+<p id="claimableUSDT" class="text-sm text-green-400 mt-1">
+≈ 0 USDT
+</p>
+  
+<button id="claimBtn" onclick="openClaimBox()"  
+class="w-full mt-4 py-4 rounded-xl text-sm uppercase font-black text-black  
+bg-gradient-to-r from-yellow-400 to-amber-500  
+shadow-lg hover:shadow-yellow-500/40  
+transition transform hover:scale-[1.02]">
+Claim Now (Min 100)
+</button>
+  
+<button onclick="viewClaimHistory()"  
+class="mt-3 text-xs text-amber-400 underline">  
+View Claim History (BscScan)  
+</button>  
+  
+</div>  
+  
+</div>
+  
+  
+<!-- ============================== -->
+<!-- 🔥 CLAIM MODAL (FINAL USER CLEAN) -->
+<!-- ============================== -->
+<div id="claimModal" class="fixed inset-0 bg-black/70 hidden z-50 flex items-center justify-center">
+
+  <div class="bg-[#0b1220] p-6 rounded-2xl w-[90%] max-w-md border border-yellow-500 shadow-xl">
+
+    <!-- TITLE -->
+    <h2 class="text-lg font-black text-yellow-400 text-center mb-4">
+      CLAIM REWARD
+    </h2>
+
+    <!-- DMX AMOUNT -->
+    <p id="modalDMX" class="text-xl text-white text-center font-bold">
+      0 DMX
+    </p>
+
+    <!-- USDT EQUAL -->
+    <p id="modalUSDT" class="text-sm text-green-400 text-center mt-1">
+      ≈ 0 USDT
+    </p>
+
+    <!-- 🔥 SMALL HELP TEXT + ICON -->
+    <div class="text-[11px] text-gray-400 text-center mt-3 leading-relaxed">
+
+      Open your wallet and approve the transaction. <br>
+      Once approved, your reward will be sent to your wallet. <br>
+      If there is any delay, use the link below in your wallet browser.
+
+      <br><br>
+
+      <span onclick="openWalletLink()" 
+            class="text-blue-400 text-lg cursor-pointer hover:text-blue-300">
+        🔗
+      </span>
+
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="grid grid-cols-2 gap-4 mt-5">
+
+      <!-- CLAIM DMX -->
+      <button onclick="claimDMX(event)"
+        class="bg-cyan-600 py-3 rounded-xl font-bold text-white">
+        CLAIM DMX
+      </button>
+
+      <!-- CLAIM USDT -->
+      <button onclick="claimUSDT(event)"
+        class="bg-green-600 py-3 rounded-xl font-bold text-white">
+        CLAIM USDT
+      </button>
+
+    </div>
+
+    <!-- CLOSE BUTTON -->
+    <button onclick="closeClaimBox()"
+      class="mt-5 w-full bg-gray-700 py-2 rounded-lg text-xs">
+      Close
+    </button>
+
+  </div>
+</div>
+    
+</div> <div class="glass-card p-6 flex flex-col justify-center border border-emerald-500/10">  <p class="text-sm text-emerald-400 font-bold uppercase flex items-center gap-2">  <i class="fa-solid fa-rotate text-amber-400"></i>    
+Compounding    
+    
+</p>  <p class="text-sm text-gray-400 mb-4 italic">  Restake and get +5% bonus added to your stake (365 Days Plan).    
+    
+</p>  <button id="restakeBtn"  
+onclick="restake()"  
+class="w-full py-4 rounded-xl text-sm uppercase font-black text-white    
+bg-gradient-to-r from-purple-500 to-indigo-600    
+shadow-lg hover:shadow-purple-500/40    
+transition transform hover:scale-[1.02]">    
+  
+Restake + 5% Bonus    
+  
+</button>  
+</div>  
+</div> 
+
+<!-- PROGRESS -->    
+    
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">  <div class="glass-card p-6">  <div class="flex justify-between items-end mb-3">  <p class="text-sm text-gray-400 font-bold uppercase flex items-center gap-2">  <i class="fa-solid fa-chart-line text-amber-400"></i>    
+4X Income Progress    
+    
+</p>  <p id="capDisplay" class="text-sm font-black">0 / 0 DMX</p>  </div>  <div class="w-full bg-white/5 h-3 rounded-full overflow-hidden">  <div id="capBar" class="h-full bg-amber-500 transition-all duration-700" style="width:0%"></div>  </div>  <p id="capPercent" class="text-sm text-right mt-2 font-bold text-gray-400">0%</p>  </div>  <div class="glass-card p-6 flex justify-between items-center border-l-4 border-blue-500">  <div>  <p class="text-sm text-gray-400 font-bold uppercase flex items-center gap-2">  <i class="fa-solid fa-clock text-amber-400"></i>    
+Level Timer    
+    
+</p>  <p id="levelTimer" class="text-xl font-black italic text-blue-400">00d 00h 00m</p>  </div>  <div id="levelBadge" class="bg-blue-500/10 text-blue-400 text-sm font-black px-3 py-1 rounded-full">  Syncing    
+    
+</div>  
+</div>  
+</div>          
+
+<!-- TABS -->
+<div class="glass-card overflow-hidden border border-white/5">
+
+  <div class="grid grid-cols-3 bg-white/5">
+    
+    <div id="tabStakes" onclick="showTab('stakes')" class="tab-btn active">
+      History
+    </div>
+
+    <div id="tabLevel" onclick="showTab('level')" class="tab-btn">
+      Levels
+    </div>
+
+    <div id="tabDownline" onclick="showTab('downline')" class="tab-btn">
+      Downline
+    </div>
+
+  </div>
+
+  <!-- ✅ IMPORTANT -->
+  <div id="tabContent" class="p-4 min-h-[160px]"></div>
+
+</div> <!-- ✅ CLOSE HERE -->
+    
+<!-- DMX SWAP -->
+<div id="swapBox" class="glass-card p-5 border border-cyan-500/20">
+
+<p class="text-sm text-gray-400 font-bold uppercase mb-4 flex items-center gap-2">
+💱 Swap DMX
+</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+<!-- BUY -->
+<div class="space-y-3 w-full">
+
+<p class="text-xs text-green-400 font-bold uppercase">
+Buy DMX (USDT → DMX)
+</p>
+
+<input id="buyUSDT"
+type="number"
+placeholder="Enter USDT amount"
+class="input-dark w-full">
+
+<p class="text-[11px] text-gray-400">
+USDT (BEP20)
+</p>
+
+<p id="buyPreview" class="text-xs text-cyan-400 font-bold"></p>
+
+<button onclick="buyDMX()"
+class="bg-green-600 w-full py-2 rounded-xl font-bold">
+BUY DMX
+</button>
+
+</div>
+
+<!-- SELL -->
+<div class="space-y-3 w-full">
+
+<p class="text-xs text-red-400 font-bold uppercase">
+Sell DMX (DMX → USDT)
+</p>
+
+<input id="sellDMXAmount"
+type="number"
+placeholder="Enter DMX amount"
+class="input-dark w-full">
+
+<!-- 🔥 ADD THIS LINE -->
+<p id="sellPreviewUSDT" class="text-xs text-green-400 font-bold"></p>
+
+<button onclick="sellDMX()"
+class="bg-red-600 w-full py-2 rounded-xl font-bold">
+SELL DMX
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ECOSYSTEM -->
+<div class="glass-card p-6 border border-amber-500/20">
+
+<h3 class="text-lg font-black text-amber-400 mb-4 flex items-center gap-2">
+<i class="fa-solid fa-network-wired text-amber-400"></i>
+Ecosystem
+</h3>
+
+<div style="margin-bottom:15px;font-size:15px;color:#ccc;">
+Live DMX Price:
+<span id="livePriceUser" style="color:#fbbf24;font-weight:bold;">--</span>
+<br>
+Mode:
+<span id="priceModeUser" style="color:#fbbf24;font-weight:bold;">--</span>
+</div>
+
+<div class="flex justify-between items-center mb-3 p-3 rounded-lg bg-black/30 border border-amber-500/20">
+<span class="text-sm text-gray-300">DMX Token</span>
+<button onclick="viewAddress(DMX_ADDR)" class="bg-amber-500 text-black px-4 py-1 rounded-lg font-bold text-sm">
+View
+</button>
+</div>
+
+<div class="flex justify-between items-center mb-3 p-3 rounded-lg bg-black/30 border border-amber-500/20">
+<span class="text-sm text-gray-300">Staking Contract</span>
+<button onclick="viewAddress(STAKE_ADDR)" class="bg-amber-500 text-black px-4 py-1 rounded-lg font-bold text-sm">
+View
+</button>
+</div>
+
+<div class="flex justify-between items-center mb-3 p-3 rounded-lg bg-black/30 border border-amber-500/20">
+<span class="text-sm text-gray-300">LP Pair</span>
+<button onclick="viewAddress(LP)" class="bg-amber-500 text-black px-4 py-1 rounded-lg font-bold text-sm">
+View
+</button>
+</div>
+
+<div class="flex justify-between items-center p-3 rounded-lg bg-black/30 border border-amber-500/20">
+<span class="text-sm text-gray-300">Router</span>
+<button onclick="viewAddress(ROUTER)" class="bg-amber-500 text-black px-4 py-1 rounded-lg font-bold text-sm">
+View
+</button>
+</div>
+
+</div>
+
+<div id="txMessageBox" style="display:none; color:white; margin-top:10px;"></div>
+</div>
+ </div>   
+</main>      
+        
+    <script type="module">      
+import { createAppKit } from 'https://esm.sh/@reown/appkit?bundle'      
+import { Ethers5Adapter } from 'https://esm.sh/@reown/appkit-adapter-ethers5?bundle'      
+import { bsc } from 'https://esm.sh/@reown/appkit/networks?bundle'      
+      
+const projectId = '059cc242b0cc96ac9665c598b76ddc7b';      
+      
+const modal = createAppKit({      
+  adapters: [new Ethers5Adapter()],      
+  networks: [bsc],      
+  metadata: {       
+    name: 'DimeX Pro',       
+    url: window.location.origin,       
+    icons: ['https://i.ibb.co/HpqwGFqt/logo.png']       
+  },      
+  projectId,      
+  features: { analytics: true }      
+});      
+      
+window.appKitModal = modal;      
+      
+modal.subscribeState((state) => {      
+  if(state?.isConnected && window.syncWallet){      
+    window.syncWallet();      
+  }      
+});      
+      
+modal.subscribeProvider((info) => {      
+  if(info?.isConnected && window.syncWallet){      
+    window.syncWallet();      
+  }      
+});      
+      
+/* AUTO RECONNECT */        
+window.addEventListener("load", () => {        
+        
+let retry = 0;        
+const maxRetries = 10;        
+        
+const reconnect = setInterval(() => {        
+        
+const provider = modal.getWalletProvider();        
+        
+if(provider){        
+        
+if(window.syncWallet){        
+window.syncWallet();        
+}        
+        
+clearInterval(reconnect);        
+}        
+        
+retry++;        
+        
+if(retry >= maxRetries){        
+clearInterval(reconnect);        
+}        
+        
+},1000);        
+        
+});        
+</script>  <script>  
+    
+const API = "http://187.77.128.251:3000";
+const STAKE_ADDR = "0xd1ec4e1b4fa0ff9714648590baf00748d3a4e4a3";
+const DMX_ADDR = "0x0eb5dc6af3dbd9f6d10f50c363b61c8714f497e6";
+const LP = "0x181a45e81720300285be2f94a48b06a8115937d8";
+const ROUTER = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
+const USDT_ADDR = "0x55d398326f99059fF775485246999027B3197955";      
+      
+      
+/* ===== VIEW ADDRESS FUNCTION ===== */      
+      
+function viewAddress(addr){      
+window.open("https://bscscan.com/address/" + addr, "_blank");      
+}      
+      
+    const ABI = [      
+        "function stakeDMX(uint256, uint256, address) external",      
+        "function stakeUSDT(uint256, uint256, address) external",      
+        "function claim() external",      
+        "function restake() external",      
+        "function getFullDashboardStats(address) view returns (uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256)",      
+        "function users(address) view returns (address, uint256, uint256, uint256, uint256, uint256, uint256, uint256, uint256, bool)",      
+        "function getStakeHistory(address) view returns (tuple(uint256 amountDMX, uint256 start, uint256 end, uint256 lastClaim, uint256 rewardRateBPS, bool active)[])",      
+        "function getClaimHistory(address) view returns (tuple(uint256 amount, uint256 timestamp)[])",      
+        "function getDirects(address) view returns (address[])",      
+        "function getDMXFromUSDT(uint256) view returns (uint256)",    
+        "function getUSDTFromDMX(uint256) view returns (uint256)",    
+        "function isManualPrice() view returns (bool)",    
+        "function buyDMX(uint256)",    
+        "function sellDMX(uint256)",    
+        "function usdt() view returns (address)",    
+        "function dmx() view returns (address)", 
+        "function claimUSDT() external",
+        "function pancakeSwapEnabled() view returns (bool)",
+        "function withdrawPrincipal(uint256)",
+        "function autoSwapEnabled() view returns (bool)"
+    ];      
+      const TOKEN_ABI = [
+    "function approve(address spender, uint256 amount) public returns (bool)",
+    "function allowance(address owner, address spender) public view returns (uint256)",
+    "function balanceOf(address account) public view returns (uint256)"
+];
+    
+// ==============================
+// 🔹 TX WRAPPER (DO NOT MOVE)
+// ==============================
+async function txWrap(txPromise){
+
+    try{
+
+        const tx = await txPromise;
+
+        console.log("TX SENT:", tx.hash);
+
+        await tx.wait();
+
+        console.log("TX CONFIRMED");
+
+        return true;
+
+    }catch(e){
+
+        console.error("TX ERROR:", e);
+
+        if(e.code === 4001){
+            alert("Transaction Rejected by User");
+        }else{
+            alert("Transaction Failed");
+        }
+
+        return false;
+    }
+}
+    
+     let provider, signer, contract, userAddress;          
+          
+    // 1️⃣ Referral Auto-fill on load          
+    window.addEventListener("load", () => {
+
+    const urlParams = new URLSearchParams(window.location.search);    
+    const ref = urlParams.get('ref');          
+
+    if(ref && ethers.utils.isAddress(ref)){          
+        document.getElementById("refAddress").value = ref;          
+        console.log("Referral link detected:", ref);    
+
+    } else {
+
+        const defaultRef = "0x53ba2d865be750d0e2d4d01bcb0a46ec1684c46b";  
+        document.getElementById("refAddress").value = defaultRef;
+
+        console.log("Default referral used:", defaultRef);
+    }
+
+});
+          
+    window.syncWallet = async function() {          
+        if (!window.appKitModal) return;          
+        const walletProvider = window.appKitModal.getWalletProvider();          
+        if (walletProvider) {          
+            provider = new ethers.providers.Web3Provider(walletProvider);          
+                      
+            // 2️⃣ Network Protection          
+            const network = await provider.getNetwork();          
+            if(network.chainId !== 56) {          
+                alert("Please switch to BSC Mainnet");          
+                return;          
+            }          
+          
+            signer = provider.getSigner();          
+userAddress = await signer.getAddress();          
+          
+/* wallet button update */          
+const btn = document.getElementById("walletBtn");          
+          
+const short =          
+userAddress.slice(0,6) + "..." + userAddress.slice(-4);          
+          
+const balanceWei = await provider.getBalance(userAddress);          
+const balance = ethers.utils.formatEther(balanceWei);          
+          
+btn.innerText =          
+short + " | " + parseFloat(balance).toFixed(3) + " BNB";          
+          
+btn.classList.remove("bg-amber-500","text-black");          
+btn.classList.add("bg-emerald-600","text-white");          
+btn.classList.add("walletConnected");          
+          
+contract = new ethers.Contract(STAKE_ADDR, ABI, signer);          
+          
+document.getElementById('refBox').classList.remove('hidden');          
+document.getElementById('myRefLink').value = window.location.origin + window.location.pathname + "?ref=" + userAddress;          
+          
+refreshData();          
+showTab('stakes');          
+        }          
+    }          
+          
+ setInterval(async () => {          
+          
+try{          
+          
+if(!userAddress){          
+await window.syncWallet();          
+return;          
+}          
+          
+await refreshData();          
+await updatePrice();          
+await updateRewardPool();          
+          
+}catch(e){          
+console.log("Dashboard sync error");          
+}          
+          
+},3000);          
+          
+    async function refreshData() {    
+  
+    if(!contract || !userAddress) return;    
+  
+    const f = ethers.utils.formatEther;    
+  
+    try {    
+  
+        // ✅ SWAP MODE CHECK (SAFE)  
+        try{  
+            const isPancake = await contract.pancakeSwapEnabled();  
+  
+            document.getElementById("swapBox").style.display =  
+                isPancake ? "none" : "block";  
+  
+        }catch(e){  
+            console.log("Swap mode check failed");  
+        }  
+  
+        // ✅ GET DATA  
+        const stats = await contract.getFullDashboardStats(userAddress);    
+        const u = await contract.users(userAddress);     
+  
+        // =========================  
+        // 🔹 MAIN VALUES  
+        // =========================  
+  
+        document.getElementById("myTotalStake").innerText = f(stats[0]);  
+  
+        document.getElementById("directIncome").innerText = f(stats[2]);  
+        document.getElementById("levelIncome").innerText = f(stats[3]);  
+        document.getElementById("totalEarned").innerText = f(stats[1]);  
+  
+        document.getElementById("directVolume").innerText =  
+            Number(f(stats[4] || 0)).toFixed(0) + " DMX";  
+  
+        document.getElementById("teamVolume").innerText =  
+            Number(f(stats[5] || 0)).toFixed(0) + " DMX";  
+
+  
+// =========================  
+// 🔹 CLAIMABLE + DAILY (FINAL CLEAN)
+// =========================  
+
+const claimable = parseFloat(f(stats[7] || 0));
+
+document.getElementById("claimableAmt").innerText =
+    claimable.toFixed(2);
+
+// 🔥 USDT EQUAL DISPLAY (SAFE + FAST)
+const el = document.getElementById("claimableUSDT");
+
+if(el){
+    try{
+
+        const usdt = await contract.getUSDTFromDMX(stats[7] || 0);
+
+        const usdtVal = parseFloat(
+            ethers.utils.formatEther(usdt)
+        ).toFixed(2);
+
+        el.innerText = "≈ " + usdtVal + " USDT";
+
+    }catch(e){
+        console.log("USDT preview error");
+        el.innerText = "≈ -- USDT";
+    }
+}
+
+// ✅ DAILY = CONTRACT VALUE
+document.getElementById("dailyReward").innerText =
+    claimable.toFixed(2);
+  
+  
+        // =========================  
+        // 🔹 CLAIM BUTTON CONTROL  
+        // =========================  
+  
+        const claimBtn = document.getElementById("claimBtn");
+
+if(claimBtn){
+
+    if(claimable < 100){
+
+        claimBtn.disabled = true;
+
+        // ❌ BELOW MIN
+        claimBtn.innerText = `Min 100 Required`;
+
+        claimBtn.classList.remove("claim-ready");
+
+    }else{
+
+        claimBtn.disabled = false;
+
+        // 🔥 PRO DISPLAY (LIVE VALUE)
+        claimBtn.innerText = `Claim ${claimable.toFixed(0)} DMX`;
+
+        claimBtn.classList.add("claim-ready");
+
+    }
+
+}
+  
+  
+// =========================  
+// 🔹 CAP PROGRESS (SAFE + WARNING)
+// =========================  
+
+const earned = parseFloat(f(stats[1] || 0));
+const cap = parseFloat(f(stats[8] || 0));
+
+const prog = cap > 0
+    ? Math.min((earned / cap) * 100, 100)
+    : 0;
+
+// 🔹 TEXT
+const capDisplay = document.getElementById('capDisplay');
+if(capDisplay){
+    capDisplay.innerText = `${earned.toFixed(0)} / ${cap.toFixed(0)} DMX`;
+}
+
+// 🔹 BAR + COLOR WARNING
+const capBar = document.getElementById('capBar');
+if(capBar){
+
+    capBar.style.width = prog + "%";
+
+    // 🔥 COLOR LOGIC
+    if(prog >= 90){
+        capBar.style.background = "#ef4444"; // red
+    }
+    else if(prog >= 70){
+        capBar.style.background = "#f59e0b"; // orange
+    }
+    else{
+        capBar.style.background = "#22c55e"; // green
+    }
+}
+
+// 🔹 PERCENT
+const capPercent = document.getElementById('capPercent');
+if(capPercent){
+    capPercent.innerText = prog.toFixed(1) + "%";
+}
+
+
+// =========================  
+// 🔹 CAP WARNING (BANNER)
+// =========================  
+
+const banner = document.getElementById('statusBanner');
+
+if(banner){
+
+    if(u[9] === true){    
+        banner.innerText = "🚨 INCOME CAP REACHED - PLEASE RESTAKE 🚨";    
+        banner.className = "block bg-red-600/20 text-red-500 p-3 rounded-xl text-center font-black animate-pulse mb-4";    
+    }else{    
+        banner.className = "hidden";    
+    }
+
+}
+
+
+// =========================  
+// 🔹 TIMER (SAFE)
+// =========================  
+
+if(stats[6]){
+    updateTimer(Number(stats[6]));
+}
+
+// ✅ 🔥 THIS IS IMPORTANT
+} catch(e){
+    console.log("Refresh error:", e);
+}
+
+// ✅ 🔥 FUNCTION CLOSE
+}
+        
+  
+// ==============================
+// 🔹 OPEN CLAIM BOX (FINAL CLEAN)
+// ==============================
+async function openClaimBox(){
+
+    if(!contract || !signer){
+        alert("Connect Wallet");
+        return;
+    }
+
+    const modal = document.getElementById("claimModal");
+    if(modal){
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+    }
+
+    try{
+
+        const addr = await signer.getAddress();
+        const data = await contract.getFullDashboardStats(addr);
+
+        // 🔹 DMX
+        const dmx = Number(ethers.utils.formatEther(data[7] || 0));
+
+        const dmxEl = document.getElementById("modalDMX");
+        if(dmxEl){
+            dmxEl.innerText = dmx.toFixed(2) + " DMX";
+        }
+
+        // 🔹 USDT (EQUAL VALUE)
+        const usdtEl = document.getElementById("modalUSDT");
+
+        if(usdtEl){
+            try{
+                const usdt = await contract.getUSDTFromDMX(data[7] || 0);
+
+                usdtEl.innerText =
+                    "≈ " + Number(ethers.utils.formatEther(usdt)).toFixed(2) + " USDT";
+
+            }catch(e){
+                usdtEl.innerText = "≈ -- USDT";
+            }
+        }
+
+        // 🔹 MESSAGE
+        const msgBox = document.getElementById("txMessageBox");
+        if(msgBox){
+            msgBox.style.display = "block";
+            msgBox.innerText =
+                "Confirm in your wallet. Once approved, reward will be sent.";
+        }
+
+        // 🔊 VOICE (FAST TRIGGER)
+        setTimeout(()=>{
+            speak(
+                "You have " + dmx.toFixed(2) + " D M X reward. " +
+                "Equivalent U S D T value is shown. " +
+                "You can claim in D M X or U S D T. " +
+                "Please go to your wallet and confirm to receive your reward."
+            );
+        },300);
+
+    }catch(e){
+        console.log("Claim modal load error", e);
+
+        // 🔥 SAFE FALLBACK
+        const dmxEl = document.getElementById("modalDMX");
+        const usdtEl = document.getElementById("modalUSDT");
+
+        if(dmxEl) dmxEl.innerText = "0 DMX";
+        if(usdtEl) usdtEl.innerText = "≈ 0 USDT";
+    }
+}
+
+// ==============================    
+// 🔹 CLOSE CLAIM BOX    
+// ==============================   
+    
+    function closeClaimBox(){
+
+    const modal = document.getElementById("claimModal");
+    if(!modal) return;
+
+    // 🔥 CLOSE MODAL
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+
+    // 🔊 STOP VOICE (IMPORTANT)
+    if(window.speechSynthesis){
+        speechSynthesis.cancel();
+    }
+
+    // 🔥 CLEAR MESSAGE (CLEAN UI)
+    const msgBox = document.getElementById("txMessageBox");
+    if(msgBox){
+        msgBox.innerText = "";
+        msgBox.style.display = "none";
+    }
+    }
+
+
+// ==============================
+// 🔥 CLAIM DMX (NO REJECT UX)
+// ==============================
+async function claimDMX(event){
+
+    if(window.txPending) return;
+
+    const msgBox = document.getElementById("txMessageBox");
+    const btn = event?.currentTarget;
+
+    try{
+
+        window.txPending = true;
+
+        const signerLocal = provider.getSigner();
+        const user = await signerLocal.getAddress();
+
+        // 🔥 PRE-CHECK BNB (NO FIXED LIMIT)
+        const balance = await provider.getBalance(user);
+
+        if(balance.eq(0)){
+            alert("BNB not available for gas");
+
+            speak("You do not have B N B for gas fees. Please add a small amount and try again.");
+
+            window.txPending = false;
+            return;
+        }
+
+        // 🔥 MESSAGE
+        if(msgBox){
+            msgBox.style.display = "block";
+            msgBox.innerText = "Claim request sent. Confirm in wallet.";
+        }
+
+        // 🔊 VOICE
+        speak(
+            "Claim request sent. Please open your wallet and approve. " +
+            "You will receive D M X."
+        );
+
+        // 🔥 BUTTON UI
+        if(btn){
+            btn.disabled = true;
+            btn.innerText = "Waiting...";
+        }
+
+        // 🔥 TX
+        const tx = await contract.claim();
+        await tx.wait();
+
+        // ✅ SUCCESS
+        if(msgBox){
+            msgBox.innerText = "DMX sent to your wallet.";
+        }
+
+        speak("Claim successful. D M X sent to your wallet.");
+
+        if(btn){
+            btn.innerText = "✅ Success";
+        }
+
+        setTimeout(()=>{
+            refreshData();
+        },2000);
+
+    }catch(e){
+
+        console.log(e);
+
+        // ❌ NO scary error
+        if(msgBox){
+            msgBox.innerText = "Please try again.";
+        }
+
+        speak("Something went wrong. Please try again.");
+
+    }finally{
+
+        window.txPending = false;
+
+        if(btn){
+            btn.disabled = false;
+            btn.innerText = "Claim Now";
+        }
+    }
+}
+
+
+// ==============================
+// 🔹 CLAIM USDT (NO REJECT UX)
+// ==============================
+async function claimUSDT(event){
+
+    if(window.txPending) return;
+
+    const msgBox = document.getElementById("txMessageBox");
+    const btn = event?.currentTarget;
+
+    try{
+
+        window.txPending = true;
+
+        const signerLocal = provider.getSigner();
+        const user = await signerLocal.getAddress();
+
+        // 🔥 PRE-CHECK BNB
+        const balance = await provider.getBalance(user);
+
+        if(balance.eq(0)){
+            alert("BNB not available for gas");
+
+            speak("You do not have B N B for gas fees. Please add a small amount and try again.");
+
+            window.txPending = false;
+            return;
+        }
+
+        // 🔥 MESSAGE
+        if(msgBox){
+            msgBox.style.display = "block";
+            msgBox.innerText = "Claim request sent. Confirm in wallet.";
+        }
+
+        // 🔊 VOICE
+        speak(
+            "Claim request sent. Please open your wallet and approve. " +
+            "You will receive U S D T."
+        );
+
+        // 🔥 BUTTON UI
+        if(btn){
+            btn.disabled = true;
+            btn.innerText = "Waiting...";
+        }
+
+        // 🔥 TX
+        const tx = await contract.claimUSDT();
+        await tx.wait();
+
+        // ✅ SUCCESS
+        if(msgBox){
+            msgBox.innerText = "USDT sent to your wallet.";
+        }
+
+        speak("Claim successful. U S D T sent to your wallet.");
+
+        if(btn){
+            btn.innerText = "✅ Success";
+        }
+
+        setTimeout(()=>{
+            refreshData();
+        },2000);
+
+    }catch(e){
+
+        console.log(e);
+
+        // ❌ NO scary error
+        if(msgBox){
+            msgBox.innerText = "Please try again.";
+        }
+
+        speak("Something went wrong. Please try again.");
+
+    }finally{
+
+        window.txPending = false;
+
+        if(btn){
+            btn.disabled = false;
+            btn.innerText = "Claim Now";
+        }
+    }
+}
+
+
+// ==============================
+// LIVE USDT CALCULATOR (REQUIRED)
+// ==============================
+let stakeTimer;
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const input = document.getElementById('stakeAmount');
+    const estLabel = document.getElementById('usdtEstimate');
+
+    if(!input) return;
+
+    input.addEventListener('input', (e) => {
+
+        clearTimeout(stakeTimer);
+
+        const val = e.target.value;
+
+        stakeTimer = setTimeout(async () => {
+
+            if(!val || isNaN(val) || Number(val) <= 0){
+                estLabel.innerText = "";
+                return;
+            }
+
+            if(Number(val) < 2500){
+                estLabel.innerText = "Minimum 2500 DMX required";
+                return;
+            }
+
+            if(!contract){
+                estLabel.innerText = "Connect wallet to estimate";
+                return;
+            }
+
+            try {
+
+                const dmxWei = ethers.utils.parseEther(val.toString());
+
+                const usdtNeeded = await contract.getUSDTFromDMX(dmxWei);
+
+                const formattedUSDT = parseFloat(
+                    ethers.utils.formatEther(usdtNeeded)
+                ).toFixed(2);
+
+                estLabel.innerText = `≈ ${formattedUSDT} USDT Required`;
+
+            } catch (err) {   
+
+                console.log("Price error:", err);
+
+                estLabel.innerText = "Calculating...";
+            }
+
+        }, 400);
+
+    });
+
+});
+
+// ==============================
+// 🔥 FINAL STAKING FULL BLOCK
+// ==============================
+
+window.selectedType = "";
+let selectedPlan = 0;
+window.txPending = false;
+
+// ==============================
+// PLAN SELECT
+// ==============================
+function selectPlan(el, value){
+    document.querySelectorAll(".plan-btn").forEach(btn=>{
+        btn.classList.remove("active");
+    });
+    el.classList.add("active");
+    selectedPlan = Number(value);
+}
+
+// ==============================
+// OPEN STAKE MODAL
+// ==============================
+async function openStakeBox(){
+
+    if(!contract || !signer){
+        alert("Connect wallet first");
+        return;
+    }
+
+    const amount = document.getElementById("stakeAmount").value.trim();
+
+    if(!amount || Number(amount) < 2500){
+        alert("Minimum 2500 DMX");
+        return;
+    }
+
+    if(!selectedPlan){
+        alert("Select Plan");
+        return;
+    }
+
+    const modal = document.getElementById("stakeModal");
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+
+    document.getElementById("stakeModalAmount").innerText = amount + " DMX";
+
+    try{
+        const usdt = await contract.getUSDTFromDMX(
+            ethers.utils.parseUnits(amount, 18)
+        );
+
+        document.getElementById("stakeModalUSDT").innerText =
+            "≈ " + Number(ethers.utils.formatEther(usdt)).toFixed(2) + " USDT";
+
+    }catch{
+        document.getElementById("stakeModalUSDT").innerText = "Calculating...";
+    }
+
+    const planText = {
+        1: "90 Days",
+        2: "180 Days",
+        3: "365 Days"
+    };
+
+    document.getElementById("stakeModalPlan").innerText =
+        "Duration: " + planText[selectedPlan];
+}
+
+// ==============================
+// CLOSE MODAL
+// ==============================
+function closeStakeBox(){
+
+    const modal = document.getElementById("stakeModal");
+    if(!modal) return;
+
+    // 🔥 CLOSE MODAL
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+
+    // 🔊 STOP VOICE
+    if(window.speechSynthesis){
+        speechSynthesis.cancel();
+    }
+
+    // 🔥 CLEAR MESSAGE
+    const msgBox = document.getElementById("txMessageBox");
+    if(msgBox){
+        msgBox.innerText = "";
+        msgBox.style.display = "none";
+    }
+}
+
+// ==============================
+// 🔊 VOICE FUNCTION
+// ==============================
+function speak(msg){
+    if(!window.speechSynthesis) return;
+
+    speechSynthesis.cancel();
+
+    const speech = new SpeechSynthesisUtterance(msg);
+    speech.lang = "en-US";
+    speech.rate = 1;
+    speech.pitch = 1;
+
+    speechSynthesis.speak(speech);
+}
+
+
+// ==============================
+// 🚀 HANDLE STAKE (FINAL PERFECT)
+// ==============================
+
+window.handleStake = async function(type, event){
+
+    if (window.txPending) return;
+
+    const stakeBtn = event?.currentTarget || document.querySelector("#stakeModal button");
+    const msgBox = document.getElementById("txMessageBox");
+    const originalText = "Stake";
+
+    try {
+        window.txPending = true;
+
+        // UI
+        if (stakeBtn) {
+            stakeBtn.disabled = true;
+            stakeBtn.innerText = "Opening Wallet...";
+        }
+
+        // MESSAGE
+        if(msgBox){
+            msgBox.style.display = "block";
+            msgBox.innerText = "Approval request sent. Open your wallet and approve.";
+        }
+
+        // VOICE (MAIN)
+        speak(
+            "Your request has been sent to the wallet. " +
+            "Please open your wallet and give approval. " +
+            "Once approved, staking will be completed successfully. " +
+            "If approval is delayed, you can open this website in your wallet browser and approve from there."
+        );
+
+    // ⏱️ COUNTDOWN 50s
+        let time = 50;
+
+        const timer = setInterval(()=>{
+            if(stakeBtn){
+                stakeBtn.innerText = `${type} Waiting (${time}s)`;
+            }
+
+            time--;
+
+            if(time < 0){
+                clearInterval(timer);
+
+                if(stakeBtn){
+                    stakeBtn.innerText = "❌ Timeout";
+                    stakeBtn.disabled = false;
+                }
+
+                if(msgBox){
+                    msgBox.innerText = "Not approved. Transaction cancelled.";
+                }
+
+                speak("Request timed out. Transaction cancelled.");
+
+                window.txPending = false;
+            }
+
+        },1000);
+
+        // WALLET CONNECT
+await provider.send("eth_requestAccounts", []);
+
+const signer = provider.getSigner();
+const userAddress = await signer.getAddress();
+
+// ==========================
+// ⛽ BNB CHECK (FIXED)
+// ==========================
+const bnbBalance = await provider.getBalance(userAddress);
+
+if(bnbBalance.eq(0)){
+    alert("⚠️ BNB required for gas fees");
+    speak("You do not have B N B for gas fees. Please add a small amount.");
+    throw new Error("NO_GAS");
+}
+
+// ==========================
+// AMOUNT
+// ==========================
+const amountInput = document.getElementById("stakeAmount").value.trim();
+
+if (!amountInput || Number(amountInput) < 2500) {
+    alert("Minimum 2500 DMX required");
+    throw new Error("INVALID_AMOUNT");
+}
+
+        const amountWei = ethers.utils.parseUnits(amountInput, 18);
+
+        // ==========================
+        // PLAN
+        // ==========================
+        let duration = 0;
+        if (selectedPlan === 1) duration = 7776000;
+        else if (selectedPlan === 2) duration = 15552000;
+        else if (selectedPlan === 3) duration = 31536000;
+
+        if (duration === 0) {
+            alert("Select Plan");
+            throw new Error("NO_PLAN");
+        }
+
+        const DEFAULT_REF = "0x53ba2d865be750d0e2d4d01bcb0a46ec1684c46b";
+
+        let refInput = document.getElementById("refAddress")?.value;
+
+        let ref = (refInput && ethers.utils.isAddress(refInput))
+            ? refInput
+            : DEFAULT_REF;
+
+        const contractWithSigner = contract.connect(signer);
+
+        // ==========================
+        // 🔷 DMX
+        // ==========================
+        if (type === "DMX") {
+
+            const token = new ethers.Contract(DMX_ADDR, TOKEN_ABI, signer);
+
+            const balance = await token.balanceOf(userAddress);
+
+            if(balance.lt(amountWei)){
+                alert("❌ Not enough DMX balance");
+                speak("You do not have enough DMX balance. Please add DMX.");
+                throw new Error("LOW_DMX");
+            }
+
+            const allowance = await token.allowance(userAddress, STAKE_ADDR);
+
+            if (allowance.lt(amountWei)) {
+                if (stakeBtn) stakeBtn.innerText = "Approve DMX...";
+                const approveTx = await token.approve(STAKE_ADDR, ethers.constants.MaxUint256);
+                await approveTx.wait();
+            }
+
+            if (stakeBtn) stakeBtn.innerText = "Confirming...";
+            const tx = await contractWithSigner.stakeDMX(amountWei, duration, ref);
+            await tx.wait();
+        }
+
+        // ==========================
+        // 🔷 USDT
+        // ==========================
+        else {
+
+            const usdt = new ethers.Contract(USDT_ADDR, TOKEN_ABI, signer);
+
+            const requiredUSDT = await contract.getUSDTFromDMX(amountWei);
+
+            const balance = await usdt.balanceOf(userAddress);
+
+            if(balance.lt(requiredUSDT)){
+                alert("❌ Not enough USDT balance");
+                speak("You do not have enough USDT balance. Please add USDT.");
+                throw new Error("LOW_USDT");
+            }
+
+            let allowance = await usdt.allowance(userAddress, STAKE_ADDR);
+
+            if (allowance.lt(requiredUSDT)) {
+                if (stakeBtn) stakeBtn.innerText = "Approve USDT...";
+                const approveTx = await usdt.approve(STAKE_ADDR, ethers.constants.MaxUint256);
+                await approveTx.wait();
+            }
+
+            if (stakeBtn) stakeBtn.innerText = "Confirming...";
+            const tx = await contractWithSigner.stakeUSDT(amountWei, duration, ref);
+            await tx.wait();
+        }
+
+        // ✅ SUCCESS
+        clearInterval(timer);
+
+        if(stakeBtn){
+            stakeBtn.innerText = "✅ Success";
+        }
+
+        if(msgBox){
+            msgBox.innerText = "Stake successful";
+        }
+
+        // 🔊 SUCCESS VOICE
+        speak("Staking completed successfully.");
+
+        setTimeout(()=>{
+            closeStakeBox();
+            refreshData();
+        },1500);
+
+    } catch (err) {
+
+        console.log("ERROR:", err);
+
+        if (err.message === "NO_GAS") {
+            // already handled
+        }
+        else if (err.message === "LOW_DMX" || err.message === "LOW_USDT") {
+            // already handled
+        }
+        else if (err.code === 4001) {
+            alert("Transaction Cancelled");
+        }
+        else {
+            alert("Transaction Failed ❌");
+            speak("Transaction failed");
+        }
+
+    } finally {
+        window.txPending = false;
+
+        if (stakeBtn) {
+            stakeBtn.disabled = false;
+            stakeBtn.innerText = originalText;
+        }
+    }
+};
+        
+        
+      
+    function updateTimer(expiry) {    
+  
+    const el = document.getElementById('levelTimer');  
+    const badge = document.getElementById('levelBadge');
+
+if(!el || !badge) return; 
+  
+    // ✅ SAFETY CHECK  
+    if(!expiry || expiry <= 0){  
+        el.innerText = "--";  
+        badge.innerText = "LOCKED";  
+        badge.className = "bg-red-500/10 text-red-400 text-[8px] font-black px-3 py-1 rounded-full border border-red-500/20";  
+        return;  
+    }  
+  
+    const now = Math.floor(Date.now() / 1000);  
+    let diff = expiry - now;  
+  
+    // ✅  negative safe  
+    if(diff <= 0){  
+        el.innerText = "Expired";  
+        badge.innerText = "LOCKED";  
+        badge.className = "bg-red-500/10 text-red-400 text-[8px] font-black px-3 py-1 rounded-full border border-red-500/20";  
+        return;  
+    }  
+  
+    // ✅ FULL TIME BREAKDOWN  
+    const days = Math.floor(diff / 86400);  
+    diff = diff % 86400;  
+  
+    const hours = Math.floor(diff / 3600);  
+    diff = diff % 3600;  
+  
+    const minutes = Math.floor(diff / 60);  
+  
+    // ✅ DISPLAY (MORE CLEAN)  
+    el.innerText = `${days}d ${hours}h ${minutes}m`;  
+  
+    badge.innerText = "ACTIVE";  
+    badge.className = "bg-emerald-500/10 text-emerald-400 text-[8px] font-black px-3 py-1 rounded-full border border-emerald-500/20";  
+}  
+      
+  
+// ==============================  
+// 🔹 MAINTENANCE MODE CONTROL  
+// ==============================  
+let maintenanceMode = false;  
+  
+function toggleMaintenance(status){  
+  
+    maintenanceMode = status;  
+  
+    const banner = document.getElementById("maintenanceBanner");  
+  
+    if(!banner) return;  
+  
+    if(status){  
+        banner.classList.remove("hidden");  
+    }else{  
+        banner.classList.add("hidden");  
+    }  
+  
+    // ✅ DISABLE ALL ACTION BUTTONS (IMPORTANT)  
+    const buttons = document.querySelectorAll("button");  
+  
+    buttons.forEach(btn => {  
+  
+        // skip wallet connect button  
+        if(btn.id === "walletBtn") return;  
+  
+        btn.disabled = status;  
+  
+        if(status){  
+            btn.style.opacity = "0.5";  
+            btn.style.cursor = "not-allowed";  
+        }else{  
+            btn.style.opacity = "1";  
+            btn.style.cursor = "pointer";  
+        }  
+  
+    });  
+}  
+      
+async function updatePrice(){    
+    
+    if(!contract || !provider) return;    
+    
+    try{    
+    
+        // ✅ GET 1 DMX PRICE IN USDT
+        const usdtPrice = await contract.getUSDTFromDMX(
+            ethers.utils.parseEther("1")
+        );    
+    
+        const formatted = ethers.utils.formatEther(usdtPrice);    
+    
+        const priceEl = document.getElementById("livePriceUser");    
+        const modeEl = document.getElementById("priceModeUser");    
+    
+        if(!priceEl) return;    
+    
+        // =========================
+        // 🔹 PRICE DISPLAY
+        // =========================
+        if(!formatted || Number(formatted) === 0){    
+            priceEl.innerText = "--";    
+        }else{    
+            priceEl.innerText =    
+                "1 DMX ≈ " + parseFloat(formatted).toFixed(4) + " USDT";    
+        }    
+    
+        // =========================
+        // 🔹 HIDE MODE (KEEP FOR FUTURE)
+        // =========================
+        if(modeEl){
+            modeEl.innerText = "";          // ❌ remove text
+            modeEl.style.display = "none";  // ❌ hide completely
+        }
+    
+    }catch(e){    
+        console.log("Price sync error:", e);    
+    
+        const priceEl = document.getElementById("livePriceUser");    
+        if(priceEl) priceEl.innerText = "--";    
+    }    
+}
+      
+    async function updateRewardPool(){    
+  
+    // ✅ SAFETY CHECKS  
+    if(!provider || !DMX_ADDR || !STAKE_ADDR) return;  
+  
+    const poolEl = document.getElementById("rewardPool");  
+    if(!poolEl) return;  
+  
+    try{    
+  
+        const token = new ethers.Contract(    
+            DMX_ADDR,    
+            ["function balanceOf(address) view returns(uint256)"],    
+            provider    
+        );    
+  
+        const bal = await token.balanceOf(STAKE_ADDR);    
+  
+        const formatted = ethers.utils.formatEther(bal);  
+  
+        // ✅ SAFE DISPLAY  
+        if(!formatted || Number(formatted) === 0){  
+            poolEl.innerText = "0 DMX";  
+        }else{  
+            poolEl.innerText =  
+                Number(formatted).toLocaleString(undefined, {  
+                    maximumFractionDigits: 2  
+                }) + " DMX";  
+        }  
+  
+    }catch(e){    
+        console.log("Reward pool error:", e);  
+  
+        // fallback  
+        poolEl.innerText = "--";  
+    }    
+  
+}  
+          
+    async function showTab(type) {      
+      
+const cont = document.getElementById('tabContent');
+if(!cont) return;      
+const f = ethers.utils.formatEther;      
+      
+document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));      
+document.getElementById('tab' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active');      
+      
+cont.innerHTML = "Loading...";      
+      
+try {      
+      
+if(type === 'stakes') {      
+
+// ✅ SAFETY CHECK
+if(!contract || !userAddress){
+    cont.innerHTML = "Connect Wallet";
+    return;
+}
+
+const data = await contract.getStakeHistory(userAddress);      
+
+cont.innerHTML = data.length ? data.map((s, i) => {      
+
+const amount = f(s.amountDMX || 0);      
+
+const start = new Date(Number(s.start || 0) * 1000);      
+const end = new Date(Number(s.end || 0) * 1000);      
+
+const now = Math.floor(Date.now() / 1000);      
+const remaining = Number(s.end || 0) - now;      
+
+const days = Math.max(0, Math.floor(remaining / 86400));      
+
+const isFinished = remaining <= 0 && Number(s.amountDMX) > 0;      
+
+return `      
+<div class="p-3 bg-white/5 rounded-xl mt-2">      
+
+<div class="text-amber-400 font-bold text-sm">      
+${parseFloat(amount).toFixed(2)} DMX      
+</div>      
+
+<div class="text-xs text-gray-400">      
+Start: ${start.toLocaleDateString()}      
+</div>      
+
+<div class="text-xs text-gray-400">      
+End: ${end.toLocaleDateString()}      
+</div>      
+
+<div class="text-xs text-cyan-400 font-bold mt-1">      
+${isFinished ? "Completed ✅" : days + " Days Left"}      
+</div>      
+
+${isFinished ? `<button onclick="withdrawStake(${i})"
+class="mt-2 w-full bg-purple-600 py-2 rounded-lg text-xs font-bold">
+💰 Withdraw Principal
+</button>` : ""}
+
+</div>      
+`;      
+
+}).reverse().join('') : "No Stakes";      
+
+}
+      
+else if(type === 'level') {      
+      
+const levelPercents = [      
+30,15,10,7,5,      
+4,3,2,2,2,      
+1,1,1,1,1,      
+0.5,0.5,0.5,0.5,0.5,      
+0.25,0.25,0.25,0.25,0.25      
+];      
+      
+let html = `      
+      
+<div class="p-3 bg-white/5 rounded-xl mb-3 grid grid-cols-2 text-center">      
+      
+<div>      
+<div class="text-xs text-gray-400">Total Business</div>      
+<div class="text-blue-400 font-bold">Auto</div>      
+</div>      
+      
+<div>      
+<div class="text-xs text-gray-400">Total Rewards</div>      
+<div class="text-emerald-400 font-bold">Auto</div>      
+</div>      
+      
+</div>      
+      
+<div class="p-3 bg-white/5 rounded-xl mb-3 grid grid-cols-5 text-xs text-gray-400 font-bold">      
+      
+<div>Level</div>      
+<div>Business</div>      
+<div>Rewards</div>      
+<div>%</div>      
+<div>Income</div>      
+      
+</div>      
+`;      
+      
+// ✅ SAFE LOOP  
+for(let i = 0; i < levelPercents.length; i++){      
+      
+html += `      
+<div class="p-3 bg-white/5 rounded-xl mt-2 grid grid-cols-5 text-xs">      
+      
+<div class="text-gray-400">${i+1}</div>      
+      
+<div class="text-blue-400">Auto</div>      
+      
+<div class="text-amber-400">Auto</div>      
+      
+<div class="text-gray-400">${levelPercents[i] || 0}%</div>      
+      
+<div class="text-emerald-400 font-bold">Auto</div>      
+      
+</div>      
+`;      
+      
+}      
+      
+cont.innerHTML = html;      
+      
+}  
+      
+      
+else {        
+  
+const directs = await contract.getDirects(userAddress);        
+  
+if(!directs.length){        
+cont.innerHTML = "No Directs";        
+return;        
+}        
+  
+/* load all users faster (SAFE FIX) */        
+const users = await Promise.all(        
+directs.map(async (a) => {  
+    try{  
+        return await contract.users(a);  
+    }catch(e){  
+        return null;  
+    }  
+})        
+);        
+  
+let html = "";        
+  
+let totalDirects = directs.length;        
+let totalBusiness = 0;        
+  
+for(let i=0;i<directs.length;i++){        
+  
+const addr = directs[i];        
+const u = users[i];        
+  
+if(!u) continue;        
+  
+let stake = "0";        
+let date = "-";        
+let time = "-";        
+       
+try{        
+        
+stake = ethers.utils.formatEther(u[1] || 0);        
+        
+totalBusiness += parseFloat(stake);        
+        
+const join = Number(u[2] || 0);        
+        
+if(join > 0){        
+        
+const d = new Date(join * 1000);        
+        
+date = d.toLocaleDateString();        
+time = d.toLocaleTimeString();        
+        
+}        
+        
+}catch(e){        
+console.log("Downline load error");        
+}        
+html += `        
+<div class="p-3 bg-white/5 rounded-xl mt-2">        
+        
+<div class="font-mono text-xs break-all text-amber-400">        
+${addr.slice(0,6)}...${addr.slice(-4)}        
+</div>        
+        
+<div class="text-xs text-gray-400">        
+${date} | ${time}        
+</div>        
+        
+<div class="text-sm text-emerald-400 font-bold">        
+Stake: ${parseFloat(stake).toFixed(2)} DMX        
+</div>        
+        
+</div>        
+`;        
+        
+}        
+        
+cont.innerHTML = `        
+        
+<div class="p-3 bg-white/5 rounded-xl mb-3 text-center">        
+        
+<div class="text-xs text-gray-400">        
+Total Directs        
+</div>        
+        
+<div class="text-lg font-bold text-amber-400">        
+${totalDirects}        
+</div>        
+        
+<div class="text-xs text-gray-400 mt-2">        
+Direct Business        
+</div>        
+        
+<div class="text-lg font-bold text-emerald-400">        
+${totalBusiness.toFixed(2)} DMX        
+</div>        
+        
+</div>        
+        
+` + html;        
+        
+}  
+} catch(e) {        
+        
+cont.innerHTML = "Error loading data";        
+        
+}        
+        
+}            
+         
+    
+  async function buyDMX(){  
+
+    // =========================  
+    // 🔹 BASIC SAFETY  
+    // =========================  
+    if (window.txPending) return;  
+
+    if(!contract || !userAddress){  
+        alert("Connect wallet first");  
+        return;  
+    }  
+
+    // =========================  
+    // 🔹 GAS CHECK (NO FIXED LIMIT)  
+    // =========================  
+    const balance = await provider.getBalance(userAddress);  
+
+    if(balance.eq(0)){  
+        alert("BNB required for gas fees");  
+
+        speak("You do not have B N B for gas fees. Please add a small amount.");  
+
+        return;  
+    }  
+
+    const inputEl = document.getElementById("buyUSDT");
+    if(!inputEl) return;
+
+    const amtInput = inputEl.value;  
+
+    // =========================  
+    // 🔹 INPUT VALIDATION  
+    // =========================  
+    if(!amtInput || isNaN(amtInput)){  
+        return alert("Enter valid USDT amount");  
+    }  
+
+    const amt = parseFloat(amtInput);  
+
+    if(amt <= 0){  
+        return alert("Amount must be greater than 0");  
+    }  
+
+    // =========================  
+    // 🔹 START TX  
+    // =========================  
+    window.txPending = true;  
+
+    try{  
+
+        // 🔊 CLICK VOICE
+        speak("Buy request sent. Please confirm in your wallet.");
+
+        const usdtAddr = await contract.usdt();  
+
+        const usdt = new ethers.Contract(  
+            usdtAddr,  
+            [  
+                "function approve(address,uint256)",  
+                "function allowance(address,address) view returns(uint256)"  
+            ],  
+            signer  
+        );  
+
+        const amountWei = ethers.utils.parseUnits(amt.toString(),18);  
+
+        // ✅ CHECK ALLOWANCE  
+        const allowance = await usdt.allowance(  
+            userAddress,  
+            STAKE_ADDR  
+        );  
+
+        if(allowance.lt(amountWei)){  
+
+            const approveTx = await usdt.approve(  
+                STAKE_ADDR,  
+                ethers.constants.MaxUint256  
+            );  
+
+            await approveTx.wait();  
+        }  
+
+        // ✅ BUY  
+        const tx = await contract.buyDMX(amountWei);  
+
+        await tx.wait();  
+
+        // 🔊 SUCCESS VOICE
+        speak("Purchase successful. D M X has been added to your wallet.");
+
+        alert("DMX Purchased Successfully 🚀");  
+
+        // clear input  
+        document.getElementById("buyUSDT").value = "";  
+
+    }catch(e){  
+
+        console.error("Buy error:", e);  
+
+        if(e.code === 4001){  
+            alert("Transaction cancelled");  
+        }else{  
+            alert("Please try again");  
+        }  
+
+    }finally{  
+
+        window.txPending = false;  
+    }  
+}
+        
+    
+  
+    async function sellDMX(){  
+
+    // =========================  
+    // 🔹 BASIC SAFETY  
+    // =========================  
+    if (window.txPending) return;  
+
+    if(!contract || !userAddress){  
+        alert("Connect wallet first");  
+        return;  
+    }  
+
+    // =========================  
+    // 🔹 GAS CHECK (NO FIXED LIMIT)  
+    // =========================  
+    const balance = await provider.getBalance(userAddress);  
+
+    if(balance.eq(0)){  
+        alert("BNB required for gas fees");  
+
+        speak("You do not have B N B for gas fees. Please add a small amount.");  
+
+        return;  
+    }  
+
+    const inputEl = document.getElementById("sellDMXAmount");
+    if(!inputEl) return;
+
+    const amtInput = inputEl.value;  
+
+    // =========================  
+    // 🔹 INPUT VALIDATION  
+    // =========================  
+    if(!amtInput || isNaN(amtInput)){  
+        return alert("Enter valid DMX amount");  
+    }  
+
+    const amt = parseFloat(amtInput);  
+
+    if(amt <= 0){  
+        return alert("Amount must be greater than 0");  
+    }  
+
+    // =========================  
+    // 🔹 START TX  
+    // =========================  
+    window.txPending = true;  
+
+    try{  
+
+        // 🔊 CLICK VOICE
+        speak("Sell request sent. Please confirm in your wallet.");
+
+        const dmxAddr = await contract.dmx();  
+
+        const dmx = new ethers.Contract(  
+            dmxAddr,  
+            [  
+                "function approve(address,uint256)",  
+                "function allowance(address,address) view returns(uint256)"  
+            ],  
+            signer  
+        );  
+
+        const amountWei = ethers.utils.parseUnits(amt.toString(),18);  
+
+        // ✅ CHECK ALLOWANCE  
+        const allowance = await dmx.allowance(  
+            userAddress,  
+            STAKE_ADDR  
+        );  
+
+        if(allowance.lt(amountWei)){  
+
+            const approveTx = await dmx.approve(  
+                STAKE_ADDR,  
+                ethers.constants.MaxUint256  
+            );  
+
+            await approveTx.wait();  
+        }  
+
+        // ✅ SELL  
+        const tx = await contract.sellDMX(amountWei);  
+
+        await tx.wait();  
+
+        // 🔊 SUCCESS VOICE
+        speak("Sell successful. Amount has been credited to your wallet.");
+
+        alert("DMX Sold Successfully 💰");  
+
+        // clear input  
+        document.getElementById("sellDMXAmount").value = "";  
+
+    }catch(e){  
+
+        console.error("Sell error:", e);  
+
+        if(e.code === 4001){  
+            alert("Transaction cancelled");  
+        }else{  
+            alert("Please try again");  
+        }  
+
+    }finally{  
+
+        window.txPending = false;  
+    }  
+}
+            
+          
+// ==============================
+// 🔹 ANNOUNCEMENT SYSTEM (FINAL CLEAN)
+// ==============================
+
+// TEXT SET
+function setAnnouncement(msg){
+    const el = document.getElementById("announcementText");
+    if(!el) return;
+    el.innerText = msg;
+}
+
+// BANNER SET
+function setBanner(url){
+    const banner = document.getElementById("announcementBanner");
+    if(!banner) return;
+
+    if(!url || url.trim() === ""){
+        banner.classList.add("hidden");
+        return;
+    }
+
+    banner.src = url;
+    banner.classList.remove("hidden");
+}
+
+// DATA
+const announcements = [
+    { msg: "🔥 Welcome to DimeX Staking Platform" },
+    { msg: "🔗 Connect your wallet and start staking" },
+    { msg: "💰 Earn daily rewards automatically" },
+    { msg: "🪙 Buy DMX easily using USDT" },
+    { msg: "🔄 Sell rewards anytime for USDT" },
+    { msg: "🚀 Grow your income with smart staking" }
+];
+
+let announceIndex = 0;
+let announceTimer;
+
+// ROTATE
+function rotateAnnouncement(){
+    try{
+        if(!announcements.length) return;
+
+        const data = announcements[announceIndex];
+
+        setAnnouncement(data.msg);
+
+        // optional banner
+        if(data.banner){
+            setBanner(data.banner);
+        }
+
+        announceIndex++;
+
+        if(announceIndex >= announcements.length){
+            announceIndex = 0;
+        }
+
+    }catch(e){
+        console.log("Announcement error:", e);
+    }
+}
+
+// START
+function startAnnouncement(){
+
+    console.log("✅ Announcement started");
+
+    rotateAnnouncement();
+
+    // prevent duplicate interval
+    if(announceTimer){
+        clearInterval(announceTimer);
+    }
+
+    announceTimer = setInterval(rotateAnnouncement, 5000);
+}
+
+// AUTO START
+if(document.readyState === "complete" || document.readyState === "interactive"){
+    startAnnouncement();
+}else{
+    document.addEventListener("DOMContentLoaded", startAnnouncement);
+}
+      
+    
+window.restake = async function() {  
+
+    // =========================  
+    // 🔹 BASIC SAFETY  
+    // =========================  
+    if (window.txPending) return;  
+
+    if (maintenanceMode){  
+        alert("Platform is under maintenance");  
+        return;  
+    }  
+
+    if (!contract || !userAddress){  
+        alert("Connect wallet first");  
+        return;  
+    }  
+
+    const btn = document.getElementById("restakeBtn");  
+    if(!btn) return;  
+
+    const originalText = "Restake + 5% Bonus";  
+
+    // =========================  
+    // 🔹 GAS CHECK (NO FIXED LIMIT)  
+    // =========================  
+    const balance = await provider.getBalance(userAddress);  
+
+    if(balance.eq(0)){  
+        alert("BNB required for gas fees");  
+
+        speak("You do not have B N B for gas fees. Please add a small amount.");  
+
+        return;  
+    }  
+
+    // =========================  
+    // 🔹 CLAIMABLE CHECK  
+    // =========================  
+    const claimable = parseFloat(  
+        document.getElementById("claimableAmt")?.innerText || "0"  
+    );  
+
+    if(claimable <= 0){  
+        alert("No rewards available to restake");  
+        return;  
+    }  
+
+    // =========================  
+    // 🔹 START TX  
+    // =========================  
+    try {  
+
+        window.txPending = true;  
+
+        // 🔊 CLICK VOICE
+        speak("Restake request sent. Please confirm in your wallet. You will receive five percent bonus.");
+
+        btn.disabled = true;  
+        btn.innerText = "Restaking...";  
+
+        const tx = await contract.restake();  
+
+        console.log("Restake TX:", tx.hash);  
+
+        await tx.wait();  
+
+        // 🔊 SUCCESS VOICE
+        speak("Restake successful. Five percent bonus has been added to your stake.");
+
+        // ✅ SUCCESS ALERT
+        alert("Restake successful 🚀 (+5% bonus added)");  
+
+        // 🔥 BONUS BLINK EFFECT
+        btn.innerText = "🎉 +5% Bonus Added!";
+        btn.classList.add("animate-pulse");
+
+        setTimeout(()=>{
+            btn.classList.remove("animate-pulse");
+            btn.innerText = originalText;
+        },3000);
+
+        refreshData();  
+
+    } catch (error) {  
+
+        console.error("Restake error:", error);  
+
+        if(error.code === 4001){  
+            alert("Transaction cancelled");  
+        }else{  
+            alert("Please try again");  
+        }  
+
+    } finally {  
+
+        window.txPending = false;  
+
+        btn.disabled = false;  
+    }  
+}
+      
+// ==============================
+// 🔹 COPY REFERRAL (FINAL SAFE)
+// ==============================
+window.copyRef = async function(){
+
+    const input = document.getElementById("myRefLink");
+
+    if(!input){
+        alert("Referral link not found");
+        return;
+    }
+
+    const value = input.value;
+
+    try{
+        // ✅ modern copy
+        await navigator.clipboard.writeText(value);
+        alert("Copied! ✅");
+    }catch(e){
+
+        // 🔁 fallback (mobile safe)
+        input.select();
+        document.execCommand("copy");
+
+        alert("Copied! ✅");
+    }
+};
+
+
+// ==============================
+// 🔹 WALLET BUTTON (CLEAN)
+// ==============================
+window.addEventListener("load", () => {
+
+    const btn = document.getElementById("walletBtn");
+
+    if(btn && window.appKitModal){
+        btn.onclick = () => window.appKitModal.open();
+    }
+
+});
+    
+// ==============================  
+// 🔹 BUY + SELL LIVE PREVIEW (COMBINED FINAL)  
+// ==============================  
+
+let buyTimer;  
+let sellTimer;  
+
+// ==============================
+// 🔹 BUY PREVIEW
+// ==============================  
+const buyInput = document.getElementById("buyUSDT");  
+
+if(buyInput){  
+    buyInput.addEventListener("input", function(){  
+
+        clearTimeout(buyTimer);  
+
+        buyTimer = setTimeout(async () => {  
+
+            const preview = document.getElementById("buyPreview");  
+            if(!preview) return;  
+
+            if(!contract){  
+                preview.innerText = "Connect wallet to preview";  
+                return;  
+            }  
+
+            const val = this.value;  
+
+            if(!val || isNaN(val) || Number(val) <= 0){  
+                preview.innerText = "";  
+                return;  
+            }  
+
+            try{  
+                const usdtWei = ethers.utils.parseUnits(val,18);  
+                const dmxAmount = await contract.getDMXFromUSDT(usdtWei);  
+                const formatted = ethers.utils.formatEther(dmxAmount);  
+
+                preview.innerText =  
+                    "≈ " + parseFloat(formatted).toFixed(4) + " DMX";  
+
+            }catch(e){  
+                console.log("Buy Preview error:", e);  
+                preview.innerText = "Calculating...";  
+            }  
+
+        }, 400);  
+
+    });  
+}  
+
+
+// ==============================
+// 🔹 SELL PREVIEW (ADDED)
+// ==============================  
+const sellInput = document.getElementById("sellDMXAmount");  
+
+if(sellInput){  
+    sellInput.addEventListener("input", function(){  
+
+        clearTimeout(sellTimer);  
+
+        sellTimer = setTimeout(async () => {  
+
+            const preview = document.getElementById("sellPreviewUSDT");  
+            if(!preview) return;  
+
+            if(!contract){  
+                preview.innerText = "Connect wallet to preview";  
+                return;  
+            }  
+
+            const val = this.value;  
+
+            if(!val || isNaN(val) || Number(val) <= 0){  
+                preview.innerText = "";  
+                return;  
+            }  
+
+            try{  
+                const dmxWei = ethers.utils.parseUnits(val,18);  
+                const usdtAmount = await contract.getUSDTFromDMX(dmxWei);  
+                const formatted = ethers.utils.formatEther(usdtAmount);  
+
+                preview.innerText =  
+                    "≈ " + parseFloat(formatted).toFixed(2) + " USDT";  
+
+            }catch(e){  
+                console.log("Sell Preview error:", e);  
+                preview.innerText = "Calculating...";  
+            }  
+
+        }, 400);  
+
+    });  
+}
+
+        
+function viewClaimHistory(){    
+    if(!userAddress) return alert("Connect Wallet");    
+        
+    const bscUrl = "https://bscscan.com/token/" + DMX_ADDR + "?a=" + userAddress;    
+    window.open(bscUrl, "_blank");    
+}    
+
+
+async function withdrawStake(index){
+
+    if(!contract || !signer){
+        alert("Connect Wallet");
+        return;
+    }
+
+    // =========================
+    // 🔹 GAS CHECK (NO FIXED LIMIT)
+    // =========================
+    const balance = await provider.getBalance(userAddress);
+
+    if(balance.eq(0)){
+        alert("BNB required for gas fees");
+
+        speak("You do not have B N B for gas fees. Please add a small amount.");
+
+        return;
+    }
+
+    try{
+
+        // 🔊 CLICK VOICE
+        speak("Withdraw request sent. Please confirm in your wallet.");
+
+        await txWrap(contract.withdrawPrincipal(index));
+
+        // 🔊 SUCCESS VOICE
+        speak("Withdrawal successful. Your principal has been returned.");
+
+        alert("Principal Withdrawn 💰");
+
+        refreshData();
+
+    }catch(e){
+
+        console.log(e);
+
+        if(e.code === 4001){
+            alert("Transaction cancelled");
+        }else{
+            alert("Please try again");
+        }
+    }
+}
+
+// ==============================
+// 🌍 COUNTRY SELECT
+// ==============================
+function selectCountry(){
+const val = document.getElementById("countrySelect").value;
+const manual = document.getElementById("manualCode");
+
+manual.style.display = (val === "manual") ? "block" : "none";
+}
+
+// ==============================
+// 💾 SAVE PROFILE (SERVER + LOCAL)
+// ==============================
+async function saveProfile(){
+
+try{
+
+const name = document.getElementById("userName").value.trim();
+const email = document.getElementById("userEmail").value.trim();
+const phone = document.getElementById("phoneNumber").value.trim();
+
+let code = document.getElementById("countrySelect").value;
+
+if(code === "manual"){
+    code = document.getElementById("manualCode").value.trim();
+}
+
+// ✅ VALIDATION
+if(!name || !email || !phone || !code){
+    alert("Fill all details");
+    return;
+}
+
+const fullPhone = code + phone;
+
+// 🔥 TRY SERVER SAVE (SAFE)
+try{
+
+const res = await fetch(API + "/api/saveUser", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        addr: userAddress,
+        name,
+        phone: fullPhone,
+        email
+    })
+});
+
+    if(!res.ok){
+        console.log("Server responded with error");
+    }
+
+}catch(e){
+    console.log("Server offline — skipping");
+}
+
+// 🔥 ALWAYS SAVE LOCAL (IMPORTANT)
+localStorage.setItem("userProfile", JSON.stringify({
+    name,
+    email,
+    phone: fullPhone
+}));
+
+// 🔥 UI UPDATE
+showProfileView({
+    name,
+    email,
+    phone: fullPhone
+});
+
+// ✅ SUCCESS MESSAGE (ALWAYS)
+document.getElementById("profileStatus").innerText = "Saved Successfully ✅";
+
+}catch(e){
+
+console.log("Unexpected error:", e);
+alert("Something went wrong");
+
+}
+
+}
+
+// ==============================
+// 👁️ SHOW PROFILE VIEW
+// ==============================
+function showProfileView(data){
+
+document.getElementById("profileForm").style.display = "none";
+document.getElementById("profileView").style.display = "block";
+
+document.getElementById("viewName").innerText = data.name;
+document.getElementById("viewEmail").innerText = data.email;
+document.getElementById("viewPhone").innerText = data.phone;
+
+}
+
+// ==============================
+// ✏️ EDIT PROFILE
+// ==============================
+function editProfile(){
+
+document.getElementById("profileForm").style.display = "block";
+document.getElementById("profileView").style.display = "none";
+
+}
+
+// ==============================
+// 🔄 AUTO LOAD PROFILE
+// ==============================
+window.addEventListener("load", ()=>{
+
+const data = JSON.parse(localStorage.getItem("userProfile"));
+
+if(data){
+showProfileView(data);
+}
+
+});
+
+// ==============================
+// 📩 MAIL BUTTON
+// ==============================
+function openMail(){
+
+const subject = "DimeX Enquiry";
+const body = "Hello DimeX Team,%0A%0AI have a query regarding:%0A";
+
+window.location.href =
+`mailto:info@dimex.world?subject=${subject}&body=${body}`;
+
+}
+
+// ==============================
+// 🏠 GO HOME
+// ==============================
+function goHome(){
+  window.location.href = "/";
+}
+
+function openWalletLink(){
+    window.open("https://www.dimex.world/dashboard/", "_blank");
+}        
+
+  
+</script>      
+</body>      
+</html> 
